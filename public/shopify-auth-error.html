@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify Authorization Error - giiHelpDeskAgent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .error-icon {
+            width: 80px;
+            height: 80px;
+            background: #e74c3c;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .error-icon::before {
+            content: "✕";
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-weight: 500;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fdf2f2;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .detail-label {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .detail-value {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .actions {
+            margin-top: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 0 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .logo {
+            margin-bottom: 20px;
+        }
+        
+        .countdown {
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h2 style="color: #667eea; margin: 0;">giiHelpDeskAgent</h2>
+        </div>
+        
+        <div class="error-icon"></div>
+        
+        <h1>Authorization Failed</h1>
+        <p class="subtitle">We couldn't complete the Shopify authorization process</p>
+        
+        <div class="error-message" id="errorMessage">
+            ❌ An error occurred during the authorization process. Please try again.
+        </div>
+        
+        <div class="details">
+            <div class="detail-item">
+                <span class="detail-label">Error Type:</span>
+                <span class="detail-value" id="errorType">Authorization Error</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Store:</span>
+                <span class="detail-value" id="shopName">Unknown</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value" style="color: #e74c3c;">Failed</span>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <a href="#" class="btn btn-primary" onclick="retryAuth()">Try Again</a>
+            <a href="https://mail.google.com/mail/u/0/#inbox" class="btn btn-secondary">Return to Gmail</a>
+        </div>
+        
+        <div class="countdown">
+            <span>Auto-returning to Gmail in <span id="countdown">10</span> seconds</span>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const shop = urlParams.get('shop');
+        const error = urlParams.get('error');
+        const errorType = urlParams.get('error_type') || 'Authorization Error';
+        
+        // Update page content
+        document.getElementById('shopName').textContent = shop || 'Unknown Store';
+        document.getElementById('errorType').textContent = errorType;
+        
+        if (error) {
+            document.getElementById('errorMessage').textContent = `❌ ${error}`;
+        }
+        
+        // Countdown and redirect
+        let countdown = 10;
+        const countdownElement = document.getElementById('countdown');
+        
+        const timer = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(timer);
+                window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
+            }
+        }, 1000);
+        
+        function retryAuth() {
+            // Redirect to the authorization initiation URL
+            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/initiate-shopify-auth?shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
+            window.location.href = authUrl;
+        }
+        
+        // Allow manual close with escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe to giiHelpDeskAgent</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+        }
+
+        input[type="email"], 
+        input[type="text"], 
+        input[type="number"], 
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            background-color: #fafafa;
+        }
+
+        input[type="email"]:focus, 
+        input[type="text"]:focus, 
+        input[type="number"]:focus, 
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .help-text {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .features {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .features h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            padding: 8px 0;
+            color: #666;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .form-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>giiHelpDeskAgent</h1>
+            <p>AI-Powered Customer Service for Shopify Stores</p>
+        </div>
+
+        <div class="form-container">
+            <form id="subscribeForm">
+                <div class="form-group">
+                    <label for="customerServiceEmail">Customer Service Email *</label>
+                    <input type="email" id="customerServiceEmail" name="customerServiceEmail" required 
+                           placeholder="support@yourbrand.com">
+                    <div class="help-text">This will be your primary account email for billing and management</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="shopifyDomain">Shopify Store Domain *</label>
+                    <input type="text" id="shopifyDomain" name="shopifyDomain" required 
+                           placeholder="your-store.myshopify.com">
+                    <div class="help-text">Your Shopify store's .myshopify.com domain</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="seatCount">Number of Agent Seats *</label>
+                    <select id="seatCount" name="seatCount" required>
+                        <option value="1">1 Seat - $29/month</option>
+                        <option value="2">2 Seats - $49/month</option>
+                        <option value="3">3 Seats - $69/month</option>
+                        <option value="5">5 Seats - $99/month</option>
+                        <option value="10">10 Seats - $179/month</option>
+                    </select>
+                    <div class="help-text">Number of customer service agents who can use the system simultaneously</div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Start 14-Day Free Trial & Connect Shopify
+                </button>
+
+                <div id="message"></div>
+            </form>
+        </div>
+
+        <div class="features">
+            <h3>What's Included:</h3>
+            <ul>
+                <li>AI-powered email intent analysis</li>
+                <li>Automatic draft generation for customer replies</li>
+                <li>Shopify order, shipping, and refund data integration</li>
+                <li>Gmail Add-on for seamless workflow</li>
+                <li>Multi-agent seat management</li>
+                <li>14-day free trial, no credit card required</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Replace with your actual Cloud Function URL
+        const SUBSCRIBE_FUNCTION_URL = "https://us-central1-your-project-id.cloudfunctions.net/subscribeAndAuthorize";
+        
+        document.getElementById("subscribeForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            
+            const customerServiceEmail = document.getElementById("customerServiceEmail").value.trim();
+            const shopifyDomain = document.getElementById("shopifyDomain").value.trim();
+            const seatCount = document.getElementById("seatCount").value;
+            const messageDiv = document.getElementById("message");
+            const submitBtn = document.getElementById("submitBtn");
+
+            // Reset message
+            messageDiv.style.display = "none";
+            messageDiv.className = "";
+
+            // Validate inputs
+            if (!customerServiceEmail || !shopifyDomain || !seatCount) {
+                showMessage("Please fill in all required fields.", "error");
+                return;
+            }
+
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(customerServiceEmail)) {
+                showMessage("Please enter a valid email address.", "error");
+                return;
+            }
+
+            // Validate Shopify domain format
+            const domainRegex = /^[a-zA-Z0-9\-]+\.myshopify\.com$/;
+            if (!domainRegex.test(shopifyDomain)) {
+                showMessage("Please enter a valid Shopify domain (e.g., your-store.myshopify.com)", "error");
+                return;
+            }
+
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+            showMessage("Creating your subscription and connecting to Shopify...", "loading");
+
+            try {
+                const response = await fetch(SUBSCRIBE_FUNCTION_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        customerServiceEmail: customerServiceEmail,
+                        shopifyDomain: shopifyDomain,
+                        seatCount: parseInt(seatCount)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    showMessage(data.message || "Subscription created successfully! Redirecting to Shopify for authorization...", "success");
+                    
+                    // Redirect to Shopify OAuth after a short delay
+                    if (data.redirectUrl) {
+                        setTimeout(() => {
+                            window.location.href = data.redirectUrl;
+                        }, 2000);
+                    }
+                } else {
+                    showMessage(data.error || "Subscription failed. Please try again.", "error");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showMessage("An error occurred while processing your subscription. Please try again.", "error");
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Start 14-Day Free Trial & Connect Shopify";
+            }
+        });
+
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById("message");
+            messageDiv.textContent = text;
+            messageDiv.className = type;
+            messageDiv.style.display = "block";
+        }
+
+        // Auto-format Shopify domain input
+        document.getElementById("shopifyDomain").addEventListener("input", function(e) {
+            let value = e.target.value.toLowerCase().trim();
+            
+            // Remove any protocol or www
+            value = value.replace(/^https?:\/\//, '').replace(/^www\./, '');
+            
+            // If user enters just the store name, append .myshopify.com
+            if (value && !value.includes('.') && !value.endsWith('.myshopify.com')) {
+                // Don't auto-append while typing, just validate on submit
+            }
+            
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
+
