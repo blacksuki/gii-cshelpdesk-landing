@@ -225,20 +225,22 @@
             
             if (countdown <= 0) {
                 clearInterval(timer);
-                window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
+                window.close();
+                // window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
             }
         }, 1000);
         
         function retryAuth() {
             // Redirect to the authorization initiation URL
-            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/initiate-shopify-auth?shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
+            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/initiateShopifyAuth?shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
             window.location.href = authUrl;
         }
         
         // Allow manual close with escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
+                window.close();
+                // window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
             }
         });
     </script>

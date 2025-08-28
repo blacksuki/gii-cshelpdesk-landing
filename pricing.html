@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing — giiHelpdesk</title>
+    <meta name="description" content="Choose a plan: Free trial, Pro, or Team.">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.paddle.com/paddle/paddle.js" defer></script>
+    <script src="js/paddle.js" defer></script>
+    <script src="js/common.js" defer></script>
+    <style>
+        .plan-card__list { margin: 10px 0 16px 0; padding-left: 18px; }
+        .plan-card__list li { margin: 6px 0; }
+    </style>
+    <meta name="robots" content="noindex">
+    
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main class="section" role="main">
+        <h1 class="section__title">Pricing</h1>
+        <p class="muted">Start your 14-day free trial. No credit card required.</p>
+
+        <div class="pricing" style="margin-top:16px;">
+            <article class="plan-card" id="free">
+                <span class="plan-card__badge">14-day trial</span>
+                <h2>Free</h2>
+                <div class="plan-card__price">$0</div>
+                <ul class="plan-card__list">
+                    <li>1 seat</li>
+                    <li>50 emails / month</li>
+                    <li>Gmail Add-on</li>
+                </ul>
+                <button class="paddle-btn" data-plan="free" aria-label="Start free trial">Get Started</button>
+            </article>
+
+            <article class="plan-card">
+                <h2>Pro</h2>
+                <div class="plan-card__price">$79 / mo</div>
+                <ul class="plan-card__list">
+                    <li>1 seat</li>
+                    <li>1,000 emails / month</li>
+                    <li>Shopify integration</li>
+                </ul>
+                <button class="paddle-btn" data-plan="pro" aria-label="Buy Pro">Buy Pro</button>
+            </article>
+
+            <article class="plan-card">
+                <h2>Team</h2>
+                <div class="plan-card__price">$199 / mo</div>
+                <ul class="plan-card__list">
+                    <li>Unlimited seats</li>
+                    <li>5,000 emails / month</li>
+                    <li>Priority support</li>
+                </ul>
+                <button class="paddle-btn" data-plan="team" aria-label="Buy Team">Buy Team</button>
+            </article>
+        </div>
+
+        <section class="section" style="margin-top:24px;">
+            <h2 class="section__title">FAQ & Compliance</h2>
+            <ul>
+                <li><strong>Gmail & Google Workspace</strong> are supported.</li>
+                <li><strong>Minimal OAuth scopes</strong>: gmail.readonly, gmail.modify.</li>
+                <li><strong>No email content stored</strong>; zero-content-storage design.</li>
+                <li><strong>DPA</strong>: handled by Paddle.</li>
+            </ul>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+</body>
+</html>
+
+
