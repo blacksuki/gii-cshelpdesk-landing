@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing — giiHelpdesk</title>
+    <meta name="description" content="Manage your giiHelpdesk subscription and billing">
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="../js/toast.js" defer></script>
+    <script src="../js/api-config.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="account-container">
+        <div class="account-header">
+            <h1 class="account-title">Billing & Subscription</h1>
+            <p class="account-subtitle">Manage your subscription, payment methods, and billing history</p>
+        </div>
+
+        <!-- Current Plan -->
+        <div class="account-card" style="max-width: 800px; margin: 0 auto 32px;">
+            <div class="account-card__title">
+                <span>💳</span>
+                Current Plan
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                <div>
+                    <div style="font-size: 24px; font-weight: 700; margin-bottom: 8px;" id="currentPlan">Free</div>
+                    <div style="color: var(--color-muted); margin-bottom: 16px;" id="planDescription">14-day free trial</div>
+                    
+                    <div style="margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Seats:</span>
+                            <span id="currentSeats">1</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Email Limit:</span>
+                            <span id="currentEmailLimit">50/month</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Next Billing:</span>
+                            <span id="nextBillingDate">14 days</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: right;">
+                    <div style="font-size: 32px; font-weight: 700; color: var(--color-primary); margin-bottom: 8px;" id="currentPrice">$0</div>
+                    <div style="color: var(--color-muted); margin-bottom: 16px;" id="billingCycle">per month</div>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                        <button class="auth-btn" onclick="upgradePlan()" id="upgradeBtn">
+                            Upgrade Plan
+                        </button>
+                        <button class="auth-btn auth-btn--danger" onclick="cancelSubscription()" id="cancelBtn" style="display: none;">
+                            Cancel Subscription
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plan Comparison -->
+        <div class="account-card" style="max-width: 800px; margin: 0 auto 32px;">
+            <div class="account-card__title">
+                <span>📊</span>
+                Available Plans
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+                <!-- Free Plan -->
+                <div style="border: 2px solid #e9ecef; border-radius: var(--radius); padding: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Free</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$0</div>
+                    <div style="margin-bottom: 16px;">
+                        <div style="margin-bottom: 8px;">1 Seat</div>
+                        <div style="margin-bottom: 8px;">50 emails/month</div>
+                        <div style="margin-bottom: 8px;">Basic support</div>
+                    </div>
+                    <button class="auth-btn auth-btn--secondary" disabled style="width: 100%;">
+                        Current Plan
+                    </button>
+                </div>
+                
+                <!-- Pro Plan -->
+                <div style="border: 2px solid var(--color-primary); border-radius: var(--radius); padding: 20px; text-align: center; position: relative;">
+                    <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--color-primary); color: white; padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 600;">
+                        POPULAR
+                    </div>
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Pro</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$79</div>
+                    <div style="margin-bottom: 16px;">
+                        <div style="margin-bottom: 8px;">1 Seat</div>
+                        <div style="margin-bottom: 8px;">1,000 emails/month</div>
+                        <div style="margin-bottom: 8px;">Priority support</div>
+                        <div style="margin-bottom: 8px;">Shopify integration</div>
+                    </div>
+                    <button class="auth-btn" onclick="upgradeToPro()" style="width: 100%;">
+                        Upgrade to Pro
+                    </button>
+                </div>
+                
+                <!-- Team Plan -->
+                <div style="border: 2px solid #e9ecef; border-radius: var(--radius); padding: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Team</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$199</div>
+                    <div style="margin-bottom: 16px;">
+                        <div style="margin-bottom: 8px;">Unlimited seats</div>
+                        <div style="margin-bottom: 8px;">5,000 emails/month</div>
+                        <div style="margin-bottom: 8px;">24/7 support</div>
+                        <div style="margin-bottom: 8px;">Advanced analytics</div>
+                    </div>
+                    <button class="auth-btn auth-btn--secondary" onclick="upgradeToTeam()" style="width: 100%;">
+                        Upgrade to Team
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="account-card" style="max-width: 800px; margin: 0 auto 32px;">
+            <div class="account-card__title">
+                <span>💳</span>
+                Payment Methods
+            </div>
+            
+            <div id="paymentMethods" style="margin-bottom: 20px;">
+                <div style="text-align: center; padding: 40px; color: var(--color-muted);">
+                    No payment methods on file
+                </div>
+            </div>
+            
+            <button class="auth-btn auth-btn--secondary" onclick="addPaymentMethod()">
+                Add Payment Method
+            </button>
+        </div>
+
+        <!-- Billing History -->
+        <div class="account-card" style="max-width: 800px; margin: 0 auto;">
+            <div class="account-card__title">
+                <span>📋</span>
+                Billing History
+            </div>
+            
+            <div id="billingHistory" style="min-height: 100px; display: flex; align-items: center; justify-content: center; color: var(--color-muted);">
+                Loading billing history...
+            </div>
+        </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadBillingData();
+            loadPaymentMethods();
+            loadBillingHistory();
+        });
+
+        // Authentication check
+        function checkAuthentication() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!user.email) {
+                Toast.error('Authentication Required', 'Please sign in to access your billing information.');
+                setTimeout(() => {
+                    window.location.href = '../auth/login.html';
+                }, 2000);
+                return;
+            }
+        }
+
+        // Load billing data
+        async function loadBillingData() {
+            try {
+                const result = await window.apiClient.getBillingInfo();
+                
+                if (result.success) {
+                    updateBillingDisplay(result.data);
+                } else {
+                    Toast.error('Failed to Load Billing', result.error || 'Unable to load your billing information.');
+                }
+            } catch (error) {
+                console.error('Error loading billing data:', error);
+                Toast.error('Load Error', 'An error occurred while loading your billing data.');
+            }
+        }
+
+        // Update billing display
+        function updateBillingDisplay(billingData) {
+            if (billingData.subscription) {
+                const sub = billingData.subscription;
+                
+                // Update current plan info
+                document.getElementById('currentPlan').textContent = sub.plan || 'Free';
+                document.getElementById('planDescription').textContent = sub.plan === 'Free' ? '14-day free trial' : `${sub.plan} plan`;
+                document.getElementById('currentSeats').textContent = sub.seats || 1;
+                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 79}`;
+                document.getElementById('billingCycle').textContent = sub.billingCycle || 'per month';
+                
+                // Calculate next billing
+                if (sub.endDate) {
+                    const endDate = new Date(sub.endDate);
+                    const now = new Date();
+                    const daysLeft = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
+                    document.getElementById('nextBillingDate').textContent = daysLeft > 0 ? `${daysLeft} days` : 'Expired';
+                }
+                
+                // Set email limit based on plan
+                const emailLimits = {
+                    'Free': '50/month',
+                    'Pro': '1,000/month',
+                    'Team': '5,000/month'
+                };
+                document.getElementById('currentEmailLimit').textContent = emailLimits[sub.plan] || '50/month';
+                
+                // Show/hide buttons based on plan
+                const upgradeBtn = document.getElementById('upgradeBtn');
+                const cancelBtn = document.getElementById('cancelBtn');
+                
+                if (sub.plan === 'Free') {
+                    upgradeBtn.textContent = 'Upgrade Plan';
+                    upgradeBtn.onclick = upgradePlan;
+                    cancelBtn.style.display = 'none';
+                } else {
+                    upgradeBtn.textContent = 'Change Plan';
+                    upgradeBtn.onclick = changePlan;
+                    cancelBtn.style.display = 'inline-block';
+                }
+            }
+        }
+
+        // Load payment methods
+        async function loadPaymentMethods() {
+            try {
+                const result = await window.apiClient.getPaymentMethods();
+                
+                if (result.success) {
+                    displayPaymentMethods(result.data);
+                } else {
+                    console.log('No payment methods found');
+                }
+            } catch (error) {
+                console.error('Error loading payment methods:', error);
+            }
+        }
+
+        // Display payment methods
+        function displayPaymentMethods(methods) {
+            const container = document.getElementById('paymentMethods');
+            
+            if (!methods || methods.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px; color: var(--color-muted);">
+                        No payment methods on file
+                    </div>
+                `;
+                return;
+            }
+            
+            const methodsList = methods.map(method => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px; border: 1px solid #e9ecef; border-radius: var(--radius); margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div style="width: 40px; height: 25px; background: #f8f9fa; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600;">
+                            ${method.brand || 'CARD'}
+                        </div>
+                        <div>
+                            <div style="font-weight: 500;">•••• •••• •••• ${method.last4}</div>
+                            <div style="font-size: 14px; color: var(--color-muted);">Expires ${method.expMonth}/${method.expYear}</div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="auth-btn auth-btn--secondary" onclick="editPaymentMethod('${method.id}')" style="padding: 8px 16px; font-size: 14px;">
+                            Edit
+                        </button>
+                        <button class="auth-btn auth-btn--danger" onclick="removePaymentMethod('${method.id}')" style="padding: 8px 16px; font-size: 14px;">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = methodsList;
+        }
+
+        // Load billing history
+        async function loadBillingHistory() {
+            try {
+                const result = await window.apiClient.getBillingHistory();
+                
+                if (result.success) {
+                    displayBillingHistory(result.data);
+                } else {
+                    document.getElementById('billingHistory').innerHTML = 'No billing history found.';
+                }
+            } catch (error) {
+                console.error('Error loading billing history:', error);
+                document.getElementById('billingHistory').innerHTML = 'Unable to load billing history.';
+            }
+        }
+
+        // Display billing history
+        function displayBillingHistory(history) {
+            const container = document.getElementById('billingHistory');
+            
+            if (!history || history.length === 0) {
+                container.innerHTML = 'No billing history found.';
+                return;
+            }
+            
+            const historyList = history.map(invoice => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
+                    <div>
+                        <div style="font-weight: 500;">${invoice.description || 'Subscription'}</div>
+                        <div style="font-size: 14px; color: var(--color-muted);">Invoice #${invoice.number}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: 600;">$${invoice.amount}</div>
+                        <div style="font-size: 14px; color: var(--color-muted);">
+                            ${new Date(invoice.date).toLocaleDateString()}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = historyList;
+        }
+
+
+
+        // Action handlers
+        function upgradePlan() {
+            Toast.info('Plan Upgrade', 'Redirecting to plan selection...');
+            // TODO: Implement plan upgrade flow
+            setTimeout(() => {
+                window.location.href = '../pricing.html?action=upgrade';
+            }, 1500);
+        }
+
+        function changePlan() {
+            Toast.info('Plan Change', 'Redirecting to plan selection...');
+            // TODO: Implement plan change flow
+            setTimeout(() => {
+                window.location.href = '../pricing.html?action=change';
+            }, 1500);
+        }
+
+        function upgradeToPro() {
+            Toast.info('Pro Plan', 'Redirecting to Pro plan upgrade...');
+            // TODO: Implement Pro plan upgrade
+            setTimeout(() => {
+                window.location.href = '../pricing.html?plan=pro';
+            }, 1500);
+        }
+
+        function upgradeToTeam() {
+            Toast.info('Team Plan', 'Redirecting to Team plan upgrade...');
+            // TODO: Implement Team plan upgrade
+            setTimeout(() => {
+                window.location.href = '../pricing.html?plan=team';
+            }, 1500);
+        }
+
+        function cancelSubscription() {
+            if (confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.')) {
+                Toast.loading('Cancelling Subscription', 'Processing your cancellation request...');
+                
+                // TODO: Implement subscription cancellation
+                setTimeout(() => {
+                    Toast.hideLoading();
+                    Toast.success('Subscription Cancelled', 'Your subscription will be cancelled at the end of the current billing period.');
+                    loadBillingData(); // Refresh data
+                }, 2000);
+            }
+        }
+
+        function addPaymentMethod() {
+            Toast.info('Payment Method', 'Opening payment method form...');
+            // TODO: Implement payment method addition
+        }
+
+        function editPaymentMethod(methodId) {
+            Toast.info('Edit Payment', 'Opening payment method editor...');
+            // TODO: Implement payment method editing
+        }
+
+        function removePaymentMethod(methodId) {
+            if (confirm('Are you sure you want to remove this payment method?')) {
+                Toast.loading('Removing Payment Method', 'Processing your request...');
+                
+                // TODO: Implement payment method removal
+                setTimeout(() => {
+                    Toast.hideLoading();
+                    Toast.success('Payment Method Removed', 'The payment method has been removed successfully.');
+                    loadPaymentMethods(); // Refresh list
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
+

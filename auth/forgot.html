@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password — giiHelpdesk</title>
+    <meta name="description" content="Reset your giiHelpdesk password">
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="../js/toast.js" defer></script>
+    <script src="../js/api-config.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">giiHelpdesk</div>
+                <div class="auth-subtitle">Reset your password</div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 24px; color: var(--color-muted);">
+                <p>Enter your email address and we'll send you a link to reset your password.</p>
+            </div>
+
+            <form class="auth-form" id="forgotForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="user@yourdomain.com"
+                        required
+                        autocomplete="email"
+                    >
+                    <div class="form-help">Enter the email address associated with your account</div>
+                </div>
+
+                <button type="submit" class="auth-btn" id="submitBtn">
+                    <span class="btn-text">Send Reset Link</span>
+                    <span class="spinner" style="display: none;"></span>
+                </button>
+            </form>
+
+            <div class="auth-links">
+                <a href="login.html" class="auth-link">← Back to Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Form submission
+        document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = submitBtn.querySelector('.spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            
+            try {
+                const formData = new FormData(e.target);
+                const data = {
+                    email: formData.get('email').trim()
+                };
+                
+                // Validation
+                if (!data.email) {
+                    Toast.error('Missing Email', 'Please enter your email address.');
+                    return;
+                }
+                
+                // Submit forgot password request using unified API client
+                const result = await window.apiClient.forgotPassword(data.email);
+                
+                if (result.success) {
+                    Toast.success('Reset Link Sent', 'If an account with that email exists, you will receive a password reset link shortly.');
+                    
+                    // Clear form
+                    e.target.reset();
+                    
+                    // Show additional instructions
+                    setTimeout(() => {
+                        Toast.info('Check Your Email', 'Please check your spam folder if you don\'t see the email in your inbox.');
+                    }, 2000);
+                    
+                } else {
+                    let errorMessage = 'Failed to send reset link. Please try again.';
+                    
+                    if (result.error === 'EMAIL_NOT_FOUND') {
+                        errorMessage = 'No account found with that email address.';
+                    } else if (result.error === 'TOO_MANY_REQUESTS') {
+                        errorMessage = 'Too many reset requests. Please wait before trying again.';
+                    } else if (result.error === 'ACCOUNT_LOCKED') {
+                        errorMessage = 'This account has been locked. Please contact support.';
+                    }
+                    
+                    Toast.error('Request Failed', errorMessage);
+                }
+                
+            } catch (error) {
+                console.error('Forgot password error:', error);
+                Toast.error('Request Error', 'An unexpected error occurred. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
+            }
+        });
+
+        // Auto-focus email field
+        document.getElementById('email').focus();
+    </script>
+</body>
+</html>
+

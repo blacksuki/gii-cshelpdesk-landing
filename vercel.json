@@ -11,8 +11,62 @@
         }
     ],
     "rewrites": [
-        { "source": "/", "destination": "/index.html" }
-    ]
+        { "source": "/", "destination": "/index.html" },
+        { "source": "/api/auth/register", "destination": "/api/auth/register.js" },
+        { "source": "/api/auth/check-domain", "destination": "/api/auth/check-domain.js" },
+        { "source": "/api/auth/login", "destination": "/api/auth/login.js" },
+        { "source": "/api/auth/verify", "destination": "/api/auth/verify.js" },
+        { "source": "/api/auth/forgot", "destination": "/api/auth/forgot.js" },
+        { "source": "/api/auth/reset", "destination": "/api/auth/reset.js" },
+        { "source": "/api/account/me", "destination": "/api/account/me.js" },
+        { "source": "/api/account/profile", "destination": "/api/account/profile.js" },
+        { "source": "/api/account/billing", "destination": "/api/account/billing.js" },
+        { "source": "/api/account/activity", "destination": "/api/account/activity.js" },
+        { "source": "/api/account/payment-methods", "destination": "/api/account/payment-methods.js" },
+        { "source": "/api/account/billing-history", "destination": "/api/account/billing-history.js" },
+        { "source": "/api/webhooks/paddle", "destination": "/api/webhooks/paddle.js" }
+    ],
+    "functions": {
+        "api/auth/register.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/auth/check-domain.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/auth/login.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/auth/verify.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/auth/forgot.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/auth/reset.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/account/me.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/account/profile.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/account/billing.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/account/activity.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/account/payment-methods.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/account/billing-history.js": {
+            "runtime": "nodejs20.x"
+        },
+        "api/webhooks/paddle.js": {
+            "runtime": "nodejs20.x"
+        }
+    }
 }
 
 

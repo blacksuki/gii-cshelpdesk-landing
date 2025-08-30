@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — giiHelpdesk</title>
+    <meta name="description" content="Your giiHelpdesk account dashboard">
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="../js/toast.js" defer></script>
+    <script src="../js/api-config.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <div class="account-container">
+        <div class="account-header">
+            <h1 class="account-title">Account Dashboard</h1>
+            <p class="account-subtitle">Manage your subscription and account settings</p>
+        </div>
+
+        <div class="account-grid">
+            <!-- Subscription Card -->
+            <div class="account-card">
+                <div class="account-card__title">
+                    <span>📊</span>
+                    Subscription Status
+                </div>
+                <div class="account-card__content">
+                    <div class="account-info">
+                        <span class="account-info__label">Current Plan</span>
+                        <span class="account-info__value">
+                            <span class="subscription-badge subscription-badge--free" id="planBadge">Free</span>
+                        </span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Status</span>
+                        <span class="account-info__value" id="subscriptionStatus">Active</span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Seats</span>
+                        <span class="account-info__value" id="seatCount">1</span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Next Billing</span>
+                        <span class="account-info__value" id="nextBilling">14 days</span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Email Limit</span>
+                        <span class="account-info__value" id="emailLimit">50/month</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="auth-btn auth-btn--secondary" onclick="upgradeSubscription()">
+                        Upgrade Plan
+                    </button>
+                    <button class="auth-btn auth-btn--danger" onclick="cancelSubscription()" id="cancelBtn" style="display: none;">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+
+            <!-- Account Info Card -->
+            <div class="account-card">
+                <div class="account-card__title">
+                    <span>👤</span>
+                    Account Information
+                </div>
+                <div class="account-card__content">
+                    <div class="account-info">
+                        <span class="account-info__label">Domain</span>
+                        <span class="account-info__value" id="userDomain">Loading...</span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Email</span>
+                        <span class="account-info__value" id="userEmail">Loading...</span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Member Since</span>
+                        <span class="account-info__value" id="memberSince">Loading...</span>
+                    </div>
+                    <div class="account-info">
+                        <span class="account-info__label">Last Login</span>
+                        <span class="account-info__value" id="lastLogin">Loading...</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <a href="profile.html" class="auth-btn auth-btn--secondary" style="text-decoration: none; text-align: center;">
+                        Edit Profile
+                    </a>
+                    <a href="billing.html" class="auth-btn auth-btn--secondary" style="text-decoration: none; text-align: center;">
+                        Billing
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="account-card" style="margin-bottom: 32px;">
+            <div class="account-card__title">
+                <span>⚡</span>
+                Quick Actions
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <button class="auth-btn auth-btn--secondary" onclick="openGmailAddon()">
+                    Open Gmail Add-on
+                </button>
+                <button class="auth-btn auth-btn--secondary" onclick="connectShopify()">
+                    Connect Shopify
+                </button>
+                <button class="auth-btn auth-btn--secondary" onclick="viewDocumentation()">
+                    View Documentation
+                </button>
+                <button class="auth-btn auth-btn--secondary" onclick="contactSupport()">
+                    Contact Support
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="account-card">
+            <div class="account-card__title">
+                <span>📈</span>
+                Recent Activity
+            </div>
+            <div id="recentActivity" style="min-height: 100px; display: flex; align-items: center; justify-content: center; color: var(--color-muted);">
+                Loading recent activity...
+            </div>
+        </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+    <script>
+        // Check authentication on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+            loadUserData();
+            loadRecentActivity();
+        });
+
+        // Authentication check
+        function checkAuthentication() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            if (!user.email) {
+                Toast.error('Authentication Required', 'Please sign in to access your dashboard.');
+                setTimeout(() => {
+                    window.location.href = '../auth/login.html';
+                }, 2000);
+                return;
+            }
+        }
+
+        // Load user data
+        async function loadUserData() {
+            try {
+                const result = await window.apiClient.getAccountInfo();
+                
+                if (result.success) {
+                    updateDashboard(result.data);
+                } else {
+                    Toast.error('Failed to Load Data', result.error || 'Unable to load your account information.');
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                Toast.error('Load Error', 'An error occurred while loading your data.');
+            }
+        }
+
+        // Update dashboard with user data
+        function updateDashboard(userData) {
+            // Update subscription info
+            if (userData.subscription) {
+                const sub = userData.subscription;
+                document.getElementById('planBadge').textContent = sub.plan || 'Free';
+                document.getElementById('planBadge').className = `subscription-badge subscription-badge--${(sub.plan || 'free').toLowerCase()}`;
+                document.getElementById('subscriptionStatus').textContent = sub.status || 'Active';
+                document.getElementById('seatCount').textContent = sub.seats || 1;
+                
+                // Show/hide cancel button based on plan
+                const cancelBtn = document.getElementById('cancelBtn');
+                if (sub.plan && sub.plan !== 'Free') {
+                    cancelBtn.style.display = 'inline-block';
+                }
+                
+                // Calculate next billing
+                if (sub.endDate) {
+                    const endDate = new Date(sub.endDate);
+                    const now = new Date();
+                    const daysLeft = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
+                    document.getElementById('nextBilling').textContent = daysLeft > 0 ? `${daysLeft} days` : 'Expired';
+                }
+                
+                // Set email limit based on plan
+                const emailLimits = {
+                    'Free': '50/month',
+                    'Pro': '1,000/month',
+                    'Team': '5,000/month'
+                };
+                document.getElementById('emailLimit').textContent = emailLimits[sub.plan] || '50/month';
+            }
+            
+            // Update account info
+            if (userData.profile) {
+                document.getElementById('userDomain').textContent = userData.profile.domain || 'N/A';
+                document.getElementById('userEmail').textContent = userData.profile.email || 'N/A';
+                
+                if (userData.profile.createdAt) {
+                    const createdDate = new Date(userData.profile.createdAt);
+                    document.getElementById('memberSince').textContent = createdDate.toLocaleDateString();
+                }
+                
+                if (userData.profile.lastLogin) {
+                    const lastLoginDate = new Date(userData.profile.lastLogin);
+                    document.getElementById('lastLogin').textContent = lastLoginDate.toLocaleDateString();
+                }
+            }
+        }
+
+        // Load recent activity
+        async function loadRecentActivity() {
+            try {
+                const result = await window.apiClient.getUserActivity();
+                
+                if (result.success) {
+                    displayRecentActivity(result.data);
+                } else {
+                    document.getElementById('recentActivity').innerHTML = 'No recent activity found.';
+                }
+            } catch (error) {
+                console.error('Error loading activity:', error);
+                document.getElementById('recentActivity').innerHTML = 'Unable to load recent activity.';
+            }
+        }
+
+        // Display recent activity
+        function displayRecentActivity(activities) {
+            const container = document.getElementById('recentActivity');
+            
+            if (!activities || activities.length === 0) {
+                container.innerHTML = 'No recent activity found.';
+                return;
+            }
+            
+            const activityList = activities.map(activity => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f3f4;">
+                    <div>
+                        <div style="font-weight: 500;">${activity.action}</div>
+                        <div style="font-size: 14px; color: var(--color-muted);">${activity.description}</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--color-muted);">
+                        ${new Date(activity.timestamp).toLocaleDateString()}
+                    </div>
+                </div>
+            `).join('');
+            
+            container.innerHTML = activityList;
+        }
+
+
+
+        // Action handlers
+        function upgradeSubscription() {
+            Toast.info('Upgrade', 'Redirecting to subscription upgrade page...');
+            // TODO: Implement subscription upgrade flow
+            setTimeout(() => {
+                window.location.href = 'billing.html?action=upgrade';
+            }, 1500);
+        }
+
+        function cancelSubscription() {
+            if (confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.')) {
+                Toast.loading('Cancelling Subscription', 'Processing your cancellation request...');
+                
+                // TODO: Implement subscription cancellation
+                setTimeout(() => {
+                    Toast.hideLoading();
+                    Toast.success('Subscription Cancelled', 'Your subscription will be cancelled at the end of the current billing period.');
+                    loadUserData(); // Refresh data
+                }, 2000);
+            }
+        }
+
+        function openGmailAddon() {
+            Toast.info('Gmail Add-on', 'Opening Gmail Add-on...');
+            // TODO: Implement Gmail Add-on opening
+        }
+
+        function connectShopify() {
+            Toast.info('Shopify Connection', 'Redirecting to Shopify authorization...');
+            // TODO: Implement Shopify connection flow
+        }
+
+        function viewDocumentation() {
+            Toast.info('Documentation', 'Opening documentation...');
+            window.open('https://docs.giihelpdesk.com', '_blank');
+        }
+
+        function contactSupport() {
+            Toast.info('Support', 'Opening support contact form...');
+            // TODO: Implement support contact form
+        }
+
+        // Logout function
+        function logout() {
+            if (window.apiClient) {
+                window.apiClient.logout();
+            } else {
+                localStorage.removeItem('user');
+                Toast.success('Logged Out', 'You have been successfully logged out.');
+                setTimeout(() => {
+                    window.location.href = '../auth/login.html';
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
+

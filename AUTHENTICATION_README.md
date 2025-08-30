@@ -1,0 +1,357 @@
+# giiHelpdesk Authentication System
+
+This document describes the complete user authentication and subscription system implemented for giiHelpdesk.
+
+## 🏗️ System Architecture
+
+### Frontend Structure
+```
+/auth/                    # Authentication pages
+├── register.html        # User registration
+├── login.html          # User login
+├── forgot.html         # Forgot password
+└── reset.html          # Password reset
+
+/account/                # User account pages
+├── dashboard.html       # Main dashboard
+├── profile.html         # Profile settings
+└── billing.html         # Subscription & billing
+
+/css/
+├── style.css           # Main landing page styles
+└── auth.css            # Authentication-specific styles
+
+/js/
+├── common.js           # Shared functionality
+├── toast.js            # Toast notification system
+└── auth.js             # Authentication utilities
+```
+
+### Backend API Structure
+```
+/api/auth/               # Authentication endpoints
+├── register            # User registration
+├── check-domain        # Domain availability check
+├── login               # User login
+├── verify              # Email verification
+├── forgot              # Password reset request
+└── reset               # Password reset
+
+/api/account/            # User account endpoints
+├── me                  # Get current user
+├── profile             # Profile management
+├── billing             # Subscription info
+├── activity            # User activity
+├── payment-methods     # Payment methods
+└── billing-history     # Billing history
+
+/api/webhooks/           # Webhook endpoints
+└── paddle              # Paddle subscription webhooks
+```
+
+## 🔐 Authentication Flow
+
+### 1. User Registration
+1. User fills out registration form with:
+   - Domain name (unique identifier)
+   - Email address
+   - Password (with strength validation)
+   - Password confirmation
+2. Frontend validates input and checks domain availability
+3. Backend creates user account with:
+   - Hashed password (bcrypt)
+   - Email verification token
+   - Free trial subscription (14 days)
+   - Default profile settings
+4. Verification email sent to user
+5. User redirected to login with success message
+
+### 2. Email Verification
+1. User clicks verification link in email
+2. Backend validates token and marks email as verified
+3. User can now log in to the system
+
+### 3. User Login
+1. User enters email and password
+2. Backend validates credentials
+3. JWT token generated and returned
+4. User redirected to dashboard
+5. Token stored in localStorage for subsequent requests
+
+### 4. Password Reset
+1. User requests password reset via forgot password page
+2. Reset token generated and sent via email
+3. User clicks reset link and enters new password
+4. Password updated and user can log in
+
+## 🗄️ Database Schema
+
+### Users Collection
+```javascript
+{
+  email: "user@domain.com",           // Document ID
+  domain: "domain.com",
+  passwordHash: "bcrypt_hash",
+  emailVerified: false,
+  verificationToken: "uuid",
+  tokenExpiry: "timestamp",
+  createdAt: "timestamp",
+  updatedAt: "timestamp",
+  profile: {
+    fullName: "User Name",
+    phone: "+1234567890",
+    company: "Company Name",
+    timezone: "America/New_York",
+    language: "en",
+    avatar: "https://...",
+    loginNotifications: false,
+    twoFactorEnabled: false
+  },
+  subscription: {
+    plan: "free",                     // free, pro, team
+    status: "active",                 // active, cancelled, expired
+    startDate: "timestamp",
+    endDate: "timestamp",
+    paddleSubscriptionId: null,
+    seats: 1,
+    billingCycle: "monthly",
+    monthlyPrice: 0
+  },
+  settings: {
+    theme: "light",
+    notifications: {
+      email: true,
+      push: false
+    }
+  }
+}
+```
+
+### Domains Collection
+```javascript
+{
+  domain: "domain.com",              // Document ID
+  email: "user@domain.com",
+  createdAt: "timestamp",
+  status: "active"
+}
+```
+
+### Subscriptions Collection
+```javascript
+{
+  userEmail: "user@domain.com",      // Document ID
+  domain: "domain.com",
+  plan: "free",
+  status: "active",
+  startDate: "timestamp",
+  endDate: "timestamp",
+  paddleSubscriptionId: null,
+  seats: 1,
+  billingCycle: "monthly",
+  monthlyPrice: 0,
+  createdAt: "timestamp",
+  updatedAt: "timestamp"
+}
+```
+
+## 💳 Subscription Plans
+
+| Plan | Price | Seats | Email Limit | Features |
+|------|-------|-------|-------------|----------|
+| Free | $0 | 1 | 50/month | Basic support, Gmail Add-on |
+| Pro | $79/month | 1 | 1,000/month | Priority support, Shopify integration |
+| Team | $199/month | Unlimited | 5,000/month | 24/7 support, Advanced analytics |
+
+## 🔧 Technical Implementation
+
+### Frontend Features
+- **Responsive Design**: Mobile-first approach with TailwindCSS-inspired classes
+- **Form Validation**: Real-time validation with helpful error messages
+- **Password Strength**: Visual indicator with requirements checking
+- **Domain Availability**: Real-time domain checking with suggestions
+- **Toast Notifications**: Consistent notification system across all pages
+- **Loading States**: Spinner animations for better UX
+- **Authentication Guards**: Protected routes with automatic redirects
+
+### Backend Features
+- **Password Security**: bcrypt hashing with salt rounds
+- **JWT Tokens**: Secure authentication with configurable expiry
+- **Input Validation**: Comprehensive validation on all endpoints
+- **Error Handling**: Structured error responses with codes
+- **Logging**: Detailed logging for debugging and monitoring
+- **CORS Support**: Cross-origin request handling
+- **Rate Limiting**: Protection against abuse (TODO: implement)
+
+### Security Features
+- **Password Requirements**: Minimum 8 characters, mixed case, numbers
+- **Domain Validation**: Reserved word checking, format validation
+- **Email Verification**: Required before account activation
+- **Secure Tokens**: UUID-based verification and reset tokens
+- **HTTPS Only**: All communication over secure connections
+- **Input Sanitization**: Protection against injection attacks
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 20.x or higher
+- Vercel CLI installed
+- Firebase project with Firestore enabled
+- Paddle account for payments (optional)
+
+### Environment Variables
+Create a `.env.local` file in the project root:
+
+```bash
+# Firebase Configuration
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_PRIVATE_KEY=your-private-key
+FIRESTORE_DATABASE_ID=giihelpdesk01
+
+# JWT Configuration
+JWT_SECRET=your-jwt-secret-key
+JWT_EXPIRY=7d
+
+# Email Configuration (SendGrid)
+SENDGRID_API_KEY=your-sendgrid-api-key
+SENDGRID_FROM_EMAIL=noreply@giihelpdesk.com
+
+# Paddle Configuration
+PADDLE_VENDOR_ID=your-vendor-id
+PADDLE_AUTH_CODE=your-auth-code
+PADDLE_WEBHOOK_SECRET=your-webhook-secret
+
+# Frontend URL
+FRONTEND_URL=https://giihelpdesk.com
+```
+
+### Local Development
+```bash
+# Install dependencies
+npm install
+
+# Start local development server
+vercel dev
+
+# Open in browser
+open http://localhost:3000
+```
+
+### Deployment
+```bash
+# Deploy to Vercel
+vercel --prod
+
+# Or deploy specific functions
+vercel deploy api/auth/register.js
+```
+
+## 🧪 Testing
+
+### Frontend Testing
+- Test all form validations
+- Test responsive design on mobile devices
+- Test authentication flow end-to-end
+- Test error handling and user feedback
+
+### Backend Testing
+- Test all API endpoints with valid/invalid data
+- Test authentication and authorization
+- Test database operations
+- Test error handling and logging
+
+### Integration Testing
+- Test complete user registration flow
+- Test subscription management
+- Test Paddle webhook processing
+- Test email delivery (verification, reset)
+
+## 📱 Responsive Design
+
+The authentication system is fully responsive with:
+- **Mobile First**: Designed for mobile devices first
+- **Breakpoints**: 480px, 768px, and 1024px
+- **Touch Friendly**: Large touch targets and proper spacing
+- **Accessibility**: ARIA labels, keyboard navigation, screen reader support
+
+## 🔒 Security Considerations
+
+### Password Security
+- Minimum 8 characters required
+- Must include uppercase, lowercase, and numbers
+- bcrypt hashing with 12 salt rounds
+- No password storage in plain text
+
+### Session Management
+- JWT tokens with 7-day expiry
+- Secure cookie storage (httpOnly, secure, sameSite)
+- Automatic token refresh
+- Session invalidation on logout
+
+### Data Protection
+- All sensitive data encrypted at rest
+- HTTPS required for all communications
+- Input validation and sanitization
+- Rate limiting to prevent abuse
+
+## 🚨 Error Handling
+
+### Frontend Errors
+- User-friendly error messages
+- Toast notifications for feedback
+- Form validation with real-time feedback
+- Graceful fallbacks for network issues
+
+### Backend Errors
+- Structured error responses
+- HTTP status codes
+- Error logging for debugging
+- Rate limiting and abuse prevention
+
+## 📊 Monitoring & Logging
+
+### Application Logs
+- User registration attempts
+- Login attempts (success/failure)
+- Password reset requests
+- Subscription changes
+- API usage and errors
+
+### Security Monitoring
+- Failed authentication attempts
+- Suspicious activity patterns
+- Rate limit violations
+- Unusual access patterns
+
+## 🔄 Future Enhancements
+
+### Planned Features
+- **Two-Factor Authentication**: SMS/App-based 2FA
+- **Social Login**: Google, GitHub, Microsoft integration
+- **Advanced Analytics**: User behavior tracking
+- **Multi-language Support**: Internationalization
+- **Advanced Security**: IP whitelisting, device management
+
+### Technical Improvements
+- **Redis Caching**: Session and data caching
+- **CDN Integration**: Static asset optimization
+- **Database Optimization**: Indexing and query optimization
+- **API Rate Limiting**: Advanced rate limiting strategies
+
+## 📞 Support
+
+For technical support or questions about the authentication system:
+
+- **Email**: support@giihelpdesk.com
+- **Documentation**: https://docs.giihelpdesk.com
+- **GitHub Issues**: Report bugs and feature requests
+
+## 📄 License
+
+This authentication system is part of the giiHelpdesk project and is proprietary software. All rights reserved.
+
+---
+
+**Last Updated**: December 2024
+**Version**: 1.0.0
+**Status**: Production Ready

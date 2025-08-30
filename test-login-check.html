@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Check Test — giiHelpdesk</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/common.js" defer></script>
+    <script src="js/auth.js" defer></script>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main class="section" role="main">
+        <h1 class="section__title">Login Check Test</h1>
+        <p>This page tests the login check functionality for the Start free trial and Buy buttons.</p>
+        
+        <div style="margin: 20px 0;">
+            <h3>Test Buttons:</h3>
+            <a href="pricing.html#free" class="hero__cta" id="testStartTrialBtn">Start free trial</a>
+            <a href="pricing.html" class="hero__cta" style="margin-left: 20px;" id="testPricingBtn">View Pricing</a>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Current Login Status:</h3>
+            <div id="loginStatus">Checking...</div>
+            <button onclick="checkLoginStatus()" style="margin-top: 10px;">Refresh Status</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h3>Test Actions:</h3>
+            <button onclick="simulateLogin()" style="margin-right: 10px;">Simulate Login</button>
+            <button onclick="simulateLogout()" style="margin-right: 10px;">Simulate Logout</button>
+            <button onclick="clearLocalStorage()">Clear Local Storage</button>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script>
+        // Check authentication for test buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthenticationForTestButtons();
+            checkLoginStatus();
+        });
+
+        // Authentication check for test buttons
+        function checkAuthenticationForTestButtons() {
+            const startTrialBtn = document.getElementById('testStartTrialBtn');
+            const pricingBtn = document.getElementById('testPricingBtn');
+            
+            if (startTrialBtn) {
+                startTrialBtn.addEventListener('click', function(e) {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    const isLoggedIn = !!user.email;
+                    
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        Toast.info('Login Required', 'Please sign in to start your free trial.');
+                        // Redirect to login page
+                        window.location.href = 'auth/login.html?redirect=test&action=start_trial';
+                    } else {
+                        Toast.success('Proceeding', 'You are logged in, proceeding to free trial...');
+                    }
+                });
+            }
+            
+            if (pricingBtn) {
+                pricingBtn.addEventListener('click', function(e) {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    const isLoggedIn = !!user.email;
+                    
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        Toast.info('Login Required', 'Please sign in to view pricing options.');
+                        // Redirect to login page
+                        window.location.href = 'auth/login.html?redirect=test&action=view_pricing';
+                    } else {
+                        Toast.success('Proceeding', 'You are logged in, proceeding to pricing...');
+                    }
+                });
+            }
+        }
+
+        // Check current login status
+        function checkLoginStatus() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const isLoggedIn = !!user.email;
+            const statusDiv = document.getElementById('loginStatus');
+            
+            if (isLoggedIn) {
+                statusDiv.innerHTML = `
+                    <div style="color: green; font-weight: bold;">✅ Logged In</div>
+                    <div>Email: ${user.email}</div>
+                    <div>Domain: ${user.domain || 'N/A'}</div>
+                `;
+            } else {
+                statusDiv.innerHTML = `
+                    <div style="color: red; font-weight: bold;">❌ Not Logged In</div>
+                    <div>No user data found in localStorage</div>
+                `;
+            }
+        }
+
+        // Simulate login
+        function simulateLogin() {
+            const mockUser = {
+                email: 'test@example.com',
+                domain: 'example.com',
+                profile: {
+                    fullName: 'Test User'
+                }
+            };
+            
+            localStorage.setItem('user', JSON.stringify(mockUser));
+            Toast.success('Login Simulated', 'Mock user logged in successfully.');
+            checkLoginStatus();
+        }
+
+        // Simulate logout
+        function simulateLogout() {
+            localStorage.removeItem('user');
+            Toast.success('Logout Simulated', 'Mock user logged out successfully.');
+            checkLoginStatus();
+        }
+
+        // Clear local storage
+        function clearLocalStorage() {
+            localStorage.clear();
+            Toast.info('Storage Cleared', 'All localStorage data has been cleared.');
+            checkLoginStatus();
+        }
+    </script>
+</body>
+</html>

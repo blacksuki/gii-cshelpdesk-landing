@@ -19,6 +19,10 @@
             { href: 'privacy.html', text: 'Privacy' }
         ];
 
+        // Check if user is logged in
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        const isLoggedIn = !!user.email;
+
         const current = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
 
         if (headerTarget) {
@@ -33,7 +37,10 @@
                     var cls = 'nav__link' + (current === l.href.toLowerCase() ? ' nav__link--active' : '');
                     return '<a class="' + cls + '" href="' + l.href + '">' + l.text + '</a>';
                 }).join(''),
-                '            <a class="nav__cta" href="pricing.html#free">Start free trial</a>',
+                (isLoggedIn ? 
+                    '<a class="nav__cta" href="account/dashboard.html">Account</a>' : 
+                    '<a class="nav__cta" href="pricing.html#free">Start free trial</a>'
+                ),
                 '        </nav>',
                 '    </div>',
                 '</header>'

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — giiHelpdesk</title>
+    <meta name="description" content="Sign in to your giiHelpdesk account">
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="../js/toast.js" defer></script>
+    <script src="../js/api-config.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">giiHelpdesk</div>
+                <div class="auth-subtitle">Welcome back! Sign in to your account</div>
+            </div>
+
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="user@yourdomain.com"
+                        required
+                        autocomplete="email"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <div class="form-group" style="flex-direction: row; justify-content: space-between; align-items: center;">
+                    <label class="checkbox-label" style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" style="width: auto;">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="forgot.html" class="auth-link" style="font-size: 14px;">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="auth-btn" id="submitBtn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="spinner" style="display: none;"></span>
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+
+            <div class="social-login">
+                <a href="#" class="social-btn" onclick="handleGoogleLogin()">
+                    <span>🔍</span>
+                    Continue with Google
+                </a>
+            </div>
+
+            <div class="auth-links">
+                Don't have an account? <a href="register.html" class="auth-link">Create one</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check for verification message and redirect parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        const redirect = urlParams.get('redirect');
+        const plan = urlParams.get('plan');
+        const action = urlParams.get('action');
+        
+        if (message === 'verification_sent') {
+            Toast.success('Verification Email Sent', 'Please check your email and click the verification link to activate your account.');
+        } else if (message === 'verification_success') {
+            Toast.success('Email Verified', 'Your email has been verified successfully. You can now sign in.');
+        } else if (message === 'password_reset_sent') {
+            Toast.success('Password Reset Email Sent', 'Please check your email for password reset instructions.');
+        } else if (message === 'password_reset_success') {
+            Toast.success('Password Reset Success', 'Your password has been reset successfully. You can now sign in with your new password.');
+        }
+        
+        // Show redirect message if applicable
+        if (redirect === 'pricing' && plan) {
+            Toast.info('Login Required', `Please sign in to continue with the ${plan} plan.`);
+        } else if (redirect === 'index' && action === 'start_trial') {
+            Toast.info('Login Required', 'Please sign in to start your free trial.');
+        }
+
+        // Form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = submitBtn.querySelector('.spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            
+            try {
+                const formData = new FormData(e.target);
+                const data = {
+                    email: formData.get('email').trim(),
+                    password: formData.get('password'),
+                    rememberMe: formData.get('rememberMe') === 'on'
+                };
+                
+                // Validation
+                if (!data.email || !data.password) {
+                    Toast.error('Missing Information', 'Please fill in all required fields.');
+                    return;
+                }
+                
+                // Submit login using unified API client
+                const result = await window.apiClient.login(data);
+                
+                if (result.success) {
+                    Toast.success('Login Successful', 'Welcome back! Redirecting...');
+                    
+                    // Store user info in localStorage
+                    if (result.user) {
+                        localStorage.setItem('user', JSON.stringify(result.user));
+                    }
+                    
+                    // Check for redirect parameters
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirect = urlParams.get('redirect');
+                    const plan = urlParams.get('plan');
+                    const action = urlParams.get('action');
+                    
+                    let redirectUrl = '../account/dashboard.html';
+                    
+                    if (redirect === 'pricing' && plan) {
+                        // Redirect back to pricing page
+                        redirectUrl = `../pricing.html?plan=${plan}`;
+                    } else if (redirect === 'index' && action === 'start_trial') {
+                        // Redirect to pricing page for free trial
+                        redirectUrl = '../pricing.html#free';
+                    }
+                    
+                    // Redirect after delay
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 1500);
+                } else {
+                    let errorMessage = 'Login failed. Please try again.';
+                    
+                    if (result.error === 'INVALID_CREDENTIALS') {
+                        errorMessage = 'Invalid email or password. Please check your credentials.';
+                    } else if (result.error === 'EMAIL_NOT_VERIFIED') {
+                        errorMessage = 'Please verify your email address before signing in.';
+                    } else if (result.error === 'ACCOUNT_LOCKED') {
+                        errorMessage = 'Your account has been locked due to multiple failed login attempts.';
+                    } else if (result.error === 'SUBSCRIPTION_EXPIRED') {
+                        errorMessage = 'Your subscription has expired. Please renew to continue.';
+                    }
+                    
+                    Toast.error('Login Failed', errorMessage);
+                }
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                Toast.error('Login Error', 'An unexpected error occurred. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
+            }
+        });
+
+        // Google OAuth login
+        function handleGoogleLogin() {
+            Toast.info('Google Login', 'Google OAuth integration coming soon!');
+            // TODO: Implement Google OAuth
+        }
+
+        // Auto-focus email field
+        document.getElementById('email').focus();
+    </script>
+</body>
+</html>
+

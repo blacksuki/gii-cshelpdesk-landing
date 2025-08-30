@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — giiHelpdesk</title>
+    <meta name="description" content="Create your giiHelpdesk account">
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="../js/toast.js" defer></script>
+    <script src="../js/api-config.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">giiHelpdesk</div>
+                <div class="auth-subtitle">Create your account to get started</div>
+            </div>
+
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="domain" class="form-label">Domain <span class="required">*</span></label>
+                    <input 
+                        type="text" 
+                        id="domain" 
+                        name="domain" 
+                        class="form-input" 
+                        placeholder="yourdomain.com"
+                        required
+                        autocomplete="off"
+                    >
+                    <div class="domain-status" id="domainStatus" style="display: none;">
+                        <span class="domain-status__icon"></span>
+                        <span class="domain-status__text"></span>
+                    </div>
+                    <div class="form-help">Enter your domain name (e.g., yourdomain.com)</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email <span class="required">*</span></label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="user@yourdomain.com"
+                        required
+                        autocomplete="email"
+                    >
+                    <div class="form-help">This will be your login email</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password <span class="required">*</span></label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Create a strong password"
+                        required
+                        autocomplete="new-password"
+                    >
+                    <div class="password-strength" id="passwordStrength" style="display: none;">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText"></div>
+                    </div>
+                    <div class="form-help">Minimum 8 characters with uppercase, lowercase, and numbers</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm Password <span class="required">*</span></label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        class="form-input" 
+                        placeholder="Confirm your password"
+                        required
+                        autocomplete="new-password"
+                    >
+                    <div class="form-error" id="confirmPasswordError" style="display: none;"></div>
+                </div>
+
+                <button type="submit" class="auth-btn" id="submitBtn">
+                    <span class="btn-text">Create Account</span>
+                    <span class="spinner" style="display: none;"></span>
+                </button>
+            </form>
+
+            <div class="auth-links">
+                Already have an account? <a href="login.html" class="auth-link">Sign in</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Domain availability checking
+        let domainCheckTimeout;
+        
+        document.getElementById('domain').addEventListener('input', function(e) {
+            const domain = e.target.value.trim();
+            const domainStatus = document.getElementById('domainStatus');
+            
+            // Clear previous timeout
+            clearTimeout(domainCheckTimeout);
+            
+            if (domain.length < 3) {
+                domainStatus.style.display = 'none';
+                return;
+            }
+            
+            // Show checking status
+            domainStatus.style.display = 'flex';
+            domainStatus.className = 'domain-status domain-status--checking';
+            domainStatus.innerHTML = `
+                <span class="domain-status__icon">⏳</span>
+                <span class="domain-status__text">Checking availability...</span>
+            `;
+            
+            // Debounce domain check
+            domainCheckTimeout = setTimeout(() => {
+                checkDomainAvailability(domain);
+            }, 500);
+        });
+
+        // Password strength checking
+        document.getElementById('password').addEventListener('input', function(e) {
+            const password = e.target.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthDiv.style.display = 'none';
+                return;
+            }
+            
+            const strength = calculatePasswordStrength(password);
+            displayPasswordStrength(strength);
+        });
+
+        // Confirm password validation
+        document.getElementById('confirmPassword').addEventListener('input', function(e) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = e.target.value;
+            const errorDiv = document.getElementById('confirmPasswordError');
+            
+            if (confirmPassword && password !== confirmPassword) {
+                errorDiv.textContent = 'Passwords do not match';
+                errorDiv.style.display = 'block';
+                e.target.classList.add('error');
+            } else {
+                errorDiv.style.display = 'none';
+                e.target.classList.remove('error');
+            }
+        });
+
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const spinner = submitBtn.querySelector('.spinner');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            spinner.style.display = 'inline-block';
+            
+            try {
+                const formData = new FormData(e.target);
+                const data = {
+                    domain: formData.get('domain').trim(),
+                    email: formData.get('email').trim(),
+                    password: formData.get('password'),
+                    confirmPassword: formData.get('confirmPassword')
+                };
+                
+                // Validation
+                if (!validateForm(data)) {
+                    return;
+                }
+                
+                // Check domain availability one more time
+                const domainAvailable = await checkDomainAvailability(data.domain);
+                if (!domainAvailable) {
+                    Toast.error('Domain Unavailable', 'This domain is already taken. Please choose another one.');
+                    return;
+                }
+                
+                // Submit registration using unified API client
+                const result = await window.apiClient.register(data);
+                
+                if (result.success) {
+                    Toast.success('Registration Successful', 'Please check your email to verify your account.');
+                    
+                    // Redirect to login after a delay
+                    setTimeout(() => {
+                        window.location.href = 'login.html?message=verification_sent';
+                    }, 2000);
+                } else {
+                    Toast.error('Registration Failed', result.error || 'An error occurred during registration.');
+                }
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                Toast.error('Registration Error', 'An unexpected error occurred. Please try again.');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                spinner.style.display = 'none';
+            }
+        });
+
+        // Helper functions
+        async function checkDomainAvailability(domain) {
+            try {
+                const result = await window.apiClient.checkDomain(domain);
+                
+                const domainStatus = document.getElementById('domainStatus');
+                const domainInput = document.getElementById('domain');
+                
+                if (result.success && result.data.available) {
+                    domainStatus.className = 'domain-status domain-status--available';
+                    domainStatus.innerHTML = `
+                        <span class="domain-status__icon">✓</span>
+                        <span class="domain-status__text">Domain is available</span>
+                    `;
+                    domainInput.classList.add('success');
+                    domainInput.classList.remove('error');
+                    return true;
+                } else {
+                    domainStatus.className = 'domain-status domain-status--unavailable';
+                    domainStatus.innerHTML = `
+                        <span class="domain-status__icon">✕</span>
+                        <span class="domain-status__text">Domain is already taken</span>
+                    `;
+                    domainInput.classList.add('error');
+                    domainInput.classList.remove('success');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Domain check error:', error);
+                const domainStatus = document.getElementById('domainStatus');
+                domainStatus.className = 'domain-status domain-status--unavailable';
+                domainStatus.innerHTML = `
+                    <span class="domain-status__icon">⚠</span>
+                    <span class="domain-status__text">Unable to check domain availability</span>
+                `;
+                return false;
+            }
+        }
+
+        function calculatePasswordStrength(password) {
+            let score = 0;
+            const feedback = [];
+            
+            if (password.length >= 8) score += 1;
+            else feedback.push('At least 8 characters');
+            
+            if (/[a-z]/.test(password)) score += 1;
+            else feedback.push('Include lowercase letter');
+            
+            if (/[A-Z]/.test(password)) score += 1;
+            else feedback.push('Include uppercase letter');
+            
+            if (/[0-9]/.test(password)) score += 1;
+            else feedback.push('Include number');
+            
+            if (/[^A-Za-z0-9]/.test(password)) score += 1;
+            else feedback.push('Include special character');
+            
+            return { score, feedback };
+        }
+
+        function displayPasswordStrength(strength) {
+            const strengthDiv = document.getElementById('passwordStrength');
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            strengthDiv.style.display = 'block';
+            
+            let strengthClass = 'strength-fill--weak';
+            let strengthLabel = 'Weak';
+            
+            if (strength.score >= 4) {
+                strengthClass = 'strength-fill--strong';
+                strengthLabel = 'Strong';
+            } else if (strength.score >= 3) {
+                strengthClass = 'strength-fill--good';
+                strengthLabel = 'Good';
+            } else if (strength.score >= 2) {
+                strengthClass = 'strength-fill--fair';
+                strengthLabel = 'Fair';
+            }
+            
+            strengthFill.className = `strength-fill ${strengthClass}`;
+            strengthText.textContent = `${strengthLabel} - ${strength.feedback.join(', ')}`;
+        }
+
+        function validateForm(data) {
+            // Domain validation
+            if (!data.domain || data.domain.length < 3) {
+                Toast.error('Invalid Domain', 'Please enter a valid domain name (minimum 3 characters).');
+                return false;
+            }
+            
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(data.email)) {
+                Toast.error('Invalid Email', 'Please enter a valid email address.');
+                return false;
+            }
+            
+            // Password validation
+            if (data.password.length < 8) {
+                Toast.error('Weak Password', 'Password must be at least 8 characters long.');
+                return false;
+            }
+            
+            const passwordStrength = calculatePasswordStrength(data.password);
+            if (passwordStrength.score < 3) {
+                Toast.error('Weak Password', 'Password must include uppercase, lowercase, and numbers.');
+                return false;
+            }
+            
+            // Confirm password validation
+            if (data.password !== data.confirmPassword) {
+                Toast.error('Password Mismatch', 'Passwords do not match.');
+                return false;
+            }
+            
+            return true;
+        }
+    </script>
+</body>
+</html>
+
