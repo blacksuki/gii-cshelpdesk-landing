@@ -125,6 +125,9 @@
                     <button type="button" class="auth-btn auth-btn--secondary" onclick="resetForm()">
                         Reset
                     </button>
+                    <button type="button" class="auth-btn auth-btn--secondary" onclick="backToDashboard()">
+                        back
+                    </button>
                 </div>
             </form>
         </div>
@@ -203,7 +206,7 @@
         // Authentication check
         function checkAuthentication() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if (!user.email) {
+            if (!user.token) {
                 Toast.error('Authentication Required', 'Please sign in to access your profile.');
                 setTimeout(() => {
                     window.location.href = '../auth/login.html';
@@ -280,8 +283,8 @@
                     
                     // Update localStorage if needed
                     const user = JSON.parse(localStorage.getItem('user') || '{}');
-                    if (result.user) {
-                        user.profile = result.user.profile;
+                    if (result.data && result.data.user) {
+                        user.profile = result.data.user.profile;
                         localStorage.setItem('user', JSON.stringify(user));
                     }
                     

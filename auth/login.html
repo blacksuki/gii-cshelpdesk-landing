@@ -19,7 +19,7 @@
                 <div class="auth-subtitle">Welcome back! Sign in to your account</div>
             </div>
 
-            <form class="auth-form" id="loginForm">
+            <form class="auth-form" id="loginForm" action="#" method="post" onsubmit="return false;">
                 <div class="form-group">
                     <label for="email" class="form-label">Email</label>
                     <input 
@@ -105,6 +105,9 @@
         // Form submission
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+            // return false;
             
             const submitBtn = document.getElementById('submitBtn');
             const btnText = submitBtn.querySelector('.btn-text');
@@ -135,10 +138,27 @@
                 if (result.success) {
                     Toast.success('Login Successful', 'Welcome back! Redirecting...');
                     
-                    // Store user info in localStorage
-                    if (result.user) {
-                        localStorage.setItem('user', JSON.stringify(result.user));
-                    }
+                    // Note: Token storage is handled by apiClient.setToken()
+                    // No need to manually store user data here
+                    console.log('Login successful, token should be stored by API client');
+                    
+                    // // Debug: Check if token was actually stored
+                    // setTimeout(() => {
+                    //     console.log('=== TOKEN STORAGE DEBUG ===');
+                    //     console.log('localStorage user:', localStorage.getItem('user'));
+                    //     console.log('API Client token:', window.apiClient.token);
+                    //     console.log('API Client isAuthenticated:', window.apiClient.isAuthenticated());
+                    //     console.log('==========================');
+                        
+                    //     // Check if we can proceed with redirect
+                    //     if (window.apiClient.isAuthenticated()) {
+                    //         console.log('✅ Token verified, proceeding with redirect...');
+                    //     } else {
+                    //         console.error('❌ Token not found, cannot proceed with redirect');
+                    //         Toast.error('Login Error', 'Authentication token not found. Please try again.');
+                    //         return;
+                    //     }
+                    // }, 200);
                     
                     // Check for redirect parameters
                     const urlParams = new URLSearchParams(window.location.search);
@@ -156,10 +176,16 @@
                         redirectUrl = '../pricing.html#free';
                     }
                     
-                    // Redirect after delay
+                    // Redirect after token verification
                     setTimeout(() => {
-                        window.location.href = redirectUrl;
-                    }, 1500);
+                        if (window.apiClient.isAuthenticated()) {
+                            console.log('Redirecting to:', redirectUrl);
+                            window.location.href = redirectUrl;
+                        } else {
+                            console.error('Cannot redirect: user not authenticated');
+                            Toast.error('Redirect Error', 'Authentication failed. Please try logging in again.');
+                        }
+                    }, 600); // 3秒后跳转，给token验证足够时间
                 } else {
                     let errorMessage = 'Login failed. Please try again.';
                     

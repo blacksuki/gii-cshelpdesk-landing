@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token Flow Debug - giiHelpdesk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .debug-button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .debug-button:hover {
+            background: #218838;
+        }
+        .debug-button.danger {
+            background: #dc3545;
+        }
+        .debug-button.danger:hover {
+            background: #c82333;
+        }
+        .debug-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #007bff;
+            background: #f8f9fa;
+        }
+        .log-entry.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .log-entry.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+        .log-entry.warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+            color: #856404;
+        }
+        .step-indicator {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6c757d;
+            color: white;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 10px;
+            font-size: 12px;
+        }
+        .step-indicator.completed {
+            background: #28a745;
+        }
+        .step-indicator.current {
+            background: #007bff;
+        }
+        .step-indicator.failed {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Token Flow Debug - giiHelpdesk</h1>
+    
+    <div class="debug-section">
+        <h2>📋 调试步骤</h2>
+        <div id="stepIndicator">
+            <div><span class="step-indicator" id="step1">1</span>检查 localStorage 初始状态</div>
+            <div><span class="step-indicator" id="step2">2</span>模拟登录 API 调用</div>
+            <div><span class="step-indicator" id="step3">3</span>验证 token 存储</div>
+            <div><span class="step-indicator" id="step4">4</span>测试 API 请求头</div>
+            <div><span class="step-indicator" id="step5">5</span>完整流程验证</div>
+        </div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🚀 执行调试</h2>
+        <button class="debug-button" onclick="runFullDebug()">运行完整调试</button>
+        <button class="debug-button" onclick="runStep1()">步骤 1: 检查初始状态</button>
+        <button class="debug-button" onclick="runStep2()">步骤 2: 模拟登录</button>
+        <button class="debug-button" onclick="runStep3()">步骤 3: 验证存储</button>
+        <button class="debug-button" onclick="runStep4()">步骤 4: 测试请求头</button>
+        <button class="debug-button" onclick="runStep5()">步骤 5: 流程验证</button>
+        <button class="debug-button danger" onclick="clearDebugLog()">清除日志</button>
+        <button class="debug-button danger" onclick="clearTestData()">清除测试数据</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>📊 调试输出</h2>
+        <div id="debugOutput" class="debug-output"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🔧 手动测试</h2>
+        <div>
+            <label>测试 Token:</label>
+            <input type="text" id="testToken" placeholder="输入 JWT token 进行测试" style="width: 400px; margin: 0 10px;">
+            <button class="debug-button" onclick="testCustomToken()">测试自定义 Token</button>
+        </div>
+        <div style="margin-top: 10px;">
+            <button class="debug-button" onclick="inspectLocalStorage()">检查 localStorage 详情</button>
+            <button class="debug-button" onclick="testApiClientMethods()">测试 API 客户端方法</button>
+        </div>
+    </div>
+
+    <script>
+        // 模拟 API 客户端（与真实实现一致）
+        class DebugApiClient {
+            constructor() {
+                this.config = {
+                    baseURL: 'https://api.example.com',
+                    retryAttempts: 3,
+                    retryDelay: 1000,
+                    timeout: 10000
+                };
+                this.retryAttempts = this.config.retryAttempts;
+                this.retryDelay = this.config.retryDelay;
+                
+                // Initialize token from localStorage
+                this.token = this.getStoredToken();
+                
+                // Bind methods
+                this.request = this.request.bind(this);
+                this.handleResponse = this.handleResponse.bind(this);
+                this.handleError = this.handleError.bind(this);
+            }
+
+            getStoredToken() {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const token = user.token || null;
+                this.log('Getting stored token:', token ? 'Token found' : 'No token found');
+                return token;
+            }
+
+            setToken(token) {
+                this.log('Setting token:', token ? 'Token provided' : 'No token');
+                
+                this.token = token;
+                if (token) {
+                    const user = JSON.parse(localStorage.getItem('user') || '{}');
+                    user.token = token;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    this.log('Token stored in localStorage and instance');
+                } else {
+                    localStorage.removeItem('user');
+                    this.log('Token cleared from localStorage and instance');
+                }
+            }
+
+            clearToken() {
+                this.token = null;
+                localStorage.removeItem('user');
+                this.log('Token cleared');
+            }
+
+            isAuthenticated() {
+                return !!this.token;
+            }
+
+            request(endpoint, options = {}) {
+                const url = `${this.config.baseURL}${endpoint}`;
+                
+                const defaultOptions = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(this.token && { 'Authorization': `Bearer ${this.token}` })
+                    }
+                };
+                
+                const requestOptions = { ...defaultOptions, ...options };
+                
+                this.log('Request details:', {
+                    url,
+                    headers: requestOptions.headers,
+                    hasToken: !!this.token
+                });
+                
+                return {
+                    url,
+                    headers: requestOptions.headers,
+                    token: this.token,
+                    options: requestOptions
+                };
+            }
+
+            log(message, data) {
+                console.log(`[DebugApiClient] ${message}`, data);
+                addDebugLog(`[API Client] ${message}`, data, 'info');
+            }
+        }
+
+        // 创建调试 API 客户端实例
+        const debugApiClient = new DebugApiClient();
+        let debugStep = 0;
+
+        function addDebugLog(message, data = null, type = 'info') {
+            const output = document.getElementById('debugOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            
+            let logText = `[${timestamp}] ${message}`;
+            if (data) {
+                if (typeof data === 'object') {
+                    logText += '\n' + JSON.stringify(data, null, 2);
+                } else {
+                    logText += `: ${data}`;
+                }
+            }
+            
+            logEntry.textContent = logText;
+            output.appendChild(logEntry);
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function updateStepIndicator(step, status) {
+            const indicator = document.getElementById(`step${step}`);
+            indicator.className = `step-indicator ${status}`;
+            if (status === 'completed') {
+                indicator.textContent = '✓';
+            } else if (status === 'failed') {
+                indicator.textContent = '✗';
+            } else if (status === 'current') {
+                indicator.textContent = step;
+            }
+        }
+
+        function runFullDebug() {
+            addDebugLog('🚀 开始完整调试流程...', null, 'success');
+            debugStep = 0;
+            
+            setTimeout(() => runStep1(), 500);
+            setTimeout(() => runStep2(), 1500);
+            setTimeout(() => runStep3(), 2500);
+            setTimeout(() => runStep4(), 3500);
+            setTimeout(() => runStep5(), 4500);
+        }
+
+        function runStep1() {
+            addDebugLog('📋 步骤 1: 检查 localStorage 初始状态', null, 'info');
+            updateStepIndicator(1, 'current');
+            
+            try {
+                const user = localStorage.getItem('user');
+                const token = debugApiClient.getStoredToken();
+                
+                addDebugLog('初始状态检查结果:', {
+                    localStorage_user: user ? '存在' : '不存在',
+                    apiClient_token: token ? '存在' : '不存在',
+                    token_length: token ? token.length : 0
+                }, 'info');
+                
+                updateStepIndicator(1, 'completed');
+            } catch (error) {
+                addDebugLog('步骤 1 失败:', error.message, 'error');
+                updateStepIndicator(1, 'failed');
+            }
+        }
+
+        function runStep2() {
+            addDebugLog('🔐 步骤 2: 模拟登录 API 调用', null, 'info');
+            updateStepIndicator(2, 'current');
+            
+            try {
+                // 模拟登录响应
+                const mockLoginResponse = {
+                    success: true,
+                    message: 'Login successful',
+                    user: {
+                        email: 'test@example.com',
+                        domain: 'example.com',
+                        emailVerified: true
+                    },
+                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiZG9tYWluIjoidGVzdEBleGFtcGxlLmNvbSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2MzQ1Njc4NzQsImV4cCI6MTYzNTQzMTg3NH0.mock_signature',
+                    expiresIn: 604800
+                };
+
+                addDebugLog('模拟登录响应:', mockLoginResponse, 'info');
+                
+                // 模拟 API 客户端处理登录响应
+                if (mockLoginResponse.success && mockLoginResponse.token) {
+                    debugApiClient.setToken(mockLoginResponse.token);
+                    addDebugLog('Token 设置完成', null, 'success');
+                } else {
+                    addDebugLog('登录响应缺少 token 或 success 标志', mockLoginResponse, 'warning');
+                }
+                
+                updateStepIndicator(2, 'completed');
+            } catch (error) {
+                addDebugLog('步骤 2 失败:', error.message, 'error');
+                updateStepIndicator(2, 'failed');
+            }
+        }
+
+        function runStep3() {
+            addDebugLog('💾 步骤 3: 验证 token 存储', null, 'info');
+            updateStepIndicator(3, 'current');
+            
+            try {
+                const user = localStorage.getItem('user');
+                const token = debugApiClient.getStoredToken();
+                const isAuth = debugApiClient.isAuthenticated();
+                
+                addDebugLog('Token 存储验证结果:', {
+                    localStorage_user: user ? '存在' : '不存在',
+                    apiClient_token: token ? '存在' : '不存在',
+                    isAuthenticated: isAuth,
+                    token_length: token ? token.length : 0
+                }, 'info');
+                
+                if (user && token && isAuth) {
+                    addDebugLog('✅ Token 存储验证成功', null, 'success');
+                    updateStepIndicator(3, 'completed');
+                } else {
+                    addDebugLog('❌ Token 存储验证失败', null, 'error');
+                    updateStepIndicator(3, 'failed');
+                }
+            } catch (error) {
+                addDebugLog('步骤 3 失败:', error.message, 'error');
+                updateStepIndicator(3, 'failed');
+            }
+        }
+
+        function runStep4() {
+            addDebugLog('🌐 步骤 4: 测试 API 请求头', null, 'info');
+            updateStepIndicator(4, 'current');
+            
+            try {
+                const requestInfo = debugApiClient.request('/api/test');
+                
+                addDebugLog('API 请求头测试结果:', {
+                    url: requestInfo.url,
+                    hasAuthorization: !!requestInfo.headers['Authorization'],
+                    authorizationValue: requestInfo.headers['Authorization'] || '未设置',
+                    bearerPrefix: requestInfo.headers['Authorization'] ? requestInfo.headers['Authorization'].startsWith('Bearer ') : false
+                }, 'info');
+                
+                if (requestInfo.headers['Authorization'] && requestInfo.headers['Authorization'].startsWith('Bearer ')) {
+                    addDebugLog('✅ API 请求头设置正确', null, 'success');
+                    updateStepIndicator(4, 'completed');
+                } else {
+                    addDebugLog('❌ API 请求头设置不正确', null, 'error');
+                    updateStepIndicator(4, 'failed');
+                }
+            } catch (error) {
+                addDebugLog('步骤 4 失败:', error.message, 'error');
+                updateStepIndicator(4, 'failed');
+            }
+        }
+
+        function runStep5() {
+            addDebugLog('🎯 步骤 5: 完整流程验证', null, 'info');
+            updateStepIndicator(5, 'current');
+            
+            try {
+                // 综合验证
+                const user = localStorage.getItem('user');
+                const token = debugApiClient.getStoredToken();
+                const isAuth = debugApiClient.isAuthenticated();
+                const requestInfo = debugApiClient.request('/api/test');
+                
+                const allChecks = {
+                    localStorage_has_user: !!user,
+                    apiClient_has_token: !!token,
+                    is_authenticated: isAuth,
+                    request_has_auth_header: !!requestInfo.headers['Authorization'],
+                    auth_header_format: requestInfo.headers['Authorization'] ? 
+                        (requestInfo.headers['Authorization'].startsWith('Bearer ') ? '正确' : '错误') : '未设置'
+                };
+                
+                addDebugLog('完整流程验证结果:', allChecks, 'info');
+                
+                const allPassed = Object.values(allChecks).every(check => 
+                    check === true || check === '正确' || check === '存在'
+                );
+                
+                if (allPassed) {
+                    addDebugLog('🎉 所有验证通过！Token 流程工作正常', null, 'success');
+                    updateStepIndicator(5, 'completed');
+                } else {
+                    addDebugLog('⚠️ 部分验证失败，请检查具体问题', allChecks, 'warning');
+                    updateStepIndicator(5, 'failed');
+                }
+            } catch (error) {
+                addDebugLog('步骤 5 失败:', error.message, 'error');
+                updateStepIndicator(5, 'failed');
+            }
+        }
+
+        function testCustomToken() {
+            const tokenInput = document.getElementById('testToken');
+            const token = tokenInput.value.trim();
+            
+            if (!token) {
+                addDebugLog('请输入要测试的 token', null, 'warning');
+                return;
+            }
+            
+            addDebugLog('🔧 测试自定义 Token:', token, 'info');
+            
+            try {
+                debugApiClient.setToken(token);
+                
+                // 验证存储
+                const storedToken = debugApiClient.getStoredToken();
+                const isAuth = debugApiClient.isAuthenticated();
+                
+                addDebugLog('自定义 Token 测试结果:', {
+                    input_token: token,
+                    stored_token: storedToken,
+                    is_authenticated: isAuth,
+                    token_match: token === storedToken
+                }, 'info');
+                
+                if (token === storedToken && isAuth) {
+                    addDebugLog('✅ 自定义 Token 测试成功', null, 'success');
+                } else {
+                    addDebugLog('❌ 自定义 Token 测试失败', null, 'error');
+                }
+            } catch (error) {
+                addDebugLog('自定义 Token 测试失败:', error.message, 'error');
+            }
+        }
+
+        function inspectLocalStorage() {
+            addDebugLog('🔍 检查 localStorage 详情', null, 'info');
+            
+            try {
+                const user = localStorage.getItem('user');
+                const allKeys = Object.keys(localStorage);
+                
+                addDebugLog('localStorage 详情:', {
+                    all_keys: allKeys,
+                    user_data: user ? JSON.parse(user) : null,
+                    user_data_keys: user ? Object.keys(JSON.parse(user)) : []
+                }, 'info');
+            } catch (error) {
+                addDebugLog('localStorage 检查失败:', error.message, 'error');
+            }
+        }
+
+        function testApiClientMethods() {
+            addDebugLog('🧪 测试 API 客户端方法', null, 'info');
+            
+            try {
+                const methods = {
+                    getStoredToken: debugApiClient.getStoredToken(),
+                    isAuthenticated: debugApiClient.isAuthenticated(),
+                    hasToken: !!debugApiClient.token
+                };
+                
+                addDebugLog('API 客户端方法测试结果:', methods, 'info');
+            } catch (error) {
+                addDebugLog('API 客户端方法测试失败:', error.message, 'error');
+            }
+        }
+
+        function clearDebugLog() {
+            document.getElementById('debugOutput').innerHTML = '';
+            addDebugLog('📝 调试日志已清除', null, 'info');
+        }
+
+        function clearTestData() {
+            localStorage.removeItem('user');
+            debugApiClient.clearToken();
+            
+            // 重置步骤指示器
+            for (let i = 1; i <= 5; i++) {
+                updateStepIndicator(i, '');
+            }
+            
+            addDebugLog('🧹 测试数据已清除', null, 'success');
+        }
+
+        // 页面加载时初始化
+        window.addEventListener('load', function() {
+            addDebugLog('🚀 调试页面已加载', null, 'success');
+            addDebugLog('当前 localStorage 状态:', {
+                has_user: !!localStorage.getItem('user'),
+                api_client_token: !!debugApiClient.getStoredToken()
+            }, 'info');
+        });
+    </script>
+</body>
+</html>

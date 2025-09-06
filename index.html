@@ -65,7 +65,7 @@
             if (startTrialBtn) {
                 startTrialBtn.addEventListener('click', function(e) {
                     const user = JSON.parse(localStorage.getItem('user') || '{}');
-                    const isLoggedIn = !!user.email;
+                    const isLoggedIn = !!user.token;
                     
                     if (!isLoggedIn) {
                         e.preventDefault();

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Flow Debug - giiHelpdesk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .debug-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .debug-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .debug-button:hover {
+            background: #0056b3;
+        }
+        .debug-button.success {
+            background: #28a745;
+        }
+        .debug-button.danger {
+            background: #dc3545;
+        }
+        .debug-output {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #007bff;
+            background: #f8f9fa;
+        }
+        .log-entry.error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .log-entry.success {
+            border-left-color: #28a745;
+            background: #d4edda;
+            color: #155724;
+        }
+        .log-entry.warning {
+            border-left-color: #ffc107;
+            background: #fff3cd;
+            color: #856404;
+        }
+        .form-group {
+            margin: 15px 0;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+        .status-info { background: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Login Flow Debug - giiHelpdesk</h1>
+    
+    <div class="debug-section">
+        <h2>📝 模拟登录表单</h2>
+        <form id="debugLoginForm">
+            <div class="form-group">
+                <label class="form-label">Email:</label>
+                <input type="email" class="form-input" id="debugEmail" value="test@example.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password:</label>
+                <input type="password" class="form-input" id="debugPassword" value="testpassword" required>
+            </div>
+            <button type="submit" class="debug-button">模拟登录</button>
+        </form>
+    </div>
+
+    <div class="debug-section">
+        <h2>🔧 调试操作</h2>
+        <button class="debug-button" onclick="checkCurrentState()">检查当前状态</button>
+        <button class="debug-button" onclick="simulateLoginResponse()">模拟登录响应</button>
+        <button class="debug-button" onclick="testTokenStorage()">测试 Token 存储</button>
+        <button class="debug-button" onclick="testApiRequest()">测试 API 请求</button>
+        <button class="debug-button success" onclick="runFullTest()">运行完整测试</button>
+        <button class="debug-button danger" onclick="clearAllData()">清除所有数据</button>
+    </div>
+
+    <div class="debug-section">
+        <h2>📊 调试输出</h2>
+        <div id="debugOutput" class="debug-output"></div>
+    </div>
+
+    <div class="debug-section">
+        <h2>🔍 状态监控</h2>
+        <div id="statusMonitor" class="debug-output"></div>
+    </div>
+
+    <script>
+        // 模拟 API 客户端（与真实实现一致）
+        class DebugApiClient {
+            constructor() {
+                this.config = {
+                    baseURL: 'https://api.example.com',
+                    retryAttempts: 3,
+                    retryDelay: 1000,
+                    timeout: 10000
+                };
+                this.retryAttempts = this.config.retryAttempts;
+                this.retryDelay = this.config.retryDelay;
+                
+                // Initialize token from localStorage
+                this.token = this.getStoredToken();
+                
+                addDebugLog('🚀 DebugApiClient 已初始化', null, 'success');
+            }
+
+            getStoredToken() {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const token = user.token || null;
+                
+                addDebugLog('Getting stored token:', {
+                    hasUser: !!localStorage.getItem('user'),
+                    userKeys: Object.keys(user),
+                    hasToken: !!token,
+                    tokenLength: token ? token.length : 0,
+                    tokenPreview: token ? token.substring(0, 20) + '...' : 'N/A'
+                }, 'info');
+                
+                return token;
+            }
+
+            setToken(token) {
+                addDebugLog('=== SET TOKEN DEBUG ===', null, 'info');
+                addDebugLog('Input token:', token ? 'Token provided' : 'No token', 'info');
+                addDebugLog('Token length:', token ? token.length : 0, 'info');
+                addDebugLog('Token preview:', token ? token.substring(0, 20) + '...' : 'N/A', 'info');
+                
+                this.token = token;
+                if (token) {
+                    // Get existing user data or create new object
+                    let user = JSON.parse(localStorage.getItem('user') || '{}');
+                    addDebugLog('Existing user data:', user, 'info');
+                    addDebugLog('User keys:', Object.keys(user), 'info');
+                    
+                    // If no user data exists, create a basic structure
+                    if (!user.email && !user.domain) {
+                        user = {
+                            token: token,
+                            createdAt: new Date().toISOString()
+                        };
+                        addDebugLog('Created new user structure', null, 'success');
+                    } else {
+                        // Update existing user data with new token
+                        user.token = token;
+                        user.updatedAt = new Date().toISOString();
+                        addDebugLog('Updated existing user data', null, 'success');
+                    }
+                    
+                    localStorage.setItem('user', JSON.stringify(user));
+                    addDebugLog('✅ Token stored in localStorage and instance', null, 'success');
+                    addDebugLog('Final user data:', user, 'info');
+                    
+                    // Verify storage
+                    const storedUser = localStorage.getItem('user');
+                    const storedToken = this.getStoredToken();
+                    addDebugLog('Storage verification:', {
+                        localStorageUser: !!storedUser,
+                        storedToken: !!storedToken,
+                        tokenMatch: storedToken === token
+                    }, 'info');
+                } else {
+                    localStorage.removeItem('user');
+                    addDebugLog('Token cleared from localStorage and instance', null, 'warning');
+                }
+                addDebugLog('==========================', null, 'info');
+            }
+
+            clearToken() {
+                this.token = null;
+                localStorage.removeItem('user');
+                addDebugLog('Token cleared', null, 'warning');
+            }
+
+            isAuthenticated() {
+                return !!this.token;
+            }
+
+            request(endpoint, options = {}) {
+                const url = `${this.config.baseURL}${endpoint}`;
+                
+                const defaultOptions = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(this.token && { 'Authorization': `Bearer ${this.token}` })
+                    }
+                };
+                
+                const requestOptions = { ...defaultOptions, ...options };
+                
+                addDebugLog('Request details:', {
+                    url,
+                    headers: requestOptions.headers,
+                    hasToken: !!this.token,
+                    tokenValue: this.token
+                }, 'info');
+                
+                return {
+                    url,
+                    headers: requestOptions.headers,
+                    token: this.token,
+                    hasAuthHeader: !!requestOptions.headers['Authorization']
+                };
+            }
+        }
+
+        // 创建调试 API 客户端实例
+        const debugApiClient = new DebugApiClient();
+
+        function addDebugLog(message, data = null, type = 'info') {
+            const output = document.getElementById('debugOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            
+            let logText = `[${timestamp}] ${message}`;
+            if (data) {
+                if (typeof data === 'object') {
+                    logText += '\n' + JSON.stringify(data, null, 2);
+                } else {
+                    logText += `: ${data}`;
+                }
+            }
+            
+            logEntry.textContent = logText;
+            output.appendChild(logEntry);
+            output.scrollTop = output.scrollHeight;
+            
+            // 同时输出到控制台
+            console.log(`[${timestamp}] ${message}`, data);
+        }
+
+        function updateStatusMonitor() {
+            const monitor = document.getElementById('statusMonitor');
+            const user = localStorage.getItem('user');
+            const token = debugApiClient.getStoredToken();
+            const isAuth = debugApiClient.isAuthenticated();
+            
+            const status = {
+                localStorage: {
+                    hasUser: !!user,
+                    userData: user ? JSON.parse(user) : null
+                },
+                apiClient: {
+                    hasToken: !!token,
+                    isAuthenticated: isAuth,
+                    tokenLength: token ? token.length : 0,
+                    tokenPreview: token ? token.substring(0, 20) + '...' : 'N/A'
+                }
+            };
+            
+            monitor.textContent = JSON.stringify(status, null, 2);
+        }
+
+        function checkCurrentState() {
+            addDebugLog('🔍 检查当前状态', null, 'info');
+            updateStatusMonitor();
+        }
+
+        function simulateLoginResponse() {
+            addDebugLog('🔐 模拟登录响应', null, 'info');
+            
+            // 模拟登录响应
+            const mockLoginResponse = {
+                success: true,
+                message: 'Login successful',
+                user: {
+                    email: 'test@example.com',
+                    domain: 'example.com',
+                    emailVerified: true
+                },
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiZG9tYWluIjoidGVzdEBleGFtcGxlLmNvbSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2MzQ1Njc4NzQsImV4cCI6MTYzNTQzMTg3NH0.mock_signature',
+                expiresIn: 604800
+            };
+            
+            addDebugLog('模拟登录响应:', mockLoginResponse, 'info');
+            
+            // 模拟 API 客户端处理登录响应
+            if (mockLoginResponse.success && mockLoginResponse.token) {
+                addDebugLog('✅ 登录响应有效，设置 token...', null, 'success');
+                debugApiClient.setToken(mockLoginResponse.token);
+            } else {
+                addDebugLog('❌ 登录响应无效', mockLoginResponse, 'error');
+            }
+            
+            updateStatusMonitor();
+        }
+
+        function testTokenStorage() {
+            addDebugLog('💾 测试 Token 存储', null, 'info');
+            
+            const user = localStorage.getItem('user');
+            const token = debugApiClient.getStoredToken();
+            const isAuth = debugApiClient.isAuthenticated();
+            
+            addDebugLog('Token 存储测试结果:', {
+                localStorage: {
+                    hasUser: !!user,
+                    userData: user ? JSON.parse(user) : null
+                },
+                apiClient: {
+                    hasToken: !!token,
+                    isAuthenticated: isAuth,
+                    tokenLength: token ? token.length : 0
+                }
+            }, 'info');
+            
+            if (user && token && isAuth) {
+                addDebugLog('✅ Token 存储测试通过', null, 'success');
+            } else {
+                addDebugLog('❌ Token 存储测试失败', null, 'error');
+            }
+            
+            updateStatusMonitor();
+        }
+
+        function testApiRequest() {
+            addDebugLog('🌐 测试 API 请求', null, 'info');
+            
+            const requestInfo = debugApiClient.request('/api/test');
+            
+            addDebugLog('API 请求测试结果:', {
+                url: requestInfo.url,
+                hasAuthHeader: requestInfo.hasAuthHeader,
+                headers: requestInfo.headers,
+                token: {
+                    exists: !!requestInfo.token,
+                    length: requestInfo.token ? requestInfo.token.length : 0
+                }
+            }, 'info');
+            
+            if (requestInfo.hasAuthHeader && requestInfo.token) {
+                addDebugLog('✅ API 请求测试通过', null, 'success');
+            } else {
+                addDebugLog('❌ API 请求测试失败', null, 'error');
+            }
+        }
+
+        function runFullTest() {
+            addDebugLog('🚀 开始运行完整测试...', null, 'success');
+            
+            setTimeout(() => checkCurrentState(), 500);
+            setTimeout(() => simulateLoginResponse(), 1000);
+            setTimeout(() => testTokenStorage(), 2000);
+            setTimeout(() => testApiRequest(), 3000);
+            setTimeout(() => {
+                addDebugLog('🎯 完整测试完成', null, 'success');
+                updateStatusMonitor();
+            }, 3500);
+        }
+
+        function clearAllData() {
+            localStorage.removeItem('user');
+            debugApiClient.clearToken();
+            
+            addDebugLog('🧹 所有数据已清除', null, 'warning');
+            updateStatusMonitor();
+        }
+
+        // 表单提交处理
+        document.getElementById('debugLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('debugEmail').value;
+            const password = document.getElementById('debugPassword').value;
+            
+            addDebugLog('📝 表单提交:', { email, password: '***' }, 'info');
+            
+            // 模拟登录流程
+            simulateLoginResponse();
+        });
+
+        // 页面加载时初始化
+        window.addEventListener('load', function() {
+            addDebugLog('🚀 调试页面已加载', null, 'success');
+            checkCurrentState();
+        });
+
+        // 定期更新状态监控
+        setInterval(updateStatusMonitor, 2000);
+    </script>
+</body>
+</html>

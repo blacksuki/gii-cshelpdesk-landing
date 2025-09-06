@@ -102,31 +102,31 @@
         // Domain availability checking
         let domainCheckTimeout;
         
-        document.getElementById('domain').addEventListener('input', function(e) {
-            const domain = e.target.value.trim();
-            const domainStatus = document.getElementById('domainStatus');
+        // document.getElementById('domain').addEventListener('change', function(e) {
+        //     const domain = e.target.value.trim();
+        //     const domainStatus = document.getElementById('domainStatus');
             
-            // Clear previous timeout
-            clearTimeout(domainCheckTimeout);
+        //     // Clear previous timeout
+        //     clearTimeout(domainCheckTimeout);
             
-            if (domain.length < 3) {
-                domainStatus.style.display = 'none';
-                return;
-            }
+        //     if (domain.length < 3) {
+        //         domainStatus.style.display = 'none';
+        //         return;
+        //     }
             
-            // Show checking status
-            domainStatus.style.display = 'flex';
-            domainStatus.className = 'domain-status domain-status--checking';
-            domainStatus.innerHTML = `
-                <span class="domain-status__icon">⏳</span>
-                <span class="domain-status__text">Checking availability...</span>
-            `;
+        //     // Show checking status
+        //     domainStatus.style.display = 'flex';
+        //     domainStatus.className = 'domain-status domain-status--checking';
+        //     domainStatus.innerHTML = `
+        //         <span class="domain-status__icon">⏳</span>
+        //         <span class="domain-status__text">Checking availability...</span>
+        //     `;
             
-            // Debounce domain check
-            domainCheckTimeout = setTimeout(() => {
-                checkDomainAvailability(domain);
-            }, 500);
-        });
+        //     // Debounce domain check
+        //     domainCheckTimeout = setTimeout(() => {
+        //         checkDomainAvailability(domain);
+        //     }, 500);
+        // });
 
         // Password strength checking
         document.getElementById('password').addEventListener('input', function(e) {
@@ -222,10 +222,20 @@
             try {
                 const result = await window.apiClient.checkDomain(domain);
                 
+                // Debug logging to understand the data structure
+                console.log('checkDomainAvailability result:', result);
+                console.log('result.success:', result.success);
+                console.log('result.data:', result.data);
+                console.log('result.data.available:', result.data?.available);
+                
                 const domainStatus = document.getElementById('domainStatus');
                 const domainInput = document.getElementById('domain');
                 
-                if (result.success && result.data.available) {
+                // Check if the domain is available
+                // The API returns { success: true, data: { available: true, ... } }
+                const isAvailable = result.success && result.data && result.data.available === true;
+                
+                if (isAvailable) {
                     domainStatus.className = 'domain-status domain-status--available';
                     domainStatus.innerHTML = `
                         <span class="domain-status__icon">✓</span>

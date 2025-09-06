@@ -7,9 +7,11 @@ class ApiClient {
     constructor() {
         this.config = window.API_CONFIG.getCurrentConfig();
         this.baseURL = this.config.baseURL;
-        this.token = this.getStoredToken();
         this.retryAttempts = this.config.retryAttempts;
         this.retryDelay = this.config.retryDelay;
+        
+        // Initialize token from localStorage
+        this.token = this.getStoredToken();
         
         // Bind methods
         this.request = this.request.bind(this);
@@ -22,21 +24,55 @@ class ApiClient {
      */
     getStoredToken() {
         const user = JSON.parse(localStorage.getItem('user') || '{}');
-        return user.token || null;
+        const token = user.token || null;
+        
+        if (token) {
+            console.log('✅ Token found, length:', token.length);
+        } else {
+            console.log('❌ No token found in localStorage');
+        }
+        
+        return token;
     }
     
     /**
      * Set authentication token
      */
     setToken(token) {
-        this.token = token;
-        if (token) {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            user.token = token;
-            localStorage.setItem('user', JSON.stringify(user));
-        } else {
-            localStorage.removeItem('user');
+        // 验证 token
+        if (!token || typeof token !== 'string' || token.trim() === '') {
+            console.error('❌ Invalid token provided:', {
+                type: typeof token,
+                isEmpty: token === '',
+                isWhitespace: token && token.trim() === ''
+            });
+            return false;
         }
+        
+        console.log('✅ Setting token, length:', token.length);
+        
+        this.token = token;
+        
+        // 获取或创建用户数据
+        let user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        if (!user.email && !user.domain) {
+            // 创建新的用户结构
+            user = {
+                token: token,
+                createdAt: new Date().toISOString()
+            };
+        } else {
+            // 更新现有用户数据
+            user.token = token;
+            user.updatedAt = new Date().toISOString();
+        }
+        
+        // 存储到 localStorage
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('✅ Token stored successfully');
+        
+        return true;
     }
     
     /**
@@ -102,7 +138,8 @@ class ApiClient {
         // Create abort controller for timeout
         const controller = new AbortController();
         const timeoutPromise = this.createTimeoutPromise(this.config.timeout);
-        
+       
+        console.log('request: requestOptions', requestOptions);
         const requestPromise = fetch(url, {
             ...requestOptions,
             signal: controller.signal
@@ -189,7 +226,12 @@ class ApiClient {
                 method: 'POST',
                 body: JSON.stringify(userData)
             });
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('register API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -202,12 +244,94 @@ class ApiClient {
                 body: JSON.stringify(credentials)
             });
             
-            if (response.token) {
-                this.setToken(response.token);
+            // 直接匹配后端响应格式：{ success: true, data: { token: { accessToken: "..." }, user: {...} } }
+            if (response && response.success && response.data) {
+                let token = response.data.token;
+                
+                // 先检查 token 的类型和值，避免调用不存在的方法
+                console.log('Token check:', {
+                    exists: !!token,
+                    type: typeof token,
+                    value: token,
+                    isString: typeof token === 'string',
+                    isObject: typeof token === 'object',
+                    isNull: token === null,
+                    isUndefined: token === undefined
+                });
+                
+                // 如果 token 是对象，尝试提取实际的 token 字符串
+                if (token && typeof token === 'object' && token !== null) {
+                    console.log('Token object keys:', Object.keys(token));
+                    
+                    // 尝试从常见的字段名中提取 token
+                    if (token.accessToken) {
+                        token = token.accessToken;
+                        console.log('✅ Extracted token from token.accessToken');
+                    } else if (token.token) {
+                        token = token.token;
+                        console.log('✅ Extracted token from token.token');
+                    } else if (token.jwt) {
+                        token = token.jwt;
+                        console.log('✅ Extracted token from token.jwt');
+                    } else {
+                        console.log('⚠️ Token object structure:', token);
+                    }
+                }
+                
+                if (token && typeof token === 'string' && token.trim() !== '') {
+                    console.log('✅ Login successful, token found and extracted');
+                    console.log('Token length:', token.length);
+                    console.log('Token preview:', token.substring(0, 20) + '...');
+                    
+                    // 设置 token
+                    const tokenSetSuccess = this.setToken(token);
+                    
+                    if (tokenSetSuccess) {
+                        // 验证 token 是否设置成功
+                        setTimeout(() => {
+                            console.log('=== TOKEN VERIFICATION ===');
+                            console.log('Instance token:', this.token);
+                            console.log('Stored token:', this.getStoredToken());
+                            console.log('Is authenticated:', this.isAuthenticated());
+                            console.log('==========================');
+                        }, 50);
+                    } else {
+                        console.error('❌ Failed to set token');
+                    }
+                } else {
+                    console.error('❌ Login successful but token is invalid or missing');
+                    console.error('Token details:', {
+                        exists: !!token,
+                        type: typeof token,
+                        value: token,
+                        isEmpty: token === '',
+                        isWhitespace: token && typeof token === 'string' ? token.trim() === '' : false
+                    });
+                    
+                    // 显示完整的响应数据结构以便调试
+                    console.log('Full response.data:', response.data);
+                    console.log('Available fields in response.data:', Object.keys(response.data));
+                    
+                    if (response.data.token && typeof response.data.token === 'object') {
+                        console.log('Token object structure:', response.data.token);
+                        console.log('Token object keys:', Object.keys(response.data.token));
+                    }
+                }
+            } else {
+                console.error('❌ Invalid login response format');
+                console.error('Response structure:', {
+                    hasResponse: !!response,
+                    hasSuccess: !!response?.success,
+                    hasData: !!response?.data,
+                    successValue: response?.success,
+                    dataKeys: response?.data ? Object.keys(response.data) : []
+                });
             }
             
-            return { success: true, data: response };
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
+            console.error('❌ Login error:', error);
             return this.handleError(error);
         }
     }
@@ -218,7 +342,12 @@ class ApiClient {
                 method: 'POST',
                 body: JSON.stringify({ email })
             });
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('forgotPassword API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -230,7 +359,12 @@ class ApiClient {
                 method: 'POST',
                 body: JSON.stringify({ token, password, confirmPassword })
             });
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('resetPassword API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -239,7 +373,13 @@ class ApiClient {
     async checkDomain(domain) {
         try {
             const response = await this.request(`${window.API_CONFIG.endpoints.auth.checkDomain}?domain=${encodeURIComponent(domain)}`);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('checkDomain API response:', response);
+            
+            // The API returns { success: true, data: { available: true, ... } }
+            // We should return the same structure to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -249,7 +389,12 @@ class ApiClient {
     async getAccountInfo() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.account.me);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('getAccountInfo API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -261,7 +406,12 @@ class ApiClient {
                 method: 'PATCH',
                 body: JSON.stringify({ profile: profileData })
             });
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('updateProfile API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -270,7 +420,12 @@ class ApiClient {
     async getBillingInfo() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.account.billing);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('getBillingInfo API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -279,7 +434,12 @@ class ApiClient {
     async getPaymentMethods() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.account.paymentMethods);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('getPaymentMethods API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -288,7 +448,12 @@ class ApiClient {
     async getBillingHistory() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.account.billingHistory);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('getBillingHistory API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -297,7 +462,12 @@ class ApiClient {
     async getUserActivity() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.account.activity);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('getUserActivity API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
         } catch (error) {
             return this.handleError(error);
         }
@@ -307,7 +477,37 @@ class ApiClient {
     async getSubscriptionStatus() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.subscription.status);
-            return { success: true, data: response };
+            
+            // Debug logging
+            console.log('getSubscriptionStatus API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+
+    async upgradeSubscription(plan, seats) {
+        try {
+            const response = await this.request('/upgradeSubscription', {
+                method: 'POST',
+                body: JSON.stringify({ plan, seats })
+            });
+            console.log('upgradeSubscription API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+
+    async cancelSubscription() {
+        try {
+            const response = await this.request('/cancelSubscription', {
+                method: 'POST'
+            });
+            console.log('cancelSubscription API response:', response);
+            return response;
         } catch (error) {
             return this.handleError(error);
         }

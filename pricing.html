@@ -46,7 +46,7 @@
                     <li>1,000 emails / month</li>
                     <li>Shopify integration</li>
                 </ul>
-                <button class="paddle-btn" data-plan="pro" aria-label="Buy Pro" id="proPlanBtn">Buy Pro</button>
+                <button class="paddle-btn" data-plan="pro" aria-label="Buy Pro" id="proPlanBtn" data-success-url="account/dashboard.html">Buy Pro</button>
             </article>
 
             <article class="plan-card" data-plan="team">
@@ -58,7 +58,7 @@
                     <li>5,000 emails / month</li>
                     <li>Priority support</li>
                 </ul>
-                <button class="paddle-btn" data-plan="team" aria-label="Buy Team" id="teamPlanBtn">Buy Team</button>
+                <button class="paddle-btn" data-plan="team" aria-label="Buy Team" id="teamPlanBtn" data-success-url="account/dashboard.html">Buy Team</button>
             </article>
         </div>
 
@@ -84,7 +84,7 @@
         // Authentication check for pricing page
         function checkAuthenticationForPricing() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const isLoggedIn = !!user.email;
+            const isLoggedIn = !!user.token;
             
             if (!isLoggedIn) {
                 // Add click event listeners to redirect to login
