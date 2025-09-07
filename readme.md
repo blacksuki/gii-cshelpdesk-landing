@@ -171,7 +171,9 @@ npx http-server . -p 5173
 # 或
 python3 -m http.server 5173
 ```
+# CROS 
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security --user-data-dir="/Users/huoward/temp"
+
 ## Web Server
 live-server .
 npx http-server . -p 5173

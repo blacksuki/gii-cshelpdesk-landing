@@ -23,7 +23,7 @@
                 <p>Enter your new password below. Make sure it's strong and secure.</p>
             </div>
 
-            <form class="auth-form" id="resetForm">
+            <form class="auth-form" id="resetForm" onsubmit="return false;">
                 <div class="form-group">
                     <label for="password" class="form-label">New Password</label>
                     <input 
@@ -71,9 +71,19 @@
     </div>
 
     <script>
-        // Get reset token from URL
+        // Get reset token from URL and clean sensitive data
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
+        
+        // Clean any sensitive data from URL immediately
+        const url = new URL(window.location);
+        const hasSensitiveData = url.searchParams.has('password') || url.searchParams.has('confirmPassword');
+        if (hasSensitiveData) {
+            url.searchParams.delete('password');
+            url.searchParams.delete('confirmPassword');
+            window.history.replaceState({}, document.title, url.pathname + url.search);
+            console.warn('Sensitive data detected in URL and removed for security');
+        }
         
         if (!token) {
             Toast.error('Invalid Reset Link', 'This password reset link is invalid or has expired.');
@@ -112,8 +122,8 @@
             }
         });
 
-        // Form submission
-        document.getElementById('resetForm').addEventListener('submit', async function(e) {
+        // Handle reset password button click
+        document.getElementById('submitBtn').addEventListener('click', async function(e) {
             e.preventDefault();
             
             if (!token) {
@@ -131,7 +141,8 @@
             spinner.style.display = 'inline-block';
             
             try {
-                const formData = new FormData(e.target);
+                const form = document.getElementById('resetForm');
+                const formData = new FormData(form);
                 const data = {
                     token: token,
                     password: formData.get('password'),
@@ -149,8 +160,14 @@
                 if (result.success) {
                     Toast.success('Password Reset Success', 'Your password has been reset successfully. Redirecting to login...');
                     
-                    // Clear form
-                    e.target.reset();
+                    // Clear form and sensitive data from URL
+                    document.getElementById('resetForm').reset();
+                    
+                    // Clear any sensitive data from URL parameters
+                    const url = new URL(window.location);
+                    url.searchParams.delete('password');
+                    url.searchParams.delete('confirmPassword');
+                    window.history.replaceState({}, document.title, url.pathname + url.search);
                     
                     // Redirect to login with success message
                     setTimeout(() => {

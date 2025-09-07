@@ -1,156 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile — giiHelpdesk</title>
-    <meta name="description" content="Edit your giiHelpdesk profile">
-    <link rel="stylesheet" href="../css/auth.css">
+    <meta name="description" content="Edit your giiHelpdesk profile" />
+    <link rel="stylesheet" href="../css/auth.css" />
     <script src="../js/toast.js" defer></script>
     <script src="../js/api-config.js" defer></script>
     <script src="../js/api-client.js" defer></script>
     <script src="../js/auth.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="site-header"></div>
 
     <div class="account-container">
-        <div class="account-header">
-            <h1 class="account-title">Profile Settings</h1>
-            <p class="account-subtitle">Update your account information and preferences</p>
+      <div class="account-header">
+        <h1 class="account-title">Profile Settings</h1>
+        <p class="account-subtitle">
+          Update your account information and preferences
+        </p>
+      </div>
+
+      <div class="account-card" style="max-width: 600px; margin: 0 auto">
+        <div class="account-card__title">
+          <span>👤</span>
+          Personal Information
         </div>
 
-        <div class="account-card" style="max-width: 600px; margin: 0 auto;">
-            <div class="account-card__title">
-                <span>👤</span>
-                Personal Information
+        <form class="auth-form" id="profileForm">
+          <div class="form-group">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              class="form-input"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="your@email.com"
+              required
+              readonly
+              style="background-color: #f5f5f5; cursor: not-allowed"
+            />
+            <div class="form-help">
+              Email address cannot be changed. Contact support if needed.
             </div>
-            
-            <form class="auth-form" id="profileForm">
-                <div class="form-group">
-                    <label for="fullName" class="form-label">Full Name</label>
-                    <input 
-                        type="text" 
-                        id="fullName" 
-                        name="fullName" 
-                        class="form-input" 
-                        placeholder="Enter your full name"
-                        required
-                    >
-                </div>
+          </div>
 
-                <div class="form-group">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        class="form-input" 
-                        placeholder="your@email.com"
-                        required
-                        readonly
-                        style="background-color: #f5f5f5; cursor: not-allowed;"
-                    >
-                    <div class="form-help">Email address cannot be changed. Contact support if needed.</div>
-                </div>
+          <div class="form-group">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              class="form-input"
+              placeholder="+1 (555) 123-4567"
+            />
+            <div class="form-help">
+              Optional: For account recovery and support
+            </div>
+          </div>
 
-                <div class="form-group">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input 
-                        type="tel" 
-                        id="phone" 
-                        name="phone" 
-                        class="form-input" 
-                        placeholder="+1 (555) 123-4567"
-                    >
-                    <div class="form-help">Optional: For account recovery and support</div>
-                </div>
+          <div class="form-group">
+            <label for="company" class="form-label">Company Name</label>
+            <input
+              type="text"
+              id="company"
+              name="company"
+              class="form-input"
+              placeholder="Your company name"
+            />
+          </div>
 
-                <div class="form-group">
-                    <label for="company" class="form-label">Company Name</label>
-                    <input 
-                        type="text" 
-                        id="company" 
-                        name="company" 
-                        class="form-input" 
-                        placeholder="Your company name"
-                    >
-                </div>
+          <div class="form-group">
+            <label for="timezone" class="form-label">Timezone</label>
+            <select id="timezone" name="timezone" class="form-input">
+              <option value="">Select your timezone</option>
+              <option value="America/New_York">Eastern Time (ET)</option>
+              <option value="America/Chicago">Central Time (CT)</option>
+              <option value="America/Denver">Mountain Time (MT)</option>
+              <option value="America/Los_Angeles">Pacific Time (PT)</option>
+              <option value="Europe/London">London (GMT)</option>
+              <option value="Europe/Paris">Paris (CET)</option>
+              <option value="Asia/Tokyo">Tokyo (JST)</option>
+              <option value="Asia/Shanghai">Shanghai (CST)</option>
+              <option value="Australia/Sydney">Sydney (AEST)</option>
+            </select>
+          </div>
 
-                <div class="form-group">
-                    <label for="timezone" class="form-label">Timezone</label>
-                    <select id="timezone" name="timezone" class="form-input">
-                        <option value="">Select your timezone</option>
-                        <option value="America/New_York">Eastern Time (ET)</option>
-                        <option value="America/Chicago">Central Time (CT)</option>
-                        <option value="America/Denver">Mountain Time (MT)</option>
-                        <option value="America/Los_Angeles">Pacific Time (PT)</option>
-                        <option value="Europe/London">London (GMT)</option>
-                        <option value="Europe/Paris">Paris (CET)</option>
-                        <option value="Asia/Tokyo">Tokyo (JST)</option>
-                        <option value="Asia/Shanghai">Shanghai (CST)</option>
-                        <option value="Australia/Sydney">Sydney (AEST)</option>
-                    </select>
-                </div>
+          <div class="form-group">
+            <label for="language" class="form-label">Language</label>
+            <select id="language" name="language" class="form-input">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="fr">Français</option>
+              <option value="de">Deutsch</option>
+              <option value="ja">日本語</option>
+              <option value="zh">中文</option>
+            </select>
+          </div>
 
-                <div class="form-group">
-                    <label for="language" class="form-label">Language</label>
-                    <select id="language" name="language" class="form-input">
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                        <option value="ja">日本語</option>
-                        <option value="zh">中文</option>
-                    </select>
-                </div>
+          <div class="form-group">
+            <label for="avatar" class="form-label">Profile Picture</label>
+            <input
+              type="url"
+              id="avatar"
+              name="avatar"
+              class="form-input"
+              placeholder="https://example.com/avatar.jpg"
+            />
+            <div class="form-help">Enter a URL to your profile picture</div>
+          </div>
 
-                <div class="form-group">
-                    <label for="avatar" class="form-label">Profile Picture</label>
-                    <input 
-                        type="url" 
-                        id="avatar" 
-                        name="avatar" 
-                        class="form-input" 
-                        placeholder="https://example.com/avatar.jpg"
-                    >
-                    <div class="form-help">Enter a URL to your profile picture</div>
-                </div>
+          <div style="display: flex; gap: 12px; margin-top: 24px">
+            <button type="submit" class="auth-btn" id="saveBtn">
+              <span class="btn-text">Save Changes</span>
+              <span class="spinner" style="display: none"></span>
+            </button>
+            <button
+              type="button"
+              class="auth-btn auth-btn--secondary"
+              onclick="resetForm()"
+            >
+              Reset
+            </button>
+            <button
+              type="button"
+              class="auth-btn auth-btn--secondary"
+              onclick="backToDashboard()"
+            >
+              back
+            </button>
+          </div>
+        </form>
+      </div>
 
-                <div style="display: flex; gap: 12px; margin-top: 24px;">
-                    <button type="submit" class="auth-btn" id="saveBtn">
-                        <span class="btn-text">Save Changes</span>
-                        <span class="spinner" style="display: none;"></span>
-                    </button>
-                    <button type="button" class="auth-btn auth-btn--secondary" onclick="resetForm()">
-                        Reset
-                    </button>
-                    <button type="button" class="auth-btn auth-btn--secondary" onclick="backToDashboard()">
-                        back
-                    </button>
-                </div>
-            </form>
+      <!-- Security Settings -->
+      <div class="account-card" style="max-width: 600px; margin: 32px auto">
+        <div class="account-card__title">
+          <span>🔒</span>
+          Security Settings
         </div>
 
-        <!-- Security Settings -->
-        <div class="account-card" style="max-width: 600px; margin: 32px auto;">
-            <div class="account-card__title">
-                <span>🔒</span>
-                Security Settings
+        <div style="margin-bottom: 20px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 16px 0;
+              border-bottom: 1px solid #f1f3f4;
+            "
+          >
+            <div>
+              <div style="font-weight: 600">Two-Factor Authentication</div>
+              <div style="font-size: 14px; color: var(--color-muted)">
+                Add an extra layer of security to your account
+              </div>
             </div>
-            
-            <div style="margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
-                    <div>
-                        <div style="font-weight: 600;">Two-Factor Authentication</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">Add an extra layer of security to your account</div>
-                    </div>
-                    <button class="auth-btn auth-btn--secondary" onclick="setup2FA()" id="setup2FABtn">
-                        Setup 2FA
-                    </button>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
+            <button
+              class="auth-btn auth-btn--secondary"
+              onclick="setup2FA()"
+              id="setup2FABtn"
+            >
+              Setup 2FA
+            </button>
+          </div>
+
+          <!-- <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
                     <div>
                         <div style="font-weight: 600;">Login Notifications</div>
                         <div style="font-size: 14px; color: var(--color-muted);">Get notified of new login attempts</div>
@@ -159,197 +187,376 @@
                         <input type="checkbox" id="loginNotifications" style="width: auto;">
                         <span>Enable</span>
                     </label>
-                </div>
-                
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0;">
-                    <div>
-                        <div style="font-weight: 600;">Session Management</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">Manage your active sessions</div>
-                    </div>
-                    <button class="auth-btn auth-btn--secondary" onclick="manageSessions()">
-                        Manage
-                    </button>
-                </div>
+                </div> -->
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 16px 0;
+            "
+          >
+            <div>
+              <div style="font-weight: 600">Reset Password</div>
+              <div style="font-size: 14px; color: var(--color-muted)">
+                Reset your password
+              </div>
             </div>
+            <button
+              class="auth-btn auth-btn--secondary"
+              onclick="resetPassword()"
+            >
+              Reset
+            </button>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 16px 0;
+            "
+          >
+            <div>
+              <div style="font-weight: 600">Session Management</div>
+              <div style="font-size: 14px; color: var(--color-muted)">
+                Manage your active sessions
+              </div>
+            </div>
+            <button
+              class="auth-btn auth-btn--secondary"
+              onclick="manageSessions()"
+            >
+              Manage
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div
+        class="account-card"
+        style="max-width: 600px; margin: 32px auto; border: 2px solid #ffebee"
+      >
+        <div class="account-card__title" style="color: #c62828">
+          <span>⚠️</span>
+          Danger Zone
         </div>
 
-        <!-- Danger Zone -->
-        <div class="account-card" style="max-width: 600px; margin: 32px auto; border: 2px solid #ffebee;">
-            <div class="account-card__title" style="color: #c62828;">
-                <span>⚠️</span>
-                Danger Zone
+        <div style="margin-bottom: 20px">
+          <div
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 16px 0;
+              border-bottom: 1px solid #ffebee;
+            "
+          >
+            <div>
+              <div style="font-weight: 600; color: #c62828">Delete Account</div>
+              <div style="font-size: 14px; color: var(--color-muted)">
+                Permanently delete your account and all data
+              </div>
             </div>
-            
-            <div style="margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #ffebee;">
-                    <div>
-                        <div style="font-weight: 600; color: #c62828;">Delete Account</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">Permanently delete your account and all data</div>
-                    </div>
-                    <button class="auth-btn auth-btn--danger" onclick="deleteAccount()">
-                        Delete Account
-                    </button>
-                </div>
-            </div>
+            <button class="auth-btn auth-btn--danger" onclick="deleteAccount()">
+              Delete Account
+            </button>
+          </div>
         </div>
+      </div>
     </div>
 
     <div id="site-footer"></div>
 
     <script>
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthentication();
-            loadProfileData();
+      // Helper function to extract email from JWT token
+      function getEmailFromToken() {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        if (user.token) {
+          try {
+            const tokenPayload = JSON.parse(atob(user.token.split(".")[1]));
+            return tokenPayload.email;
+          } catch (error) {
+            console.error("Error parsing JWT token:", error);
+          }
+        }
+        return null;
+      }
+
+      // Check authentication on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        checkAuthentication();
+        loadProfileData();
+      });
+
+      // Authentication check
+      function checkAuthentication() {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        if (!user.token) {
+          Toast.error(
+            "Authentication Required",
+            "Please sign in to access your profile."
+          );
+          setTimeout(() => {
+            window.location.href = "../auth/login.html";
+          }, 2000);
+          return;
+        }
+
+        // Verify token is valid and not expired
+        try {
+          const tokenPayload = JSON.parse(atob(user.token.split(".")[1]));
+          if (tokenPayload.exp * 1000 < Date.now()) {
+            Toast.error(
+              "Session Expired",
+              "Your session has expired. Please sign in again."
+            );
+            localStorage.removeItem("user");
+            setTimeout(() => {
+              window.location.href = "../auth/login.html";
+            }, 2000);
+            return;
+          }
+        } catch (error) {
+          console.error("Error validating token:", error);
+          Toast.error(
+            "Invalid Session",
+            "Your session is invalid. Please sign in again."
+          );
+          localStorage.removeItem("user");
+          setTimeout(() => {
+            window.location.href = "../auth/login.html";
+          }, 2000);
+          return;
+        }
+      }
+
+      // Load profile data
+      async function loadProfileData() {
+        try {
+          const result = await window.apiClient.getAccountInfo();
+
+          if (result.success) {
+            populateForm(result.data.user);
+          } else {
+            Toast.error(
+              "Failed to Load Profile",
+              result.error || "Unable to load your profile information."
+            );
+          }
+        } catch (error) {
+          console.error("Error loading profile:", error);
+          Toast.error(
+            "Load Error",
+            "An error occurred while loading your profile."
+          );
+        }
+      }
+
+      // Populate form with profile data
+      function populateForm(profileData) {
+        document.getElementById("fullName").value = profileData.fullName || "";
+
+        // Handle email - try from profile data first, then from JWT token
+        let email = profileData.email || getEmailFromToken();
+        document.getElementById("email").value = email || "";
+
+        document.getElementById("phone").value = profileData.phone || "";
+        document.getElementById("company").value = profileData.company || "";
+        document.getElementById("timezone").value = profileData.timezone || "";
+        document.getElementById("language").value =
+          profileData.language || "en";
+        document.getElementById("avatar").value = profileData.avatar || "";
+        // document.getElementById('loginNotifications').checked = profileData.loginNotifications || false;
+
+        // Update 2FA button based on status
+        const setup2FABtn = document.getElementById("setup2FABtn");
+        if (profileData.twoFactorEnabled) {
+          setup2FABtn.textContent = "Manage 2FA";
+          setup2FABtn.onclick = manage2FA;
+        }
+      }
+
+      // Form submission
+      document
+        .getElementById("profileForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const saveBtn = document.getElementById("saveBtn");
+          const btnText = saveBtn.querySelector(".btn-text");
+          const spinner = saveBtn.querySelector(".spinner");
+
+          // Show loading state
+          saveBtn.disabled = true;
+          btnText.style.display = "none";
+          spinner.style.display = "inline-block";
+
+          try {
+            const formData = new FormData(e.target);
+            const data = {
+              fullName: formData.get("fullName"),
+              phone: formData.get("phone"),
+              company: formData.get("company"),
+              timezone: formData.get("timezone"),
+              language: formData.get("language"),
+              avatar: formData.get("avatar"),
+              // loginNotifications: formData.get('loginNotifications') === 'on'
+            };
+
+            // Submit profile update using unified API client
+            const result = await window.apiClient.updateProfile(data);
+
+            if (result.success) {
+              Toast.success(
+                "Profile Updated",
+                "Your profile has been updated successfully."
+              );
+
+              // Update localStorage if needed
+              const user = JSON.parse(localStorage.getItem("user") || "{}");
+              if (result.data && result.data.user) {
+                user.profile = result.data.user.profile;
+                localStorage.setItem("user", JSON.stringify(user));
+              }
+            } else {
+              Toast.error(
+                "Update Failed",
+                result.error || "Failed to update profile. Please try again."
+              );
+            }
+          } catch (error) {
+            console.error("Profile update error:", error);
+            Toast.error(
+              "Update Error",
+              "An unexpected error occurred. Please try again."
+            );
+          } finally {
+            // Reset button state
+            saveBtn.disabled = false;
+            btnText.style.display = "inline";
+            spinner.style.display = "none";
+          }
         });
 
-        // Authentication check
-        function checkAuthentication() {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            if (!user.token) {
-                Toast.error('Authentication Required', 'Please sign in to access your profile.');
+      // Reset form to original values
+      function resetForm() {
+        loadProfileData();
+        Toast.info("Form Reset", "Form has been reset to original values.");
+      }
+      // back to dashboard
+      function backToDashboard() {
+        window.location.href = "../account/dashboard.html";
+      }
+
+      // Security functions
+      function setup2FA() {
+        Toast.info("2FA Setup", "Two-factor authentication setup coming soon!");
+        // TODO: Implement 2FA setup
+      }
+
+      function manage2FA() {
+        Toast.info(
+          "2FA Management",
+          "Two-factor authentication management coming soon!"
+        );
+        // TODO: Implement 2FA management
+      }
+
+      function manageSessions() {
+        Toast.info("Session Management", "Session management coming soon!");
+        // TODO: Implement session management
+      }
+
+      function resetPassword() {
+        // Request password reset token first
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        let email = user.email || getEmailFromToken();
+
+        if (!email) {
+          Toast.error(
+            "Error",
+            "Unable to find your email address. Please contact support."
+          );
+          return;
+        }
+
+        Toast.loading("Requesting Reset", "Sending password reset email...");
+
+        // Call forgot password API to get reset token
+        window.apiClient
+          .forgotPassword(email)
+          .then((result) => {
+            Toast.hideLoading();
+
+            if (result.success) {
+              Toast.success(
+                "Reset Email Sent",
+                "Please check your email for password reset instructions."
+              );
+              // Redirect to login page after showing instructions
+              setTimeout(() => {
+                window.location.href = "../auth/login.html?message=verification_sent";
+              }, 2000);
+            } else {
+              Toast.error(
+                "Reset Failed",
+                result.error || "Failed to send reset email. Please try again."
+              );
+            }
+          })
+          .catch((error) => {
+            Toast.hideLoading();
+            console.error("Password reset request error:", error);
+            Toast.error(
+              "Reset Error",
+              "An error occurred while requesting password reset."
+            );
+          });
+      }
+
+      function deleteAccount() {
+        if (
+          confirm(
+            "Are you absolutely sure you want to delete your account? This action cannot be undone and will permanently delete all your data."
+          )
+        ) {
+          if (
+            confirm(
+              'This is your final warning. All data will be permanently deleted. Type "DELETE" to confirm.'
+            )
+          ) {
+            const confirmation = prompt(
+              'Type "DELETE" to confirm account deletion:'
+            );
+            if (confirmation === "DELETE") {
+              Toast.loading(
+                "Deleting Account",
+                "Processing your account deletion..."
+              );
+
+              // TODO: Implement account deletion
+              setTimeout(() => {
+                Toast.hideLoading();
+                Toast.success(
+                  "Account Deleted",
+                  "Your account has been permanently deleted."
+                );
+                localStorage.removeItem("user");
                 setTimeout(() => {
-                    window.location.href = '../auth/login.html';
+                  window.location.href = "../auth/register.html";
                 }, 2000);
-                return;
+              }, 3000);
+            } else {
+              Toast.info(
+                "Deletion Cancelled",
+                "Account deletion was cancelled."
+              );
             }
+          }
         }
-
-        // Load profile data
-        async function loadProfileData() {
-            try {
-                const result = await window.apiClient.getAccountInfo();
-                
-                if (result.success) {
-                    populateForm(result.data.user);
-                } else {
-                    Toast.error('Failed to Load Profile', result.error || 'Unable to load your profile information.');
-                }
-            } catch (error) {
-                console.error('Error loading profile:', error);
-                Toast.error('Load Error', 'An error occurred while loading your profile.');
-            }
-        }
-
-        // Populate form with profile data
-        function populateForm(profileData) {
-            document.getElementById('fullName').value = profileData.fullName || '';
-            document.getElementById('email').value = profileData.email || '';
-            document.getElementById('phone').value = profileData.phone || '';
-            document.getElementById('company').value = profileData.company || '';
-            document.getElementById('timezone').value = profileData.timezone || '';
-            document.getElementById('language').value = profileData.language || 'en';
-            document.getElementById('avatar').value = profileData.avatar || '';
-            document.getElementById('loginNotifications').checked = profileData.loginNotifications || false;
-            
-            // Update 2FA button based on status
-            const setup2FABtn = document.getElementById('setup2FABtn');
-            if (profileData.twoFactorEnabled) {
-                setup2FABtn.textContent = 'Manage 2FA';
-                setup2FABtn.onclick = manage2FA;
-            }
-        }
-
-        // Form submission
-        document.getElementById('profileForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const saveBtn = document.getElementById('saveBtn');
-            const btnText = saveBtn.querySelector('.btn-text');
-            const spinner = saveBtn.querySelector('.spinner');
-            
-            // Show loading state
-            saveBtn.disabled = true;
-            btnText.style.display = 'none';
-            spinner.style.display = 'inline-block';
-            
-            try {
-                const formData = new FormData(e.target);
-                const data = {
-                    fullName: formData.get('fullName'),
-                    phone: formData.get('phone'),
-                    company: formData.get('company'),
-                    timezone: formData.get('timezone'),
-                    language: formData.get('language'),
-                    avatar: formData.get('avatar'),
-                    loginNotifications: formData.get('loginNotifications') === 'on'
-                };
-                
-                // Submit profile update using unified API client
-                const result = await window.apiClient.updateProfile(data);
-                
-                if (result.success) {
-                    Toast.success('Profile Updated', 'Your profile has been updated successfully.');
-                    
-                    // Update localStorage if needed
-                    const user = JSON.parse(localStorage.getItem('user') || '{}');
-                    if (result.data && result.data.user) {
-                        user.profile = result.data.user.profile;
-                        localStorage.setItem('user', JSON.stringify(user));
-                    }
-                    
-                } else {
-                    Toast.error('Update Failed', result.error || 'Failed to update profile. Please try again.');
-                }
-                
-            } catch (error) {
-                console.error('Profile update error:', error);
-                Toast.error('Update Error', 'An unexpected error occurred. Please try again.');
-            } finally {
-                // Reset button state
-                saveBtn.disabled = false;
-                btnText.style.display = 'inline';
-                spinner.style.display = 'none';
-            }
-        });
-
-        // Reset form to original values
-        function resetForm() {
-            loadProfileData();
-            Toast.info('Form Reset', 'Form has been reset to original values.');
-        }
-
-
-
-        // Security functions
-        function setup2FA() {
-            Toast.info('2FA Setup', 'Two-factor authentication setup coming soon!');
-            // TODO: Implement 2FA setup
-        }
-
-        function manage2FA() {
-            Toast.info('2FA Management', 'Two-factor authentication management coming soon!');
-            // TODO: Implement 2FA management
-        }
-
-        function manageSessions() {
-            Toast.info('Session Management', 'Session management coming soon!');
-            // TODO: Implement session management
-        }
-
-        function deleteAccount() {
-            if (confirm('Are you absolutely sure you want to delete your account? This action cannot be undone and will permanently delete all your data.')) {
-                if (confirm('This is your final warning. All data will be permanently deleted. Type "DELETE" to confirm.')) {
-                    const confirmation = prompt('Type "DELETE" to confirm account deletion:');
-                    if (confirmation === 'DELETE') {
-                        Toast.loading('Deleting Account', 'Processing your account deletion...');
-                        
-                        // TODO: Implement account deletion
-                        setTimeout(() => {
-                            Toast.hideLoading();
-                            Toast.success('Account Deleted', 'Your account has been permanently deleted.');
-                            localStorage.removeItem('user');
-                            setTimeout(() => {
-                                window.location.href = '../auth/register.html';
-                            }, 2000);
-                        }, 3000);
-                    } else {
-                        Toast.info('Deletion Cancelled', 'Account deletion was cancelled.');
-                    }
-                }
-            }
-        }
+      }
     </script>
-</body>
+  </body>
 </html>
-

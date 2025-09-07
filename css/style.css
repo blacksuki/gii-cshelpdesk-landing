@@ -91,6 +91,19 @@ body {
     filter: brightness(1.1);
 }
 
+.nav__cta--logout {
+    background: #dc3545;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.nav__cta--logout:hover {
+    background: #c82333;
+    filter: none;
+}
+
 /* Hero */
 .hero {
     padding: 60px 20px;

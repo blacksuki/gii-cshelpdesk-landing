@@ -310,17 +310,9 @@
             // TODO: Implement support contact form
         }
 
-        // Logout function
+        // Logout function (legacy - now handled by handleLogout in common.js)
         function logout() {
-            if (window.apiClient) {
-                window.apiClient.logout();
-            } else {
-                localStorage.removeItem('user');
-                Toast.success('Logged Out', 'You have been successfully logged out.');
-                setTimeout(() => {
-                    window.location.href = '../auth/login.html';
-                }, 1500);
-            }
+            handleLogout();
         }
     </script>
 </body>

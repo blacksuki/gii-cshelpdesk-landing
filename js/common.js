@@ -15,8 +15,8 @@
       { href: "features.html", text: "Features" },
       { href: "pricing.html", text: "Pricing" },
       { href: "case.html", text: "Case Studies" },
-      { href: "about.html", text: "About" },
       { href: "privacy.html", text: "Privacy" },
+      { href: "about.html", text: "About" },
     ];
 
     // Check if user is logged in
@@ -27,27 +27,49 @@
       location.pathname.split("/").pop() || "index.html"
     ).toLowerCase();
 
+    // Determine if we're in the account directory
+    const isInAccountDir = location.pathname.includes('/account/');
+    const isDashboardPage = current === 'dashboard.html';
+    
+    // Adjust navigation links based on current directory
+    const adjustedNavLinks = navLinks.map(function (l) {
+      var href = l.href;
+      if (isInAccountDir) {
+        href = '../' + href;
+      }
+      var cls =
+        "nav__link" +
+        (current === l.href.toLowerCase() ? " nav__link--active" : "");
+      return (
+        '<a class="' + cls + '" href="' + href + '">' + l.text + "</a>"
+      );
+    });
+
     if (headerTarget) {
+      // Determine CTA button content and action
+      let ctaButton;
+      if (isLoggedIn) {
+        if (isDashboardPage) {
+          // Show Logout button on dashboard page
+          ctaButton = '<button class="nav__cta nav__cta--logout" onclick="handleLogout()">Logout</button>';
+        } else {
+          // Show Account link on other pages
+          ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? 'dashboard.html' : 'account/dashboard.html') + '">Account</a>';
+        }
+      } else {
+        // Show Start free trial link for non-logged in users
+        ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? '../pricing.html#free' : 'pricing.html#free') + '">Start free trial</a>';
+      }
+
       headerTarget.innerHTML = [
         '<header class="site-header" role="banner">',
         '    <div class="site-header__inner">',
-        '        <a class="logo" href="/index.html" aria-label="giiHelpdesk home">',
+        '        <a class="logo" href="' + (isInAccountDir ? '../index.html' : '/index.html') + '" aria-label="giiHelpdesk home">',
         "            <span>giiHelpdesk</span>",
         "        </a>",
         '        <nav class="nav" role="navigation" aria-label="Primary">',
-        navLinks
-          .map(function (l) {
-            var cls =
-              "nav__link" +
-              (current === l.href.toLowerCase() ? " nav__link--active" : "");
-            return (
-              '<a class="' + cls + '" href="' + l.href + '">' + l.text + "</a>"
-            );
-          })
-          .join(""),
-        isLoggedIn
-          ? '<a class="nav__cta" href="account/dashboard.html">Account</a>'
-          : '<a class="nav__cta" href="pricing.html#free">Start free trial</a>',
+        adjustedNavLinks.join(""),
+        ctaButton,
         "        </nav>",
         "    </div>",
         "</header>",
@@ -88,5 +110,27 @@ function checkAuthentication() {
       // window.location.href = '../auth/login.html';
     }, 2000);
     return;
+  }
+}
+
+// Handle logout functionality
+function handleLogout() {
+  if (confirm('Are you sure you want to logout?')) {
+    Toast.loading('Logging out', 'Please wait...');
+    
+    // Clear authentication data
+    if (window.apiClient) {
+      window.apiClient.logout();
+    } else if (window.Auth) {
+      window.Auth.logout();
+    } else {
+      // Fallback: clear localStorage and redirect
+      localStorage.removeItem('user');
+      Toast.hideLoading();
+      Toast.success('Logged out', 'You have been successfully logged out.');
+      setTimeout(() => {
+        window.location.href = '../auth/login.html';
+      }, 1500);
+    }
   }
 }

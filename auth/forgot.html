@@ -23,7 +23,7 @@
                 <p>Enter your email address and we'll send you a link to reset your password.</p>
             </div>
 
-            <form class="auth-form" id="forgotForm">
+            <form class="auth-form" id="forgotForm" onsubmit="return false;">
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
                     <input 
@@ -51,8 +51,20 @@
     </div>
 
     <script>
-        // Form submission
-        document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+        // Check for success message from profile page
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('sent') === 'true') {
+                Toast.success('Reset Email Sent', 'Please check your email for password reset instructions.');
+                // Clean URL
+                const url = new URL(window.location);
+                url.searchParams.delete('sent');
+                window.history.replaceState({}, document.title, url.pathname + url.search);
+            }
+        });
+
+        // Handle forgot password button click
+        document.getElementById('submitBtn').addEventListener('click', async function(e) {
             e.preventDefault();
             
             const submitBtn = document.getElementById('submitBtn');
@@ -65,7 +77,8 @@
             spinner.style.display = 'inline-block';
             
             try {
-                const formData = new FormData(e.target);
+                const form = document.getElementById('forgotForm');
+                const formData = new FormData(form);
                 const data = {
                     email: formData.get('email').trim()
                 };
@@ -83,11 +96,16 @@
                     Toast.success('Reset Link Sent', 'If an account with that email exists, you will receive a password reset link shortly.');
                     
                     // Clear form
-                    e.target.reset();
+                    document.getElementById('forgotForm').reset();
                     
-                    // Show additional instructions
+                    // Show additional instructions and redirect to login page
                     setTimeout(() => {
                         Toast.info('Check Your Email', 'Please check your spam folder if you don\'t see the email in your inbox.');
+                        
+                        // Redirect to login page after showing instructions
+                        setTimeout(() => {
+                            window.location.href = 'login.html?message=password_reset_sent';
+                        }, 2000);
                     }, 2000);
                     
                 } else {
