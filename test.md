@@ -198,27 +198,7 @@ test();
 "
 ```
 
-#### 5.2 测试 SendGrid 连接
-```bash
-node -e "
-const { initializeSendGrid, sendVerificationEmail } = require('./lib/sendgrid');
 
-async function test() {
-  try {
-    initializeSendGrid();
-    console.log('✅ SendGrid 初始化成功');
-    
-    // 测试发送邮件（使用测试邮箱）
-    await sendVerificationEmail('test@example.com', 'test.com', 'test-token');
-    console.log('✅ SendGrid 邮件发送成功');
-  } catch (error) {
-    console.error('❌ SendGrid 测试失败:', error.message);
-  }
-}
-
-test();
-"
-```
 
 #### 5.3 测试 Paddle 连接
 ```bash

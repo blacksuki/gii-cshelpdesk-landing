@@ -47,10 +47,8 @@
                     var user = {};
                     try { user = JSON.parse(localStorage.getItem('user') || '{}'); } catch(_) {}
                     var userEmail = (user && user.email) || (user && user.user && user.user.email) || '';
-                    var userDomain = '';
-                    if (userEmail && userEmail.indexOf('@') > -1) {
-                        userDomain = userEmail.split('@')[1];
-                    }
+                    var userDomain = (user && user.domain) || (user && user.user && user.user.domain) || '';
+              
 
                     // success URL if provided on button
                     var successUrl = btn.getAttribute('data-success-url') || window.location.origin + '/account/dashboard.html';
@@ -63,7 +61,7 @@
                             selectedPlan: plan
                         },
                         // optional: redirect to dashboard
-                        success: successUrl
+                        successUrl: successUrl
                     });
                 } catch (e) {
                     console.error('Failed to open Paddle checkout:', e);

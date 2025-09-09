@@ -102,13 +102,13 @@
       currentUser = result.data.user;
       authToken = result.data.token;
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...result.data.user,
-          token: result.data.token,
-        })
-      );
+      // localStorage.setItem(
+      //   "user",
+      //   JSON.stringify({
+      //     ...result.data.user,
+      //     token: result.data.token,
+      //   })
+      // );
 
       // Update UI
       updateUIForAuthState(true);

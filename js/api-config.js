@@ -6,8 +6,8 @@
 const API_CONFIG = {
     // Development environment (local testing)
     development: {
-        baseURL: 'http://localhost:8088',
-        // baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
+        // baseURL: 'http://localhost:8088',
+        baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
         timeout: 30000,
         retryAttempts: 3,
         retryDelay: 2000
@@ -31,7 +31,11 @@ const API_CONFIG = {
     }
 };
 
-// API endpoint definitions
+/**
+ * API endpoint definitions
+ * first is the path in frontend, second is the function name in serverless-functions/api
+ * @type {Object}
+ */
 const API_ENDPOINTS = {
     // Authentication endpoints
     auth: {

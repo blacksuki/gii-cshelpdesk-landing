@@ -53,20 +53,15 @@ class ApiClient {
         
         this.token = token;
         
-        // 获取或创建用户数据
-        let user = JSON.parse(localStorage.getItem('user') || '{}');
-        
-        if (!user.email && !user.domain) {
-            // 创建新的用户结构
-            user = {
-                token: token,
-                createdAt: new Date().toISOString()
-            };
-        } else {
-            // 更新现有用户数据
-            user.token = token;
-            user.updatedAt = new Date().toISOString();
-        }
+        // 最简结构：仅保存 token / email / domain 与时间戳（如有）
+        const existingUser = JSON.parse(localStorage.getItem('user') || '{}');
+        const user = {
+            token: token,
+            email: existingUser.email,
+            domain: existingUser.domain,
+            createdAt: existingUser.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
         
         // 存储到 localStorage
         localStorage.setItem('user', JSON.stringify(user));
@@ -247,6 +242,7 @@ class ApiClient {
             // 直接匹配后端响应格式：{ success: true, data: { token: { accessToken: "..." }, user: {...} } }
             if (response && response.success && response.data) {
                 let token = response.data.token;
+                const returnedUser = response.data.user || {};
                 
                 // 先检查 token 的类型和值，避免调用不存在的方法
                 console.log('Token check:', {
@@ -287,6 +283,16 @@ class ApiClient {
                     const tokenSetSuccess = this.setToken(token);
                     
                     if (tokenSetSuccess) {
+                        // 按最简结构持久化 email 与 domain（覆盖写入）
+                        const minimalUser = {
+                            token: token,
+                            email: returnedUser.email || credentials?.email || undefined,
+                            domain: returnedUser.domain || undefined,
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        };
+                        localStorage.setItem('user', JSON.stringify(minimalUser));
+                        console.log('✅ Stored {token,email,domain} to localStorage');
                         // 验证 token 是否设置成功
                         setTimeout(() => {
                             console.log('=== TOKEN VERIFICATION ===');
