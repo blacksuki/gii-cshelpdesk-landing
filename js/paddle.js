@@ -3,10 +3,10 @@
     'use strict';
 
     // Replace with your real Vendor ID and product IDs
-    var PADDLE_VENDOR_ID = 'VENDOR_ID';
+    var PADDLE_VENDOR_ID = '37642';
     var PRODUCT_IDS = {
         free: 'FREE_PRODUCT_ID',
-        pro: 'PRO_PRODUCT_ID',
+        pro: 'pro_01k4kjp0jmd33g5jek3xk28esp',
         team: 'TEAM_PRODUCT_ID'
     };
 
@@ -16,11 +16,16 @@
             return;
         }
 
+        Paddle.Environment.set('sandbox');
+        
         if (!PADDLE_VENDOR_ID || PADDLE_VENDOR_ID === 'VENDOR_ID') {
             console.warn('Paddle Vendor ID is not set. Buttons will show a notice.');
         } else {
             try {
-                window.Paddle.Setup({ vendor: PADDLE_VENDOR_ID });
+                // window.Paddle.Setup({ vendor: PADDLE_VENDOR_ID });
+                window.Paddle.Initialize({
+                    token: 'test_702fcc10e2a004641eb9f87e3f2'
+                  });
             } catch (e) {
                 console.error('Failed to initialize Paddle:', e);
             }
@@ -38,7 +43,28 @@
                     return;
                 }
                 try {
-                    window.Paddle.Checkout.open({ product: productId });
+                    // derive user context for customData
+                    var user = {};
+                    try { user = JSON.parse(localStorage.getItem('user') || '{}'); } catch(_) {}
+                    var userEmail = (user && user.email) || (user && user.user && user.user.email) || '';
+                    var userDomain = '';
+                    if (userEmail && userEmail.indexOf('@') > -1) {
+                        userDomain = userEmail.split('@')[1];
+                    }
+
+                    // success URL if provided on button
+                    var successUrl = btn.getAttribute('data-success-url') || window.location.origin + '/account/dashboard.html';
+
+                    window.Paddle.Checkout.open({
+                        product: productId,
+                        customData: {
+                            userEmail: userEmail,
+                            userDomain: userDomain,
+                            selectedPlan: plan
+                        },
+                        // optional: redirect to dashboard
+                        success: successUrl
+                    });
                 } catch (e) {
                     console.error('Failed to open Paddle checkout:', e);
                 }
