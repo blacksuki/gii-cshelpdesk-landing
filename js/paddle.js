@@ -66,7 +66,9 @@
             (user && user.domain) ||
             (user && user.user && user.user.domain) ||
             "";
-
+          var subscriptionId =
+            (user && user.subscription && user.subscription.paddleSubscriptionId) ||
+            "";
           // success URL if provided on button
           var successUrl =
             btn.getAttribute("data-success-url") ||
@@ -85,7 +87,9 @@
               userEmail: userEmail,
               userDomain: userDomain,
               selectedPlan: plan,
+              
             },
+            subscriptionId:"sub_01k4sjcfzvbdjxq8365ch313fz",
             // optional: redirect to dashboard
             successUrl: successUrl,
           });

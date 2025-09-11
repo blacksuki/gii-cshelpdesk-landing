@@ -32,7 +32,7 @@
                 <div class="plan-card__price">$0</div>
                 <ul class="plan-card__list">
                     <li>1 seat</li>
-                    <li>50 emails / month</li>
+                    <li>100 emails</li>
                     <li>Gmail Add-on</li>
                 </ul>
                 <button class="paddle-btn" data-plan="free" aria-label="Start free trial" id="freePlanBtn">Get Started</button>
@@ -80,6 +80,7 @@
         // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthenticationForPricing();
+            applySubscriptionUIState();
         });
 
         // Authentication check for pricing page
@@ -93,7 +94,8 @@
                 const proBtn = document.getElementById('proPlanBtn');
                 const teamBtn = document.getElementById('teamPlanBtn');
                 
-                if (freeBtn) {
+                if (freeBtn && !isLoggedIn) {
+                    //only show for non-logged in users
                     freeBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         redirectToLogin('free');
@@ -121,6 +123,59 @@
                 if (plan) {
                     // Highlight the selected plan
                     highlightSelectedPlan(plan);
+                }
+            }
+        }
+
+        // Apply subscription state to pricing UI
+        function applySubscriptionUIState() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const sub = user.subscription || null;
+
+            const freeBtn = document.getElementById('freePlanBtn');
+            const proBtn = document.getElementById('proPlanBtn');
+            const teamBtn = document.getElementById('teamPlanBtn');
+
+            const proBadge = document.querySelector('[data-plan="pro"] .plan-card__badge');
+            const teamBadge = document.querySelector('[data-plan="team"] .plan-card__badge');
+
+            // Default: nothing to do if no subscription info
+            if (!sub || !sub.status) {
+                return;
+            }
+
+            // 1) After login, free button disabled for all logged-in users
+            if (freeBtn) {
+                freeBtn.disabled = true;
+                freeBtn.textContent = 'Logged in';
+                freeBtn.setAttribute('aria-disabled', 'true');
+            }
+
+            // 2) Manage Pro/Team based on plan
+            // Normalize plan
+            const plan = (sub.plan || '').toLowerCase();
+            const isActive = sub.status === 'active';
+
+            if (plan === 'pro' && isActive) {
+                if (proBadge) { proBadge.textContent = 'Subscribed'; }
+                if (proBtn) {
+                    proBtn.disabled = true;
+                    proBtn.textContent = 'Current Plan';
+                    proBtn.setAttribute('aria-disabled', 'true');
+                }
+            }
+
+            if (plan === 'team' && isActive) {
+                if (teamBadge) { teamBadge.textContent = 'Subscribed'; }
+                if (proBtn) {
+                    proBtn.disabled = true;
+                    proBtn.textContent = 'Unavailable';
+                    proBtn.setAttribute('aria-disabled', 'true');
+                }
+                if (teamBtn) {
+                    teamBtn.disabled = true;
+                    teamBtn.textContent = 'Current Plan';
+                    teamBtn.setAttribute('aria-disabled', 'true');
                 }
             }
         }

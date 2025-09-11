@@ -480,9 +480,22 @@ class ApiClient {
     }
     
     // Subscription methods
-    async getSubscriptionStatus() {
+    async getSubscriptionStatus(userEmail, shopDomain) {
         try {
-            const response = await this.request(window.API_CONFIG.endpoints.subscription.status);
+            // Derive from localStorage if not provided
+            if (!userEmail || !shopDomain) {
+                const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+                userEmail = userEmail || storedUser.email;
+                shopDomain = shopDomain || storedUser.domain;
+            }
+
+            const response = await this.request(
+                window.API_CONFIG.endpoints.subscription.status,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ userEmail, shopDomain })
+                }
+            );
             
             // Debug logging
             console.log('getSubscriptionStatus API response:', response);
