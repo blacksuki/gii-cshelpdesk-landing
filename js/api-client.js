@@ -60,7 +60,8 @@ class ApiClient {
             email: existingUser.email,
             domain: existingUser.domain,
             createdAt: existingUser.createdAt || new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
+            subscription: existingUser.subscription || null
         };
         
         // 存储到 localStorage
@@ -289,7 +290,8 @@ class ApiClient {
                             email: returnedUser.email || credentials?.email || undefined,
                             domain: returnedUser.domain || undefined,
                             createdAt: new Date().toISOString(),
-                            updatedAt: new Date().toISOString()
+                            updatedAt: new Date().toISOString(),
+                            subscription: returnedUser.subscription || null
                         };
                         localStorage.setItem('user', JSON.stringify(minimalUser));
                         console.log('✅ Stored {token,email,domain} to localStorage');
@@ -522,7 +524,7 @@ class ApiClient {
 
     async cancelSubscription() {
         try {
-            const response = await this.request('/cancelSubscription', {
+            const response = await this.request(window.API_CONFIG.endpoints.subscription.cancel, {
                 method: 'POST'
             });
             console.log('cancelSubscription API response:', response);

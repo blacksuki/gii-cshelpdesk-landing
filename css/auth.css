@@ -140,7 +140,9 @@
 .auth-btn--danger {
     background: #dc3545;
 }
-
+.auth-btn--warning {
+    background: lch(80.15% 25.16 93.13);
+}
 /* Loading spinner */
 .spinner {
     display: inline-block;

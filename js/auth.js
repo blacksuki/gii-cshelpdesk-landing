@@ -111,21 +111,21 @@
       // );
 
       // Fetch subscription status once and store
-      try {
-        const email = result?.data?.user?.email || credentials?.email;
-        const domain = result?.data?.user?.domain;
-        const subResp = await window.apiClient.getSubscriptionStatus(email, domain);
-        if (subResp && subResp.success) {
-          const existing = JSON.parse(localStorage.getItem("user") || "{}");
-          const toStore = {
-            ...existing,
-            subscription: subResp.data?.subscription || null,
-          };
-          localStorage.setItem("user", JSON.stringify(toStore));
-        }
-      } catch (e) {
-        console.error("Failed to fetch subscription status on login", e);
-      }
+      // try {
+      //   // const email = result?.data?.user?.email || credentials?.email;
+      //   // const domain = result?.data?.user?.domain;
+      //   // const subResp = await window.apiClient.getSubscriptionStatus(email, domain);
+      // //   if (subResp && subResp.success) {
+      // //     const existing = JSON.parse(localStorage.getItem("user") || "{}");
+      // //     const toStore = {
+      // //       ...existing,
+      // //       subscription: subResp.data?.subscription || null,
+      // //     };
+      // //     localStorage.setItem("user", JSON.stringify(toStore));
+      // //   }
+      // // } catch (e) {
+      // //   console.error("Failed to fetch subscription status on login", e);
+      // // }
 
       // Update UI
       updateUIForAuthState(true);

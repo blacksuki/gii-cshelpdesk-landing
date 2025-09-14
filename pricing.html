@@ -32,32 +32,32 @@
                 <div class="plan-card__price">$0</div>
                 <ul class="plan-card__list">
                     <li>1 seat</li>
-                    <li>100 emails</li>
-                    <li>Gmail Add-on</li>
+                    <li>max 100 emails</li>
+                    <li>Gmail Add-on + Shopify integration</li>
                 </ul>
                 <button class="paddle-btn" data-plan="free" aria-label="Start free trial" id="freePlanBtn">Get Started</button>
             </article>
 
             <article class="plan-card" data-plan="pro">
-                <span class="plan-card__badge"></span>
+                <span class="plan-card__badge">POPULAR</span>
                 <h2>Pro</h2>
                 <div class="plan-card__price">$79 / mo</div>
                 <ul class="plan-card__list">
                     <li>1 seat</li>
                     <li>1,000 emails / month</li>
-                    <li>Shopify integration</li>
+                    <li>Gmail Add-on + Shopify integration</li>
                 </ul>
                 <button class="paddle-btn" data-plan="pro" aria-label="Buy Pro" id="proPlanBtn" data-success-url="account/dashboard.html">Buy Pro</button>
             </article>
 
             <article class="plan-card" data-plan="team">
-                <span class="plan-card__badge"></span>
+                <span class="plan-card__badge">HIGH PERFORMANCE</span>
                 <h2>Team</h2>
                 <div class="plan-card__price">$199 / mo</div>
                 <ul class="plan-card__list">
                     <li>Unlimited seats</li>
                     <li>5,000 emails / month</li>
-                    <li>Priority support</li>
+                    <li>Gmail Add-on + Shopify integration</li>
                 </ul>
                 <button class="paddle-btn" data-plan="team" aria-label="Buy Team" id="teamPlanBtn" data-success-url="account/dashboard.html">Buy Team</button>
             </article>
@@ -147,7 +147,7 @@
             // 1) After login, free button disabled for all logged-in users
             if (freeBtn) {
                 freeBtn.disabled = true;
-                freeBtn.textContent = 'Logged in';
+                freeBtn.textContent = 'Free trial';
                 freeBtn.setAttribute('aria-disabled', 'true');
             }
 
@@ -169,7 +169,7 @@
                 if (teamBadge) { teamBadge.textContent = 'Subscribed'; }
                 if (proBtn) {
                     proBtn.disabled = true;
-                    proBtn.textContent = 'Unavailable';
+                    proBtn.textContent = 'Pro Plan';
                     proBtn.setAttribute('aria-disabled', 'true');
                 }
                 if (teamBtn) {

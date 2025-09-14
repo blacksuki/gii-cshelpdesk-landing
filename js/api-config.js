@@ -6,8 +6,8 @@
 const API_CONFIG = {
     // Development environment (local testing)
     development: {
-        // baseURL: 'http://localhost:8088',
-        baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
+        baseURL: 'http://localhost:8088',
+        // baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
         timeout: 30000,
         retryAttempts: 3,
         retryDelay: 2000
@@ -61,7 +61,8 @@ const API_ENDPOINTS = {
     subscription: {
         status: '/getSubscriptionStatus',
         plans: '/subscription-plans',
-        upgrade: '/upgradeSubscription'
+        upgrade: '/upgradeSubscription',
+        cancel: '/cancelSubscription'
     },
     
     // Shopify integration endpoints

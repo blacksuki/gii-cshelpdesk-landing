@@ -7,8 +7,7 @@
   var PRICE_IDS = {
     free: "FREE_PRODUCT_ID",
     pro: "pri_01k4kjrchghh35zbfyxkptqfgd",
-    // pro: 'pro_01k4kjp0jmd33g5jek3xk28esp',
-    team: "TEAM_PRODUCT_ID",
+    team: "pri_01k4va1hbt1cepkxjq1vjyebg4",
   };
 
   function initPaddle() {
@@ -89,7 +88,7 @@
               selectedPlan: plan,
               
             },
-            subscriptionId:"sub_01k4sjcfzvbdjxq8365ch313fz",
+            // subscriptionId:"sub_01k4sjcfzvbdjxq8365ch313fz",
             // optional: redirect to dashboard
             successUrl: successUrl,
           });
