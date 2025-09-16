@@ -6,8 +6,6 @@
     <title>Dashboard — giiHelpdesk</title>
     <meta name="description" content="Your giiHelpdesk account dashboard" />
     <link rel="stylesheet" href="../css/auth.css" />
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script src="../js/paddle.js" defer></script>
     <script src="../js/toast.js" defer></script>
     <script src="../js/api-config.js" defer></script>
     <script src="../js/api-client.js" defer></script>
@@ -55,21 +53,21 @@
             </div>
             <div class="account-info">
               <span class="account-info__label">Next Billing</span>
-              <span class="account-info__value" id="nextBilling">14 days</span>
+              <span class="account-info__value" id="nextBilling">--</span>
             </div>
             <div class="account-info">
               <span class="account-info__label">Email Limit</span>
               <span class="account-info__value" id="emailLimit">max 100</span>
             </div>
             <div style="display: flex; gap: 12px">
-                <a
-                  href="/pricing.html"
-                  class="auth-btn auth-btn--secondary"
-                  style="text-decoration: none; text-align: center"
-                >
-                  Upgrade Subscription
-                </a>
-              </div>
+              <a
+                href="/pricing.html"
+                class="auth-btn auth-btn--secondary"
+                style="text-decoration: none; text-align: center"
+              >
+                Upgrade Subscription
+              </a>
+            </div>
           </div>
         </div>
 
@@ -83,7 +81,8 @@
             <div class="account-info">
               <span class="account-info__label">Domain</span>
               <span class="account-info__value" id="userDomain"
-                >Loading...</span >
+                >Loading...</span
+              >
             </div>
             <div class="account-info">
               <span class="account-info__label">Email</span>
@@ -91,7 +90,9 @@
             </div>
             <div class="account-info">
               <span class="account-info__label">Member Since</span>
-              <span class="account-info__value" id="memberSince" >Loading...</span >
+              <span class="account-info__value" id="memberSince"
+                >Loading...</span
+              >
             </div>
             <div class="account-info">
               <span class="account-info__label">Last Login</span>
@@ -231,6 +232,21 @@
 
           if (result.success) {
             console.log("loadUserData: result.data.user", result.data.user);
+            try {
+              // 1. 获取当前user数据（若不存在则初始化为空对象）
+              let user = JSON.parse(localStorage.getItem("user")) || {};
+
+              // 2. 更新subscription部分（确保user对象存在）
+              if (result?.data?.user?.subscription) {
+                user.subscription = result.data.user.subscription;
+              }
+
+              // 3. 存回localStorage
+              localStorage.setItem("user", JSON.stringify(user));
+            } catch (error) {
+              console.error("update user.subscription failedi, please logout and login again:", error);
+              // 可在此处添加备用逻辑（如提示用户、重试等）
+            }
             updateDashboard(result.data.user);
           } else {
             Toast.error(
@@ -266,30 +282,41 @@
 
           // Show/hide cancel button based on plan
           const cancelBtn = document.getElementById("cancelBtn");
-          if (sub.plan && sub.plan !== "trial" && sub.plan !== "free" && sub.status.toLowerCase() !== "cancelled") {
+          if (
+            sub.plan &&
+            sub.plan !== "trial" &&
+            sub.plan !== "free" &&
+            sub.status.toLowerCase() !== "cancelled"
+          ) {
             cancelBtn.style.display = "inline-block";
-          }else{
+          } else {
             cancelBtn.style.display = "none";
           }
 
           // Calculate next billing
           if (sub.nextPayment) {
             // 1. 先拿到“账单日”的 0 点（UTC+8）
-            const billDay = new Date(sub.nextPayment);
-            billDay.setHours(0, 0, 0, 0); // 21:10 → 00:00
+            const billDay = new Date(sub.nextPayment._seconds * 1000);
+            // billDay.setHours(0, 0, 0, 0); // 21:10 → 00:00
+            if (sub.plan === "trial" || sub.status !== "active") {
+              document.getElementById("nextBilling").textContent = "--";
+            } else {
+              document.getElementById("nextBilling").textContent =
+                billDay.toLocaleDateString();
+            }
 
-            // 2. 今天 0 点（UTC+8）
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
+            // // 2. 今天 0 点（UTC+8）
+            // const today = new Date();
+            // today.setHours(0, 0, 0, 0);
 
-            // 3. 相差天数
-            const msPerDay = 24 * 60 * 60 * 1000;
-            const daysLeft = Math.round((billDay - today) / msPerDay);
+            // // 3. 相差天数
+            // const msPerDay = 24 * 60 * 60 * 1000;
+            // const daysLeft = Math.round((billDay - today) / msPerDay);
 
-            document.getElementById("nextBilling").textContent =
-              daysLeft > 0
-                ? `${daysLeft} day${daysLeft > 1 ? "s" : ""}`
-                : "Expired";
+            // document.getElementById("nextBilling").textContent =
+            //   daysLeft > 0
+            //     ? `${daysLeft} day${daysLeft > 1 ? "s" : ""}`
+            //     : "Expired";
           }
 
           // Set email limit based on plan

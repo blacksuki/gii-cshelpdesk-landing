@@ -43,7 +43,7 @@
                 <h2>Pro</h2>
                 <div class="plan-card__price">$79 / mo</div>
                 <ul class="plan-card__list">
-                    <li>1 seat</li>
+                    <li>2 seat</li>
                     <li>1,000 emails / month</li>
                     <li>Gmail Add-on + Shopify integration</li>
                 </ul>
@@ -53,9 +53,9 @@
             <article class="plan-card" data-plan="team">
                 <span class="plan-card__badge">HIGH PERFORMANCE</span>
                 <h2>Team</h2>
-                <div class="plan-card__price">$199 / mo</div>
+                <div class="plan-card__price">$179 / mo</div>
                 <ul class="plan-card__list">
-                    <li>Unlimited seats</li>
+                    <li>10 seats</li>
                     <li>5,000 emails / month</li>
                     <li>Gmail Add-on + Shopify integration</li>
                 </ul>
@@ -117,8 +117,8 @@
                 }
             } else {
                 // User is logged in, check for plan parameter
-                const urlParams = new URLSearchParams(window.location.search);
-                const plan = urlParams.get('plan');
+                console.log("checkAuthenticationForPricing: user plan is ", user.subscription.plan);
+                const plan = user.subscription.plan;
                 
                 if (plan) {
                     // Highlight the selected plan
@@ -157,7 +157,7 @@
             const isActive = sub.status === 'active';
 
             if (plan === 'pro' && isActive) {
-                if (proBadge) { proBadge.textContent = 'Subscribed'; }
+                if (proBadge) { proBadge.textContent += '  (Subscribed)'; }
                 if (proBtn) {
                     proBtn.disabled = true;
                     proBtn.textContent = 'Current Plan';
@@ -166,7 +166,7 @@
             }
 
             if (plan === 'team' && isActive) {
-                if (teamBadge) { teamBadge.textContent = 'Subscribed'; }
+                if (teamBadge) { teamBadge.textContent += '  (Subscribed)'; }
                 if (proBtn) {
                     proBtn.disabled = true;
                     proBtn.textContent = 'Pro Plan';
@@ -189,6 +189,7 @@
             
             // Highlight the selected plan
             const selectedCard = document.querySelector(`[data-plan="${plan}"]`).closest('.plan-card');
+            console.log("highlightSelectedPlan: selectedCard", selectedCard);
             if (selectedCard) {
                 selectedCard.style.border = '2px solid var(--color-primary)';
                 selectedCard.style.boxShadow = '0 0 0 3px rgba(10, 117, 255, 0.1)';
