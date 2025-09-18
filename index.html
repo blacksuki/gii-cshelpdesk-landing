@@ -1,81 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>giiHelpdesk — AI Helpdesk for Shopify</title>
-    <meta name="description" content="AI-powered Gmail Add-on for Shopify merchants. 14-day free trial, zero content storage.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
-    <link rel="stylesheet" href="css/style.css">
+    <meta
+      name="description"
+      content="AI-powered Gmail Add-on for Shopify merchants. 14-day free trial, zero content storage."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>"
+    />
+    <link rel="stylesheet" href="css/style.css" />
     <script src="js/common.js" defer></script>
     <script src="js/auth.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="site-header"></div>
 
     <section class="hero" aria-labelledby="hero-title">
-        <div class="hero__inner">
-            <div>
-                <h1 id="hero-title" class="hero__title">Your AI Customer Service Intern for Shopify</h1>
-                <p class="hero__subtitle">14-day free trial → Paddle billing → Seamless Gmail sidebar. Minimal data footprint. Ready out of the box.</p>
-                <a class="hero__cta" href="pricing.html#free" aria-label="Start free trial" id="startTrialBtn">Start free trial</a>
-            </div>
-            <div class="hero__media" aria-hidden="true"></div>
+      <div class="hero__inner">
+        <div>
+          <h1 id="hero-title" class="hero__title">
+            Your AI Customer Service Intern for Shopify
+          </h1>
+          <p class="hero__subtitle">
+            14-day free trial → Paddle billing → Seamless Gmail sidebar. Minimal
+            data footprint. Ready out of the box.
+          </p>
+          <a
+            class="hero__cta"
+            href="/auth/login.html"
+            aria-label="Start free trial"
+            id="startTrialBtn"
+            >Start free trial</a
+          >
         </div>
+        <div class="hero__media" aria-hidden="true"></div>
+      </div>
     </section>
 
     <main class="section" role="main">
-        <h2 class="section__title">What you get</h2>
-        <div class="features">
-            <article class="feature-card">
-                <h3 class="feature-card__title">Smart intent analysis</h3>
-                <p class="feature-card__desc">Detect WISMO / refund / other, extract order IDs and key details.</p>
-            </article>
-            <article class="feature-card">
-                <h3 class="feature-card__title">Auto draft generation</h3>
-                <p class="feature-card__desc">Personalized drafts from email + Shopify data. You stay in control.</p>
-            </article>
-            <article class="feature-card">
-                <h3 class="feature-card__title">Shopify integration</h3>
-                <p class="feature-card__desc">Orders, shipping, refunds and history at your fingertips in Gmail.</p>
-            </article>
-        </div>
+      <h2 class="section__title">What you get</h2>
+      <div class="features">
+        <article class="feature-card">
+          <h3 class="feature-card__title">Smart intent analysis</h3>
+          <p class="feature-card__desc">
+            Detect WISMO / refund / other, extract order IDs and key details.
+          </p>
+        </article>
+        <article class="feature-card">
+          <h3 class="feature-card__title">Auto draft generation</h3>
+          <p class="feature-card__desc">
+            Personalized drafts from email + Shopify data. You stay in control.
+          </p>
+        </article>
+        <article class="feature-card">
+          <h3 class="feature-card__title">Shopify integration</h3>
+          <p class="feature-card__desc">
+            Orders, shipping, refunds and history at your fingertips in Gmail.
+          </p>
+        </article>
+      </div>
     </main>
 
     <section class="section" aria-labelledby="get-started-title">
-        <h2 id="get-started-title" class="section__title">Get started in minutes</h2>
-        <ul>
-            <li>Install the Gmail Add-on</li>
-            <li>Authorize your Shopify store</li>
-            <li>Open a customer email and review AI suggestions</li>
-        </ul>
+      <h2 id="get-started-title" class="section__title">
+        Get started in minutes
+      </h2>
+      <ul>
+        <li>Install the Gmail Add-on</li>
+        <li>Authorize your Shopify store</li>
+        <li>Open a customer email and review AI suggestions</li>
+      </ul>
     </section>
 
     <div id="site-footer"></div>
 
     <script>
-        // Check authentication for Start free trial button
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthenticationForStartTrial();
-        });
-
-        // Authentication check for start trial button
-        function checkAuthenticationForStartTrial() {
-            const startTrialBtn = document.getElementById('startTrialBtn');
-            if (startTrialBtn) {
-                startTrialBtn.addEventListener('click', function(e) {
-                    const user = JSON.parse(localStorage.getItem('user') || '{}');
-                    const isLoggedIn = !!user.token;
-                    
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        // Redirect to login page
-                        window.location.href = 'auth/login.html?redirect=index&action=start_trial';
-                    }
-                });
-            }
+      // Check authentication for Start free trial button
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check for redirect parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopifyCallbackStatus = urlParams.get("status");
+        if (shopifyCallbackStatus === "success") {
+          Toast.success("Login Successful", "Welcome back! Redirecting...");
+        } else if (
+          shopifyCallbackStatus === "error" 
+        ) {
+          Toast.error(
+            "shopify authorization Failed",urlParams.get("message")
+          );
         }
-    </script>
 
-</body>
+        checkAuthenticationForStartTrial();
+      });
+
+      // Authentication check for start trial button
+      function checkAuthenticationForStartTrial() {
+        const startTrialBtn = document.getElementById("startTrialBtn");
+        if (startTrialBtn) {
+          startTrialBtn.addEventListener("click", function (e) {
+            const user = JSON.parse(localStorage.getItem("user") || "{}");
+            const isLoggedIn = !!user.token;
+
+            if (!isLoggedIn) {
+              e.preventDefault();
+              // Redirect to login page
+              window.location.href =
+                "auth/login.html?redirect=index&action=start_trial";
+            }
+          });
+        }
+      }
+    </script>
+  </body>
 </html>

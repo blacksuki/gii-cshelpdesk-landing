@@ -147,24 +147,6 @@
                     // No need to manually store user data here
                     console.log('Login successful, token should be stored by API client');
                     
-                    // // Debug: Check if token was actually stored
-                    // setTimeout(() => {
-                    //     console.log('=== TOKEN STORAGE DEBUG ===');
-                    //     console.log('localStorage user:', localStorage.getItem('user'));
-                    //     console.log('API Client token:', window.apiClient.token);
-                    //     console.log('API Client isAuthenticated:', window.apiClient.isAuthenticated());
-                    //     console.log('==========================');
-                        
-                    //     // Check if we can proceed with redirect
-                    //     if (window.apiClient.isAuthenticated()) {
-                    //         console.log('✅ Token verified, proceeding with redirect...');
-                    //     } else {
-                    //         console.error('❌ Token not found, cannot proceed with redirect');
-                    //         Toast.error('Login Error', 'Authentication token not found. Please try again.');
-                    //         return;
-                    //     }
-                    // }, 200);
-                    
                     // Check for redirect parameters
                     const urlParams = new URLSearchParams(window.location.search);
                     const redirect = urlParams.get('redirect');
