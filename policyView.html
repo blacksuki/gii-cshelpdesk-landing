@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Policy — giiHelpdesk</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="/js/toast.js" defer></script>
+    <script src="/js/api-config.js" defer></script>
+    <script src="/js/api-client.js" defer></script>
+    <script src="/js/common.js" defer></script>
+  </head>
+  <body>
+    <div id="site-header"></div>
+
+    <main class="account-container" style="max-width: 960px; margin: 24px auto;">
+      <div class="account-card">
+        <div class="account-card__title">
+          <span>📑</span>
+          Service Policy
+        </div>
+        <div class="account-card__content">
+          <div id="planGate" style="display:none; color: var(--color-muted);">
+            This page is available for Pro/Team subscribers.
+          </div>
+          <article id="policyContainer" style="white-space: pre-wrap; line-height: 1.6;"></article>
+        </div>
+      </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        checkAuthentication();
+        await loadPolicy();
+      });
+
+      async function loadPolicy() {
+        try {
+          const user = JSON.parse(localStorage.getItem('user') || '{}');
+          const plan = (user?.subscription?.plan || '').toLowerCase();
+          const eligible = plan === 'pro' || plan === 'team';
+          if (!eligible) {
+            document.getElementById('planGate').style.display = 'block';
+            return;
+          }
+          const res = await window.apiClient.getServicePolicy();
+          if (res && res.success) {
+            document.getElementById('policyContainer').textContent = (res.data && res.data.markdown) || 'No policy found.';
+          } else {
+            document.getElementById('policyContainer').textContent = res?.error || 'Failed to load policy.';
+          }
+        } catch (e) {
+          document.getElementById('policyContainer').textContent = e.message || 'Failed to load policy.';
+        }
+      }
+    </script>
+  </body>
+</html>
+
+

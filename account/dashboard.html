@@ -154,6 +154,32 @@
         </div>
       </div>
 
+      <!-- Service Policy Management (Pro/Team only) -->
+      <div class="account-card" style="margin-bottom: 32px">
+        <div class="account-card__title">
+          <span>📑</span>
+          Service Policy (Pro/Team)
+        </div>
+        <div class="account-card__content">
+          <div class="account-info" id="policyGate" style="display:none; color:var(--color-muted)">
+            This feature is available for Pro and Team plans.
+          </div>
+          <div id="policyForm" style="display:none;">
+            <div style="margin-bottom: 8px; font-weight: 500;">Upload Policy File</div>
+            <input type="file" id="policyFile" accept=".md,.markdown,.txt,.pdf,.doc,.docx" />
+            <div style="margin: 8px 0; font-size: 12px; color: var(--color-muted);">
+              Recommended: Markdown (.md). PDF/DOC will be converted to text best-effort.
+            </div>
+            <textarea id="policyMarkdown" placeholder="Or paste Markdown here" style="width:100%; min-height: 160px; padding: 8px; margin-top: 8px;"></textarea>
+            <div style="display:flex; gap: 12px; margin-top: 12px;">
+              <button class="auth-btn" onclick="submitServicePolicy()">Save Policy</button>
+              <a href="/policyView.html" class="auth-btn auth-btn--secondary" style="text-decoration:none;">View Policy</a>
+            </div>
+            <div id="policyStatus" style="margin-top: 8px; color: var(--color-muted);"></div>
+          </div>
+        </div>
+      </div>
+
       <!-- Quick Actions -->
       <div class="account-card" style="margin-bottom: 32px">
         <div class="account-card__title">
@@ -183,7 +209,7 @@
             class="auth-btn auth-btn--secondary"
             onclick="viewDocumentation()"
           >
-            View Documentation
+            View Policy
           </button>
           <button
             class="auth-btn auth-btn--secondary"
@@ -223,6 +249,7 @@
         checkAuthentication();
         loadUserData();
         // loadRecentActivity();
+        initPolicySection();
       });
 
       // Load user data
@@ -546,8 +573,66 @@
       }
 
       function viewDocumentation() {
-        Toast.info("Documentation", "Opening documentation...");
-        window.open("https://docs.giihelpdesk.com", "_blank");
+        window.location.href = "/policyView.html";
+      }
+      // Service Policy logic
+      function initPolicySection() {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        const plan = (user?.subscription?.plan || "").toLowerCase();
+        const eligible = plan === "pro" || plan === "team";
+        document.getElementById("policyGate").style.display = eligible ? "none" : "block";
+        document.getElementById("policyForm").style.display = eligible ? "block" : "none";
+
+        if (eligible) {
+          // Load existing policy preview
+          window.apiClient.getServicePolicy().then(r => {
+            if (r && r.success && r.data && r.data.markdown) {
+              document.getElementById("policyMarkdown").value = r.data.markdown || "";
+            }
+          }).catch(()=>{});
+        }
+
+        const fileInput = document.getElementById("policyFile");
+        fileInput.addEventListener("change", async (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const statusEl = document.getElementById("policyStatus");
+          statusEl.textContent = `Selected: ${file.name}`;
+          const ext = (file.name.split('.').pop() || '').toLowerCase();
+          if (ext === 'md' || ext === 'markdown' || ext === 'txt') {
+            const text = await file.text();
+            document.getElementById("policyMarkdown").value = text;
+          } else {
+            // Best-effort text extraction for pdf/doc - require manual paste if not supported
+            try {
+              const text = await file.text();
+              document.getElementById("policyMarkdown").value = text;
+            } catch (err) {
+              Toast.info("Conversion", "Please paste Markdown content into the textbox.");
+            }
+          }
+        });
+      }
+
+      async function submitServicePolicy() {
+        try {
+          const md = document.getElementById("policyMarkdown").value || "";
+          if (!md.trim()) {
+            Toast.error("Validation", "Please upload a file or paste Markdown content.");
+            return;
+          }
+          Toast.loading("Saving", "Uploading service policy...");
+          const res = await window.apiClient.uploadServicePolicy({ markdown: md });
+          Toast.hideLoading();
+          if (res && res.success) {
+            Toast.success("Saved", "Service policy saved successfully.");
+          } else {
+            Toast.error("Error", res?.error || "Failed to save policy");
+          }
+        } catch (err) {
+          Toast.hideLoading();
+          Toast.error("Error", err.message || "Failed to save policy");
+        }
       }
 
       function contactSupport() {

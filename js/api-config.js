@@ -54,7 +54,9 @@ const API_ENDPOINTS = {
         activity: '/account-activity',
         billing: '/account-billing',
         paymentMethods: '/account-payment-methods',
-        billingHistory: '/account-billing-history'
+        billingHistory: '/account-billing-history',
+        servicePolicyGet: '/getServicePolicy',
+        servicePolicyUpload: '/uploadServicePolicy'
     },
     
     // Subscription endpoints

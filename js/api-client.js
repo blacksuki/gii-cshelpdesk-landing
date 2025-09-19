@@ -480,6 +480,44 @@ class ApiClient {
             return this.handleError(error);
         }
     }
+
+    // Service Policy methods
+    async getServicePolicy(shopDomain) {
+        try {
+            const domain = shopDomain || (JSON.parse(localStorage.getItem('user') || '{}').domain);
+            const endpoint = `${window.API_CONFIG.endpoints.account.servicePolicyGet}?shopDomain=${encodeURIComponent(domain || '')}`;
+            const response = await this.request(endpoint);
+            console.log('getServicePolicy response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+
+    async uploadServicePolicy({ shopDomain, markdown, format }) {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const subscription = user.subscription || null;
+            // Client-side gate: Pro/Team only
+            const plan = (subscription && subscription.plan || '').toLowerCase();
+            if (plan !== 'pro' && plan !== 'team') {
+                throw new Error('Service policy is available for Pro/Team plans only');
+            }
+            const response = await this.request(window.API_CONFIG.endpoints.account.servicePolicyUpload, {
+                method: 'POST',
+                body: JSON.stringify({
+                    shopDomain: shopDomain || user.domain,
+                    markdown,
+                    format: format || 'markdown',
+                    userSubscription: subscription
+                })
+            });
+            console.log('uploadServicePolicy response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
     
     // Subscription methods
     async getSubscriptionStatus(userEmail, shopDomain) {
