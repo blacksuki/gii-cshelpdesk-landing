@@ -494,7 +494,7 @@ class ApiClient {
         }
     }
 
-    async uploadServicePolicy({ shopDomain, markdown, format }) {
+    async uploadServicePolicy({ shopDomain, policyType, content }) {
         try {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const subscription = user.subscription || null;
@@ -507,8 +507,8 @@ class ApiClient {
                 method: 'POST',
                 body: JSON.stringify({
                     shopDomain: shopDomain || user.domain,
-                    markdown,
-                    format: format || 'markdown',
+                    policyType,
+                    content: content,
                     userSubscription: subscription
                 })
             });
