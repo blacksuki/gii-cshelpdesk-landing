@@ -482,10 +482,10 @@ class ApiClient {
     }
 
     // Service Policy methods
-    async getServicePolicy(shopDomain) {
+    async getServicePolicy(shopDomain, policyType) {
         try {
             const domain = shopDomain || (JSON.parse(localStorage.getItem('user') || '{}').domain);
-            const endpoint = `${window.API_CONFIG.endpoints.account.servicePolicyGet}?shopDomain=${encodeURIComponent(domain || '')}`;
+            const endpoint = `${window.API_CONFIG.endpoints.account.servicePolicyGet}?shopDomain=${encodeURIComponent(domain || '')}&policyType=${encodeURIComponent(policyType || '')}`;
             const response = await this.request(endpoint);
             console.log('getServicePolicy response:', response);
             return response;
