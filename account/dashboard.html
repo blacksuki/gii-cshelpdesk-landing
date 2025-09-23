@@ -629,16 +629,16 @@
           if (!shopDomain) return;
 
           // Load refund policy
-          const refundResult = await window.apiClient.getServicePolicy({ shopDomain, policyType: 'refund' });
-          if (refundResult && refundResult.success && refundResult.data && refundResult.data.markdown) {
-            document.getElementById("refundPolicyText").value = refundResult.data.markdown || "";
+          const refundResult = await window.apiClient.getServicePolicy( shopDomain,  'refund' );
+          if (refundResult && refundResult.success && refundResult.data && refundResult.data.parsedData) {
+            document.getElementById("refundPolicyText").value = JSON.stringify(refundResult.data.parsedData,null,2) || "";
             updateWordCount('refund');
           }
 
           // Load shipping policy
-          const shippingResult = await window.apiClient.getServicePolicy({ shopDomain, policyType: 'shipping' });
-          if (shippingResult && shippingResult.success && shippingResult.data && shippingResult.data.markdown) {
-            document.getElementById("shippingPolicyText").value = shippingResult.data.markdown || "";
+          const shippingResult = await window.apiClient.getServicePolicy( shopDomain, 'shipping' );
+          if (shippingResult && shippingResult.success && shippingResult.data && shippingResult.data.parsedData) {
+            document.getElementById("shippingPolicyText").value = JSON.stringify(shippingResult.data.parsedData,null,2) || "";
             updateWordCount('shipping');
           }
         } catch (error) {
@@ -710,12 +710,8 @@
             return;
           }
 
-          const res = await window.apiClient.uploadServicePolicy({ 
-            shopDomain,
-            policyType,
-            content: content,
-            userSubscription: user.subscription
-          });
+          const res = await window.apiClient.uploadServicePolicy( shopDomain, policyType, content );
+        
           
           Toast.hideLoading();
           

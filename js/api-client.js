@@ -494,7 +494,7 @@ class ApiClient {
         }
     }
 
-    async uploadServicePolicy({ shopDomain, policyType, content }) {
+    async uploadServicePolicy(shopDomain, policyType, content ) {
         try {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const subscription = user.subscription || null;
