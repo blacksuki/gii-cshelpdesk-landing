@@ -163,7 +163,7 @@ class ApiClient {
             if (window.location.pathname.includes('/account/')) {
                 window.location.href = '/auth/login.html';
             }
-            throw new Error('Authentication required');
+            throw new Error('Authentication required, or EMAIL_NOT_VERIFIED');
         }
         
         // Handle 403 Forbidden

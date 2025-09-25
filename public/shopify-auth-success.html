@@ -207,6 +207,8 @@
       // 通知父窗口（Gmail Add-on 弹窗）授权成功
       if (window.opener) {
         window.opener.postMessage({ type: "shopify-auth-success" }, "*");
+        // from giislacker
+        window.opener.google.script.run.showShopifySettings();
       }
 
       // Get URL parameters

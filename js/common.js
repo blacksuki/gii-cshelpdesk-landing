@@ -57,8 +57,8 @@
           ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? 'dashboard.html' : 'account/dashboard.html') + '">Account</a>';
         }
       } else {
-        // Show Start free trial link for non-logged in users
-        ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? '../pricing.html#free' : 'pricing.html#free') + '">Start free trial</a>';
+        // Show Login link for non-logged in users
+        ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? '../auth/login.html' : 'auth/login.html') + '">Login</a>';
       }
 
       headerTarget.innerHTML = [

@@ -61,12 +61,13 @@
     // Update navigation
     const navCTA = document.querySelector(".nav__cta");
     if (navCTA) {
+      const isInAccountDir = window.location.pathname.includes('/account/');
       if (isLoggedIn) {
         navCTA.textContent = "Account";
-        navCTA.href = "account/dashboard.html";
+        navCTA.href = isInAccountDir ? "dashboard.html" : "account/dashboard.html";
       } else {
-        navCTA.textContent = "Start free trial";
-        navCTA.href = "pricing.html#free";
+        navCTA.textContent = "Login";
+        navCTA.href = isInAccountDir ? "../auth/login.html" : "auth/login.html";
       }
     }
 
