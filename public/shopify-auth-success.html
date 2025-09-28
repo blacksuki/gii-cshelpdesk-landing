@@ -208,7 +208,7 @@
       if (window.opener) {
         window.opener.postMessage({ type: "shopify-auth-success" }, "*");
         // from giislacker
-        window.opener.google.script.run.showShopifySettings();
+        window.opener.google.script.run.refreshAddOn();
       }
 
       // Get URL parameters
