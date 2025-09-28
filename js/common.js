@@ -134,3 +134,39 @@ function handleLogout() {
     }
   }
 }
+
+/**
+ * Convert JSON object to key-value string
+ *
+ * @param {*} jsonObj
+ * @return {*} 
+ */
+function jsonToKeyValue(jsonObj, prefix = '', result = []) {
+  // 遍历当前对象的所有属性
+  Object.entries(jsonObj).forEach(([key, value]) => {
+      // 构建带前缀的键名（处理嵌套情况）
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+      
+      // 检查值是否为对象且不为null（排除null和数组）
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          // 如果是对象则递归处理
+          jsonToKeyValue(value, fullKey, result);
+      } else if (Array.isArray(value)) {
+          // 处理数组
+          value.forEach((item, index) => {
+              const arrayKey = `${fullKey}[${index}]`;
+              if (typeof item === 'object' && item !== null) {
+                  // 数组中的对象也递归处理
+                  jsonToKeyValue(item, arrayKey, result);
+              } else {
+                  result.push(`${arrayKey} - ${item}`);
+              }
+          });
+      } else {
+          // 基本类型直接添加
+          result.push(`${fullKey} - ${value}`);
+      }
+  });
+  
+  return result.join('\n');
+}

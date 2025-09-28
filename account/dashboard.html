@@ -119,6 +119,105 @@
         </div>
       </div>
 
+      <!-- Service Policy Management (Pro/Team only) -->
+      <div class="account-card" style="margin-bottom: 32px">
+        <div class="account-card__title">
+          <span>📑</span>
+          Service Policies (Pro/Team)
+        </div>
+        <div class="account-card__content">
+          <div
+            class="account-info"
+            id="policyGate"
+            style="display: none; color: var(--color-muted)"
+          >
+            This feature is available for Pro and Team plans only.
+          </div>
+          <div id="policyForm" style="display: none">
+            <!-- Refund Policy Section -->
+            <div style="margin-bottom: 24px">
+              <div style="margin-bottom: 8px; font-weight: 500">
+                Refund Policy (max 2000 words)
+              </div>
+              <textarea
+                id="refundPolicyText"
+                placeholder="Enter your refund policy details here (max 2000 words)..."
+                style="
+                  width: 100%;
+                  min-height: 120px;
+                  padding: 8px;
+                  margin-bottom: 8px;
+                  resize: vertical;
+                "
+                maxlength="12000"
+              ></textarea>
+              <div style="font-size: 12px; color: var(--color-muted)">
+                Word count: <span id="refundWordCount">0</span>/2000 words, you
+                can just copy and paste the content from your Shopify store and
+                save it here.
+              </div>
+              <button
+                class="auth-btn auth-btn--secondary"
+                onclick="submitPolicy('refund')"
+                style="margin-top: 8px"
+              >
+                Save Refund Policy
+              </button>
+              <div
+                id="refundPolicyStatus"
+                style="
+                  margin-top: 8px;
+                  color: var(--color-muted);
+                  font-size: 12px;
+                "
+              ></div>
+            </div>
+
+            <!-- Shipping Policy Section -->
+            <div style="margin-bottom: 24px">
+              <div style="margin-bottom: 8px; font-weight: 500">
+                Shipping Policy (max 2000 words)
+              </div>
+              <textarea
+                id="shippingPolicyText"
+                placeholder="Enter your shipping policy details here (max 2000 words)..."
+                style="
+                  width: 100%;
+                  min-height: 120px;
+                  padding: 8px;
+                  margin-bottom: 8px;
+                  resize: vertical;
+                "
+                maxlength="12000"
+              ></textarea>
+              <div style="font-size: 12px; color: var(--color-muted)">
+                Word count: <span id="shippingWordCount">0</span>/2000 words,
+                you can just copy and paste the content from your Shopify store
+                and save it here.
+              </div>
+              <button
+                class="auth-btn auth-btn--secondary"
+                onclick="submitPolicy('shipping')"
+                style="margin-top: 8px"
+              >
+                Save Shipping Policy
+              </button>
+              <div
+                id="shippingPolicyStatus"
+                style="
+                  margin-top: 8px;
+                  color: var(--color-muted);
+                  font-size: 12px;
+                "
+              ></div>
+            </div>
+
+            <!-- <div style="display:flex; gap: 12px; margin-top: 16px;">
+              <a href="/policyView.html" class="auth-btn auth-btn--secondary" style="text-decoration:none;">View Policies</a>
+            </div> -->
+          </div>
+        </div>
+      </div>
       <!-- Billing History -->
       <div class="account-card" style="margin-bottom: 32px">
         <div class="account-card__title">
@@ -151,60 +250,6 @@
         </div>
         <div class="account-card__title">
           <span></span>
-        </div>
-      </div>
-
-      <!-- Service Policy Management (Pro/Team only) -->
-      <div class="account-card" style="margin-bottom: 32px">
-        <div class="account-card__title">
-          <span>📑</span>
-          Service Policies (Pro/Team)
-        </div>
-        <div class="account-card__content">
-          <div class="account-info" id="policyGate" style="display:none; color:var(--color-muted)">
-            This feature is available for Pro and Team plans only.
-          </div>
-          <div id="policyForm" style="display:none;">
-            <!-- Refund Policy Section -->
-            <div style="margin-bottom: 24px;">
-              <div style="margin-bottom: 8px; font-weight: 500;">Refund Policy (max 2000 words)</div>
-              <textarea 
-                id="refundPolicyText" 
-                placeholder="Enter your refund policy details here (max 2000 words)..." 
-                style="width:100%; min-height: 120px; padding: 8px; margin-bottom: 8px; resize: vertical;"
-                maxlength="12000"
-              ></textarea>
-              <div style="font-size: 12px; color: var(--color-muted);">
-                Word count: <span id="refundWordCount">0</span>/2000 words
-              </div>
-              <button class="auth-btn auth-btn--secondary" onclick="submitPolicy('refund')" style="margin-top: 8px;">
-                Save Refund Policy
-              </button>
-              <div id="refundPolicyStatus" style="margin-top: 8px; color: var(--color-muted); font-size: 12px;"></div>
-            </div>
-
-            <!-- Shipping Policy Section -->
-            <div style="margin-bottom: 24px;">
-              <div style="margin-bottom: 8px; font-weight: 500;">Shipping Policy (max 2000 words)</div>
-              <textarea 
-                id="shippingPolicyText" 
-                placeholder="Enter your shipping policy details here (max 2000 words)..." 
-                style="width:100%; min-height: 120px; padding: 8px; margin-bottom: 8px; resize: vertical;"
-                maxlength="12000"
-              ></textarea>
-              <div style="font-size: 12px; color: var(--color-muted);">
-                Word count: <span id="shippingWordCount">0</span>/2000 words
-              </div>
-              <button class="auth-btn auth-btn--secondary" onclick="submitPolicy('shipping')" style="margin-top: 8px;">
-                Save Shipping Policy
-              </button>
-              <div id="shippingPolicyStatus" style="margin-top: 8px; color: var(--color-muted); font-size: 12px;"></div>
-            </div>
-
-            <!-- <div style="display:flex; gap: 12px; margin-top: 16px;">
-              <a href="/policyView.html" class="auth-btn auth-btn--secondary" style="text-decoration:none;">View Policies</a>
-            </div> -->
-          </div>
         </div>
       </div>
 
@@ -299,7 +344,10 @@
               // 3. 存回localStorage
               localStorage.setItem("user", JSON.stringify(user));
             } catch (error) {
-              console.error("update user.subscription failedi, please logout and login again:", error);
+              console.error(
+                "update user.subscription failedi, please logout and login again:",
+                error
+              );
               // 可在此处添加备用逻辑（如提示用户、重试等）
             }
             updateDashboard(result.data.user);
@@ -601,7 +649,6 @@
       }
 
       function viewDocumentation() {
-        
         window.location.href = "/policyView.html";
       }
       // Service Policy logic
@@ -609,13 +656,17 @@
         const user = JSON.parse(localStorage.getItem("user") || "{}");
         const plan = (user?.subscription?.plan || "").toLowerCase();
         const eligible = plan === "pro" || plan === "team";
-        document.getElementById("policyGate").style.display = eligible ? "none" : "block";
-        document.getElementById("policyForm").style.display = eligible ? "block" : "none";
+        document.getElementById("policyGate").style.display = eligible
+          ? "none"
+          : "block";
+        document.getElementById("policyForm").style.display = eligible
+          ? "block"
+          : "none";
 
         if (eligible) {
           // Load existing policies
           loadExistingPolicies();
-          
+
           // Setup word counters
           setupWordCounters();
         }
@@ -626,21 +677,39 @@
         try {
           const user = JSON.parse(localStorage.getItem("user") || "{}");
           const shopDomain = user.domain;
-          
+
           if (!shopDomain) return;
 
           // Load refund policy
-          const refundResult = await window.apiClient.getServicePolicy( shopDomain,  'refund' );
-          if (refundResult && refundResult.success && refundResult.data && refundResult.data.parsedData) {
-            document.getElementById("refundPolicyText").value = JSON.stringify(refundResult.data.parsedData,null,2) || "";
-            updateWordCount('refund');
+          const refundResult = await window.apiClient.getServicePolicy(
+            shopDomain,
+            "refund"
+          );
+          if (
+            refundResult &&
+            refundResult.success &&
+            refundResult.data &&
+            refundResult.data.parsedData
+          ) {
+            fmtData = jsonToKeyValue(refundResult.data.parsedData);
+            document.getElementById("refundPolicyText").value = fmtData || "";
+            updateWordCount("refund");
           }
 
           // Load shipping policy
-          const shippingResult = await window.apiClient.getServicePolicy( shopDomain, 'shipping' );
-          if (shippingResult && shippingResult.success && shippingResult.data && shippingResult.data.parsedData) {
-            document.getElementById("shippingPolicyText").value = JSON.stringify(shippingResult.data.parsedData,null,2) || "";
-            updateWordCount('shipping');
+          const shippingResult = await window.apiClient.getServicePolicy(
+            shopDomain,
+            "shipping"
+          );
+          if (
+            shippingResult &&
+            shippingResult.success &&
+            shippingResult.data &&
+            shippingResult.data.parsedData
+          ) {
+            fmtData = jsonToKeyValue(shippingResult.data.parsedData);
+            document.getElementById("shippingPolicyText").value = fmtData || "";
+            updateWordCount("shipping");
           }
         } catch (error) {
           console.error("Error loading existing policies:", error);
@@ -652,28 +721,32 @@
         const refundTextarea = document.getElementById("refundPolicyText");
         const shippingTextarea = document.getElementById("shippingPolicyText");
 
-        refundTextarea.addEventListener("input", () => updateWordCount('refund'));
-        shippingTextarea.addEventListener("input", () => updateWordCount('shipping'));
+        refundTextarea.addEventListener("input", () =>
+          updateWordCount("refund")
+        );
+        shippingTextarea.addEventListener("input", () =>
+          updateWordCount("shipping")
+        );
       }
 
       // Update word count display
       function updateWordCount(policyType) {
         const textarea = document.getElementById(`${policyType}PolicyText`);
         const wordCountEl = document.getElementById(`${policyType}WordCount`);
-        
+
         if (!textarea || !wordCountEl) return;
 
         const text = textarea.value.trim();
         const wordCount = text ? text.split(/\s+/).length : 0;
         wordCountEl.textContent = wordCount;
-        
+
         // Update color based on word count
         if (wordCount > 2000) {
-          wordCountEl.style.color = 'var(--color-error)';
+          wordCountEl.style.color = "var(--color-error)";
         } else if (wordCount > 1500) {
-          wordCountEl.style.color = 'var(--color-warning)';
+          wordCountEl.style.color = "var(--color-warning)";
         } else {
-          wordCountEl.style.color = 'var(--color-muted)';
+          wordCountEl.style.color = "var(--color-muted)";
         }
       }
 
@@ -682,55 +755,76 @@
         try {
           const textarea = document.getElementById(`${policyType}PolicyText`);
           const statusEl = document.getElementById(`${policyType}PolicyStatus`);
-          
+
           if (!textarea || !statusEl) return;
 
           const content = textarea.value.trim();
           if (!content) {
-            Toast.error("Validation", `Please enter your ${policyType} policy content.`);
+            Toast.error(
+              "Validation",
+              `Please enter your ${policyType} policy content.`
+            );
             return;
           }
 
           // Check word count
           const wordCount = content.split(/\s+/).length;
           if (wordCount > 2000) {
-            Toast.error("Validation", `${policyType} policy exceeds 2000 words (${wordCount} words). Please reduce the content.`);
+            Toast.error(
+              "Validation",
+              `${policyType} policy exceeds 2000 words (${wordCount} words). Please reduce the content.`
+            );
             return;
           }
 
           statusEl.textContent = `Saving ${policyType} policy...`;
-          statusEl.style.color = 'var(--color-info)';
+          statusEl.style.color = "var(--color-info)";
 
           Toast.loading("Saving", `Processing ${policyType} policy...`);
-          
+
           const user = JSON.parse(localStorage.getItem("user") || "{}");
           const shopDomain = user.domain;
-          
+
           if (!shopDomain) {
-            Toast.error("Error", "Shop domain not found. Please refresh and try again.");
+            Toast.error(
+              "Error",
+              "Shop domain not found. Please refresh and try again."
+            );
             return;
           }
 
-          const res = await window.apiClient.uploadServicePolicy( shopDomain, policyType, content );
-        
-          
+          const res = await window.apiClient.uploadServicePolicy(
+            shopDomain,
+            policyType,
+            content
+          );
+
           Toast.hideLoading();
-          
-          if (res ) {
+
+          if (res) {
             statusEl.textContent = `${policyType} policy saved successfully.`;
-            statusEl.style.color = 'var(--color-success)';
-            Toast.success("Saved", `${policyType.charAt(0).toUpperCase() + policyType.slice(1)} policy saved and processed successfully.`);
+            statusEl.style.color = "var(--color-success)";
+            Toast.success(
+              "Saved",
+              `${
+                policyType.charAt(0).toUpperCase() + policyType.slice(1)
+              } policy saved and processed successfully.`
+            );
           } else {
-            statusEl.textContent = `Failed to save ${policyType} policy: ${res?.error || 'Unknown error'}`;
-            statusEl.style.color = 'var(--color-error)';
+            statusEl.textContent = `Failed to save ${policyType} policy: ${
+              res?.error || "Unknown error"
+            }`;
+            statusEl.style.color = "var(--color-error)";
             Toast.error("Error", res?.error || "Failed to save policy");
           }
         } catch (err) {
           Toast.hideLoading();
           const statusEl = document.getElementById(`${policyType}PolicyStatus`);
           if (statusEl) {
-            statusEl.textContent = `Error: ${err.message || 'Failed to save policy'}`;
-            statusEl.style.color = 'var(--color-error)';
+            statusEl.textContent = `Error: ${
+              err.message || "Failed to save policy"
+            }`;
+            statusEl.style.color = "var(--color-error)";
           }
           Toast.error("Error", err.message || "Failed to save policy");
         }
