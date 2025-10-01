@@ -204,41 +204,50 @@
     </div>
 
     <script>
-      // Get URL parameters
+      // Update page content from URL
       const urlParams = new URLSearchParams(window.location.search);
-      const shop = urlParams.get("shop");
-      const userEmail = urlParams.get("user_email");
+      document.getElementById("shopName").textContent = urlParams.get("shop") || "Unknown Store";
+      document.getElementById("userEmail").textContent = urlParams.get("user_email") || "Unknown User";
 
-      // Update page content
-      document.getElementById("shopName").textContent = shop || "Unknown Store";
-      document.getElementById("userEmail").textContent =
-        userEmail || "Unknown User";
+      // This function is the key to the fix.
+      function runTokenSyncAndClose() {
+        console.log("Attempting to call Apps Script to sync token...");
+        // Check if the opener and the google.script.run API are available
+        if (window.opener && window.opener.google && window.opener.google.script) {
+          window.opener.google.script.run
+            .withSuccessHandler(function() {
+              console.log("✅ Token sync successful. Closing window to trigger UI refresh.");
+              window.close();
+            })
+            .withFailureHandler(function(error) {
+              console.error("❌ Token sync failed:", error);
+              // Still close the window; the OnClose handler is our fallback.
+              window.close();
+            })
+            .handleAuthSuccessAndRefresh(); // Calling the new function in auth.gs
+        } else {
+          console.warn("Could not find window.opener.google.script.run. Closing window directly.");
+          window.close();
+        }
+      }
 
-      // Countdown and close window
+      // Countdown and redirect
       let countdown = 5;
       const countdownElement = document.getElementById("countdown");
-
       const timer = setInterval(() => {
         countdown--;
         countdownElement.textContent = countdown;
-
         if (countdown <= 0) {
           clearInterval(timer);
-          window.close();
+          runTokenSyncAndClose();
         }
       }, 1000);
 
-      // Also allow manual close with escape key
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          window.close();
-        }
-      });
-
-      // Allow clicking anywhere to close
-      document.addEventListener("click", () => {
-        window.close();
-      });
+      // Also allow manual close by clicking the button
+      document.querySelector("button").onclick = function() {
+        clearInterval(timer);
+        runTokenSyncAndClose();
+      };
     </script>
   </body>
 </html>
