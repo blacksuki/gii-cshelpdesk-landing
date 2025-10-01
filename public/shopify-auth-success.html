@@ -204,30 +204,6 @@
     </div>
 
     <script>
-      // 通知父窗口（Gmail Add-on 弹窗）授权成功
-      if (window.opener) {
-        window.opener.postMessage({ type: "shopify-auth-success" }, "*");
-        // 调用handleShopifyAuthSuccess来同步token
-        try {
-          window.opener.google.script.run
-            .withSuccessHandler(function(result) {
-              console.log("✅ Shopify auth success handler completed");
-            })
-            .withFailureHandler(function(error) {
-              console.error("❌ Failed to handle Shopify auth success:", error);
-            })
-            .handleShopifyAuthSuccess();
-        } catch (error) {
-          console.error("❌ Error calling handleShopifyAuthSuccess:", error);
-          // 备用方案：调用refreshAddOn
-          try {
-            window.opener.google.script.run.refreshAddOn();
-          } catch (refreshError) {
-            console.error("❌ Failed to refresh add-on:", refreshError);
-          }
-        }
-      }
-
       // Get URL parameters
       const urlParams = new URLSearchParams(window.location.search);
       const shop = urlParams.get("shop");
@@ -238,7 +214,7 @@
       document.getElementById("userEmail").textContent =
         userEmail || "Unknown User";
 
-      // Countdown and redirect
+      // Countdown and close window
       let countdown = 5;
       const countdownElement = document.getElementById("countdown");
 
@@ -248,40 +224,19 @@
 
         if (countdown <= 0) {
           clearInterval(timer);
-
-          // Try to close the window and redirect to Gmail
-          try {
-            // Give a moment for the token sync to complete
-            setTimeout(() => {
-              // Try to close the window
-              if (window.opener) {
-                // Notify the parent window that we're closing
-                window.opener.postMessage({ type: "shopify-auth-window-closing" }, "*");
-              }
-              window.close();
-            }, 2000); // Increased delay to allow token sync
-          } catch (error) {
-            console.error("Error closing window:", error);
-            window.close();
-          }
+          window.close();
         }
       }, 1000);
 
       // Also allow manual close with escape key
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          if (window.opener) {
-            window.opener.postMessage({ type: "shopify-auth-window-closing" }, "*");
-          }
           window.close();
         }
       });
 
       // Allow clicking anywhere to close
       document.addEventListener("click", () => {
-        if (window.opener) {
-          window.opener.postMessage({ type: "shopify-auth-window-closing" }, "*");
-        }
         window.close();
       });
     </script>
