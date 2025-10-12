@@ -1,13 +1,13 @@
 /**
- * API Configuration for giiHelpdesk
+ * API Configuration for giiHelpdeskAgent
  * Centralized configuration for different environments
  */
 
 const API_CONFIG = {
     // Development environment (local testing)
     development: {
-        // baseURL: 'http://localhost:8088',
-        baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
+        baseURL: 'http://localhost:8088',
+        // baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
         timeout: 30000,
         retryAttempts: 3,
         retryDelay: 2000

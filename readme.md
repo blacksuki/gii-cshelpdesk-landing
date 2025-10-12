@@ -54,7 +54,7 @@
 
 # 🔧 Cursor Prompt：
 
-# giiHelpdesk Landing Page（Shopify 智能客服 AI）
+# giiHelpdeskAgent Landing Page（Shopify 智能客服 AI）
 
 ## 1️⃣ 项目定位
 为北美 Shopify 小 B 商户打造的「AI 客服实习生」产品介绍与购买站点。  

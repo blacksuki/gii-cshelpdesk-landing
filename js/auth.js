@@ -1,5 +1,5 @@
 /**
- * Frontend authentication utilities for giiHelpdesk
+ * Frontend authentication utilities for giiHelpdeskAgent
  * Handles authentication state, token management, and API calls
  */
 

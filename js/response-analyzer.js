@@ -1,5 +1,5 @@
 /**
- * Response Analyzer for giiHelpdesk
+ * Response Analyzer for giiHelpdeskAgent
  * Helps debug API responses and identify token locations
  */
 

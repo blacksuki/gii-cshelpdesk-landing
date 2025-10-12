@@ -64,8 +64,8 @@
       headerTarget.innerHTML = [
         '<header class="site-header" role="banner">',
         '    <div class="site-header__inner">',
-        '        <a class="logo" href="' + (isInAccountDir ? '../index.html' : '/index.html') + '" aria-label="giiHelpdesk home">',
-        "            <span>giiHelpdesk</span>",
+        '        <a class="logo" href="' + (isInAccountDir ? '../index.html' : '/index.html') + '" aria-label="giiHelpdeskAgent home">',
+        "            <span>giiHelpdeskAgent</span>",
         "        </a>",
         '        <nav class="nav" role="navigation" aria-label="Primary">',
         adjustedNavLinks.join(""),
@@ -83,7 +83,7 @@
         '    <div class="container">',
         "        <div>&copy; " +
           year +
-          " giiHelpdesk. All rights reserved.</div>",
+          " giiHelpdeskAgent. All rights reserved.</div>",
         '        <div class="muted" style="margin-top:6px;">We do not store any email content.</div>',
         "    </div>",
         "</footer>",

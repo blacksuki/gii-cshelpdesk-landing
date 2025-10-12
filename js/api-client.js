@@ -1,5 +1,5 @@
 /**
- * Unified API Client for giiHelpdesk
+ * Unified API Client for giiHelpdeskAgent
  * Handles all API calls with authentication, retry logic, and error handling
  */
 
