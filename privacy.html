@@ -14,14 +14,21 @@
 
     <main class="section" role="main">
 
+        <div style="padding: 1rem; border: 1px solid #eee; margin-bottom: 2rem; border-radius: 8px;">
+            <strong>Quick Links:</strong>
+            <a href="#terms" style="margin-left: 1rem;">Terms of Service</a> |
+            <a href="#privacy" style="margin-left: 0.5rem;">Privacy Policy</a> |
+            <a href="#refund" style="margin-left: 0.5rem;">Refund Policy</a>
+        </div>
+
         <!-- ② Terms of Service (ToS) -->
-        <h1 class="section__title">Terms of Service</h1>
+        <h1 id="terms" class="section__title">Terms of Service</h1>
         <p>Last updated: 2025-10-08</p>
 
         <h2>1. Acceptance</h2>
         <p>By accessing or using giiHelpdeskAgent you agree to be bound by these Terms and all applicable laws.</p>
 
-        <h2>2. Refund Policy</h2>
+        <h2 id="refund">2. Refund Policy</h2>
         <p>We offer a 14-day money-back guarantee on all first-time subscriptions. To request a refund email support@giihelpdesk.com within 14 days of the initial purchase. We will process the refund via Paddle within 5 business days. Refunds for renewals are not granted unless required by mandatory law.</p>
 
         <h2>3. Subscriptions & Billing</h2>
@@ -36,18 +43,18 @@
         <hr style="margin:3rem 0">
 
         <!-- ③ Privacy Policy (Cookie & Third-Party Processors) -->
-        <h1 class="section__title">Privacy Policy</h1>
+        <h1 id="privacy" class="section__title">Privacy Policy</h1>
         <p>Last updated: 2025-10-08</p>
 
         <h2>1. Information We Collect and Why</h2>
         <ul>
             <li><b>Email address:</b> Used for authentication and to identify your account.</li>
-            <li><b>OAuth tokens (gmail.readonly, gmail.modify):</b> We request the narrowest possible permissions. 
+            <li><b>OAuth Scopes for Gmail Add-on:</b> We request the narrowest possible permissions to function within Gmail. 
                 <ul>
-                    <li style="margin-top:0.5rem;"><code>gmail.readonly</code> is used to read the content of the email you are currently viewing to provide analysis.</li>
-                    <li style="margin-top:0.5rem;"><code>gmail.modify</code> is used solely to insert generated draft replies into your Gmail when you click the "generate reply" button.</li>
+                    <li style="margin-top:0.5rem;"><code>https://www.googleapis.com/auth/gmail.addons.current.message.readonly</code> is used to read the content of the email you are currently viewing to provide analysis. We cannot access any other messages.</li>
+                    <li style="margin-top:0.5rem;"><code>https://www.googleapis.com/auth/gmail.addons.current.action.compose</code> is used solely to create a draft reply for the current message when you click an action button.</li>
                 </ul>
-            We do not have permission to, and do not, send emails on your behalf or access your emails outside of the currently active message.
+            We do not have permission to, and do not, send emails on your behalf or access any emails outside of the single message you have open in the add-on.
             </li>
             <li><b>Browser type & IP address:</b> Stored in temporary server logs for security and debugging purposes.</li>
             <li><b>Cookies:</b> Essential session cookies to keep you logged in and preference flags.</li>
@@ -57,25 +64,36 @@
         <p><b>We do not permanently store your email content.</b> Email content is processed transiently in memory and is never saved to our servers' disks.</p>
         <p>Any metadata or analysis results derived from email processing (such as an intent summary) are <b>automatically and permanently deleted from our systems within 7 days</b> of creation. This is to provide you with a short window to review past activity if needed for support reasons, while minimizing data retention.</p>
 
-        <h2>3. Third-Party Processors</h2>
-        <p>We use Paddle.com for payment processing and tax compliance. Paddle receives:</p>
+        <h2>3. Sharing and Disclosure of Google User Data</h2>
+        <p>To provide our core features, we share a limited subset of your Google user data with third-party AI service providers (such as Google Cloud AI or OpenAI). Our use and transfer of information received from Google APIs to any other app adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy#limited_use_requirements" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
         <ul>
-            <li>Your email address</li>
-            <li>Invoice amount & currency</li>
-            <li>IP address (for fraud detection)</li>
+            <li><b>What is shared:</b> The text content (body and subject) of the currently active email is sent to our AI provider for analysis and draft generation.</li>
+            <li><b>What is NOT shared:</b> We do not share your name, email address, or OAuth tokens with our AI providers. The data is sent for processing and is not used to train their models or stored long-term on their systems.</li>
         </ul>
-        <p>Paddle’s privacy policy: <a href="https://paddle.com/privacy" target="_blank" rel="noopener">https://paddle.com/privacy</a></p>
+        <p><b>We do not sell, transfer for marketing purposes, or otherwise disclose your Google user data to any other third parties</b>, except as explicitly listed in the "Third-Party Processors" section below for the essential functioning of the service.</p>
 
-        <h2>4. Cookies</h2>
+        <h2>4. Third-Party Processors</h2>
+        <p>We use the following third-party services to provide our application:</p>
+        <ul>
+            <li>
+                <b>Paddle.com:</b> Used for payment processing and tax compliance. Paddle receives your email address, invoice amount, currency, and IP address (for fraud detection).
+                <br>Paddle’s privacy policy: <a href="https://paddle.com/privacy" target="_blank" rel="noopener">https://paddle.com/privacy</a>
+            </li>
+            <li style="margin-top:0.5rem;">
+                <b>AI Service Providers (e.g., Google Cloud AI, OpenAI):</b> Used to analyze email content and generate reply drafts. These providers process email text transiently and are contractually obligated not to store it or use it for training their models.
+            </li>
+        </ul>
+
+        <h2>5. Cookies</h2>
         <p>Essential cookies keep you signed in. You can block cookies in your browser, but the service will not be able to function.</p>
 
-        <h2>5. GDPR & CCPA</h2>
+        <h2>6. GDPR & CCPA</h2>
         <p>We act as a data processor. You may request access, correction, erasure or portability of your personal data by emailing support@giihelpdesk.com. We do not sell personal information.</p>
 
-        <h2>6. Security</h2>
+        <h2>7. Security</h2>
         <p>All data in transit between your browser, Google, and our servers is encrypted using industry-standard TLS 1.3.</p>
 
-        <h2>6. Contact</h2>
+        <h2>8. Contact</h2>
         <p>Email: support@giihelpdesk.com</p>
     </main>
 
