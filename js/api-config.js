@@ -37,37 +37,37 @@ const API_CONFIG = {
  * @type {Object}
  */
 const API_ENDPOINTS = {
-    // Authentication endpoints
+    // Authentication endpoints - now using unified apiRouter
     auth: {
-        register: '/auth-register',
-        login: '/auth-login',
-        forgot: '/auth-forgot',
-        reset: '/auth-reset',
-        verify: '/auth-verify',
-        checkDomain: '/auth-check-domain'
+        register: '/apiRouter?route=auth/register',
+        login: '/apiRouter?route=auth/login',
+        forgot: '/apiRouter?route=auth/forgot',
+        reset: '/apiRouter?route=auth/reset',
+        verify: '/apiRouter?route=auth/verify',
+        checkDomain: '/apiRouter?route=auth/check-domain'
     },
     
-    // Account management endpoints
+    // Account management endpoints - now using unified apiRouter
     account: {
-        me: '/account-me',
-        profile: '/account-profile',
-        activity: '/account-activity',
-        billing: '/account-billing',
-        paymentMethods: '/account-payment-methods',
-        billingHistory: '/account-billing-history',
-        servicePolicyGet: '/getServicePolicy',
-        servicePolicyUpload: '/uploadServicePolicy'
+        me: '/apiRouter?route=account/me',
+        profile: '/apiRouter?route=account/profile',
+        activity: '/apiRouter?route=account/activity',
+        billing: '/apiRouter?route=account/billing',
+        paymentMethods: '/apiRouter?route=account/payment-methods',
+        billingHistory: '/apiRouter?route=account/billing-history',
+        servicePolicyGet: '/apiRouter?route=account/service-policy',
+        servicePolicyUpload: '/apiRouter?route=account/service-policy/upload'
     },
     
-    // Subscription endpoints
+    // Subscription endpoints - now using unified apiRouter
     subscription: {
         status: '/getSubscriptionStatus',
         plans: '/subscription-plans',
-        upgrade: '/upgradeSubscription',
-        cancel: '/cancelSubscription'
+        upgrade: '/apiRouter?route=subscription/upgrade',
+        cancel: '/apiRouter?route=subscription/cancel'
     },
     
-    // Shopify integration endpoints
+    // Shopify integration endpoints (unchanged - not part of apiRouter)
     shopify: {
         auth: '/shopifyAuthCallback',
         initiate: '/initiateShopifyAuth',

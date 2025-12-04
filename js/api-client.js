@@ -485,7 +485,8 @@ class ApiClient {
     async getServicePolicy(shopDomain, policyType) {
         try {
             const domain = shopDomain || (JSON.parse(localStorage.getItem('user') || '{}').domain);
-            const endpoint = `${window.API_CONFIG.endpoints.account.servicePolicyGet}?shopDomain=${encodeURIComponent(domain || '')}&policyType=${encodeURIComponent(policyType || '')}`;
+            // Note: servicePolicyGet already contains '?route=...', so we use '&' for additional params
+            const endpoint = `${window.API_CONFIG.endpoints.account.servicePolicyGet}&shopDomain=${encodeURIComponent(domain || '')}&policyType=${encodeURIComponent(policyType || '')}`;
             const response = await this.request(endpoint);
             console.log('getServicePolicy response:', response);
             return response;
@@ -549,7 +550,7 @@ class ApiClient {
 
     async upgradeSubscription(plan, seats) {
         try {
-            const response = await this.request('/upgradeSubscription', {
+            const response = await this.request(window.API_CONFIG.endpoints.subscription.upgrade, {
                 method: 'POST',
                 body: JSON.stringify({ plan, seats })
             });
