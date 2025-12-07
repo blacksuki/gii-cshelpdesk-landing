@@ -147,6 +147,63 @@
         </form>
       </div>
 
+      <!-- Shopify Integration Settings -->
+      <div class="account-card" style="max-width: 600px; margin: 32px auto">
+        <div class="account-card__title">
+          <span>🛍️</span>
+          Shopify Integration
+        </div>
+        <div class="account-card__content">
+          <div class="form-group">
+            <label for="shopifyDomain" class="form-label">Shopify Store Domain</label>
+            <div style="display: flex; gap: 8px; align-items: flex-start;">
+              <input
+                type="text"
+                id="shopifyDomain"
+                name="shopifyDomain"
+                class="form-input"
+                placeholder="your-shop.myshopify.com"
+                style="flex: 1;"
+              />
+              <button
+                type="button"
+                class="auth-btn auth-btn--secondary"
+                onclick="checkDomainAvailability()"
+                id="checkDomainBtn"
+                style="white-space: nowrap;"
+              >
+                Check
+              </button>
+            </div>
+            <div class="form-help">Enter your Shopify store domain (e.g., your-shop.myshopify.com)</div>
+            <div id="domainAvailabilityStatus" style="display: none; margin-top: 8px; font-size: 14px;"></div>
+          </div>
+          
+          <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <button
+              type="button"
+              class="auth-btn"
+              onclick="saveShopifyDomain()"
+              id="saveShopifyDomainBtn"
+            >
+              <span class="btn-text">Save Domain</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+            <button
+              type="button"
+              class="auth-btn auth-btn--secondary"
+              onclick="verifyShopifyConnectionProfile()"
+              id="verifyShopifyBtn"
+            >
+              <span class="btn-text">Verify Connection</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+          </div>
+          
+          <div id="shopifyConnectionStatus" style="margin-top: 16px; padding: 12px; border-radius: 8px; display: none;"></div>
+        </div>
+      </div>
+
       <!-- Security Settings -->
       <div class="account-card" style="max-width: 600px; margin: 32px auto">
         <div class="account-card__title">
@@ -369,6 +426,15 @@
         document.getElementById("language").value =
           profileData.language || "en";
         document.getElementById("avatar").value = profileData.avatar || "";
+        
+        // Populate Shopify domain
+        document.getElementById("shopifyDomain").value = profileData.domain || "";
+        
+        // Update connection status if verified
+        if (profileData.shopifyDomainVerified) {
+          showShopifyConnectionStatus(true, profileData.domain);
+        }
+        
         // document.getElementById('loginNotifications').checked = profileData.loginNotifications || false;
 
         // Update 2FA button based on status
@@ -556,6 +622,207 @@
               );
             }
           }
+        }
+      }
+
+      // Shopify Domain Management Functions
+      async function checkDomainAvailability() {
+        const domainInput = document.getElementById('shopifyDomain');
+        const domain = domainInput.value.trim();
+        const statusEl = document.getElementById('domainAvailabilityStatus');
+        const checkBtn = document.getElementById('checkDomainBtn');
+        
+        if (!domain) {
+          Toast.error('Missing Domain', 'Please enter a Shopify domain first.');
+          return;
+        }
+        
+        // Validate format
+        const shopifyDomainPattern = /^[a-zA-Z0-9\-]+\.myshopify\.com$/;
+        if (!shopifyDomainPattern.test(domain)) {
+          statusEl.style.display = 'block';
+          statusEl.style.color = 'var(--color-error)';
+          statusEl.textContent = 'Invalid format. Please use: your-shop.myshopify.com';
+          return;
+        }
+        
+        checkBtn.disabled = true;
+        checkBtn.textContent = 'Checking...';
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--color-info)';
+        statusEl.textContent = 'Checking domain availability...';
+        
+        try {
+          const result = await window.apiClient.checkShopifyDomainAvailability(domain);
+          
+          if (result.success && result.data) {
+            if (result.data.available) {
+              statusEl.style.color = 'var(--color-success)';
+              statusEl.textContent = '✓ Domain is available';
+            } else {
+              statusEl.style.color = 'var(--color-error)';
+              statusEl.textContent = `✕ ${result.data.reason || 'Domain is already registered'}`;
+            }
+          } else {
+            statusEl.style.color = 'var(--color-error)';
+            statusEl.textContent = 'Failed to check domain availability';
+          }
+        } catch (error) {
+          console.error('Check domain availability error:', error);
+          statusEl.style.color = 'var(--color-error)';
+          statusEl.textContent = 'Error checking domain availability';
+        } finally {
+          checkBtn.disabled = false;
+          checkBtn.textContent = 'Check';
+        }
+      }
+      
+      async function saveShopifyDomain() {
+        const domainInput = document.getElementById('shopifyDomain');
+        const domain = domainInput.value.trim();
+        const saveBtn = document.getElementById('saveShopifyDomainBtn');
+        const btnText = saveBtn.querySelector('.btn-text');
+        const spinner = saveBtn.querySelector('.spinner');
+        
+        if (!domain) {
+          Toast.error('Missing Domain', 'Please enter a Shopify store domain.');
+          return;
+        }
+        
+        // Validate format
+        const shopifyDomainPattern = /^[a-zA-Z0-9\-]+\.myshopify\.com$/;
+        if (!shopifyDomainPattern.test(domain)) {
+          Toast.error('Invalid Format', 'Please use the format: your-shop.myshopify.com');
+          return;
+        }
+        
+        saveBtn.disabled = true;
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        
+        try {
+          Toast.loading('Saving Domain', 'Updating your Shopify domain...');
+          
+          // Check availability first
+          const checkResult = await window.apiClient.checkShopifyDomainAvailability(domain);
+          
+          if (!checkResult.success || !checkResult.data || !checkResult.data.available) {
+            Toast.hideLoading();
+            Toast.error('Domain Unavailable', 
+              checkResult.data?.reason || 'This Shopify domain is already registered by another user.');
+            return;
+          }
+          
+          // Update domain
+          const result = await window.apiClient.updateShopifyDomain(domain);
+          
+          Toast.hideLoading();
+          
+          if (result.success) {
+            Toast.success('Domain Saved', 'Shopify domain updated successfully.');
+            
+            // Update localStorage
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            user.domain = domain;
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            // Update availability status
+            const statusEl = document.getElementById('domainAvailabilityStatus');
+            statusEl.style.display = 'block';
+            statusEl.style.color = 'var(--color-success)';
+            statusEl.textContent = '✓ Domain saved successfully';
+            
+            // Suggest verification
+            setTimeout(() => {
+              if (confirm('Would you like to verify your Shopify connection now?')) {
+                verifyShopifyConnectionProfile();
+              }
+            }, 1000);
+          } else {
+            Toast.error('Save Failed', result.error || 'Failed to save Shopify domain. Please try again.');
+          }
+        } catch (error) {
+          Toast.hideLoading();
+          console.error('Save Shopify domain error:', error);
+          Toast.error('Save Error', 'An unexpected error occurred. Please try again.');
+        } finally {
+          saveBtn.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+        }
+      }
+      
+      async function verifyShopifyConnectionProfile() {
+        const verifyBtn = document.getElementById('verifyShopifyBtn');
+        const btnText = verifyBtn.querySelector('.btn-text');
+        const spinner = verifyBtn.querySelector('.spinner');
+        const domainInput = document.getElementById('shopifyDomain');
+        const domain = domainInput.value.trim() || null;
+        
+        verifyBtn.disabled = true;
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        
+        try {
+          Toast.loading('Verifying Connection', 'Checking Shopify connection...');
+          
+          const result = await window.apiClient.verifyShopifyConnection(domain);
+          
+          Toast.hideLoading();
+          
+          if (result.success && result.data) {
+            if (result.data.verified) {
+              Toast.success('Connection Verified', 
+                `Successfully connected to ${result.data.shopName || 'your Shopify store'}!`);
+              showShopifyConnectionStatus(true, result.data.domain, result.data);
+            } else {
+              Toast.warning('Connection Failed', 
+                result.data.message || 'Unable to verify Shopify connection. Please ensure you have authorized the app via Shopify OAuth.');
+              showShopifyConnectionStatus(false, domain, result.data);
+            }
+          } else {
+            Toast.error('Verification Failed', result.error || 'Failed to verify connection. Please try again.');
+            showShopifyConnectionStatus(false, domain);
+          }
+        } catch (error) {
+          Toast.hideLoading();
+          console.error('Verify Shopify connection error:', error);
+          Toast.error('Verification Error', 'An unexpected error occurred. Please try again.');
+          showShopifyConnectionStatus(false, domain);
+        } finally {
+          verifyBtn.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+        }
+      }
+      
+      function showShopifyConnectionStatus(isVerified, domain, data = null) {
+        const statusEl = document.getElementById('shopifyConnectionStatus');
+        statusEl.style.display = 'block';
+        
+        if (isVerified && data) {
+          statusEl.style.backgroundColor = '#d4edda';
+          statusEl.style.border = '1px solid #c3e6cb';
+          statusEl.style.color = '#155724';
+          statusEl.innerHTML = `
+            <div style="font-weight: 600; margin-bottom: 8px;">✓ Connection Verified</div>
+            <div style="font-size: 14px;">
+              <div><strong>Domain:</strong> ${domain}</div>
+              ${data.shopName ? `<div><strong>Shop Name:</strong> ${data.shopName}</div>` : ''}
+              ${data.plan ? `<div><strong>Plan:</strong> ${data.plan}</div>` : ''}
+            </div>
+          `;
+        } else {
+          statusEl.style.backgroundColor = '#fff3cd';
+          statusEl.style.border = '1px solid #ffc107';
+          statusEl.style.color = '#856404';
+          statusEl.innerHTML = `
+            <div style="font-weight: 600; margin-bottom: 8px;">⚠ Connection Not Verified</div>
+            <div style="font-size: 14px;">
+              ${domain ? `<div><strong>Domain:</strong> ${domain}</div>` : 'No domain set'}
+              <div style="margin-top: 8px;">Please authorize via Shopify OAuth to connect your store.</div>
+            </div>
+          `;
         }
       }
     </script>

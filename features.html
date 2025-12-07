@@ -73,11 +73,24 @@
     <script>
         // No page-specific JS
     </script>
+    <style>
+        .features-intro {
+            margin-bottom: var(--spacing-xl);
+        }
+        .features-intro p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+        }
+        /* Highlight for our column - Shopify green tint */
+        table.compare td.td--us, table.compare th:nth-child(2) { 
+            background: rgba(0, 128, 96, 0.05); 
+        }
+        table.compare td.td--us {
+            color: var(--color-success);
+            font-weight: 600;
+        }
+    </style>
 </body>
-<style>
-/* Slight highlight for our column */
-table.compare td.td--us, table.compare th:nth-child(2) { background: #f0fff4; }
-</style>
 </html>
 
 

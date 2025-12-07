@@ -12,6 +12,31 @@
     <link rel="stylesheet" href="css/style.css" />
     <script src="js/common.js" defer></script>
     <script src="js/auth.js" defer></script>
+    <style>
+        .hero__subtitle ol {
+            color: var(--color-text-secondary);
+        }
+        .hero__subtitle li b {
+            color: var(--color-text);
+        }
+        .section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .section ul li {
+            padding-left: var(--spacing-lg);
+            position: relative;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+        }
+        .section ul li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+    </style>
   </head>
   <body>
     <div id="site-header"></div>

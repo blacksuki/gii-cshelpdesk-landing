@@ -44,7 +44,8 @@ const API_ENDPOINTS = {
         forgot: '/apiRouter?route=auth/forgot',
         reset: '/apiRouter?route=auth/reset',
         verify: '/apiRouter?route=auth/verify',
-        checkDomain: '/apiRouter?route=auth/check-domain'
+        checkDomain: '/apiRouter?route=auth/check-domain',
+        googleOAuth: '/apiRouter?route=auth/google-oauth'
     },
     
     // Account management endpoints - now using unified apiRouter
@@ -56,7 +57,10 @@ const API_ENDPOINTS = {
         paymentMethods: '/apiRouter?route=account/payment-methods',
         billingHistory: '/apiRouter?route=account/billing-history',
         servicePolicyGet: '/apiRouter?route=account/service-policy',
-        servicePolicyUpload: '/apiRouter?route=account/service-policy/upload'
+        servicePolicyUpload: '/apiRouter?route=account/service-policy/upload',
+        shopifyDomain: '/apiRouter?route=account/shopify-domain',
+        shopifyDomainVerify: '/apiRouter?route=account/shopify-domain/verify',
+        shopifyDomainCheck: '/apiRouter?route=account/shopify-domain/check'
     },
     
     // Subscription endpoints - now using unified apiRouter

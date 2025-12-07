@@ -11,6 +11,8 @@
     <script src="../js/api-config.js" defer></script>
     <script src="../js/api-client.js" defer></script>
     <script src="../js/auth.js" defer></script>
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div class="auth-container">
@@ -22,13 +24,13 @@
 
             <form class="auth-form" id="registerForm" onsubmit="return false;">
                 <div class="form-group">
-                    <label for="domain" class="form-label">Domain <span class="required">*</span></label>
+                    <label for="domain" class="form-label">Shopify Store Domain <span class="required">*</span></label>
                     <input 
                         type="text" 
                         id="domain" 
                         name="domain" 
                         class="form-input" 
-                        placeholder="yourdomain.com"
+                        placeholder="your-shop.myshopify.com"
                         required
                         autocomplete="off"
                     >
@@ -36,7 +38,7 @@
                         <span class="domain-status__icon"></span>
                         <span class="domain-status__text"></span>
                     </div>
-                    <div class="form-help">Enter your domain name (e.g., yourdomain.com)</div>
+                    <div class="form-help">Enter your Shopify store domain (e.g., your-shop.myshopify.com)</div>
                 </div>
 
                 <div class="form-group">
@@ -92,6 +94,17 @@
                     <span class="spinner" style="display: none;"></span>
                 </button>
             </form>
+
+            <div class="auth-divider">
+                <span>or</span>
+            </div>
+
+            <div class="social-login">
+                <a href="#" class="social-btn" onclick="handleGoogleRegister()">
+                    <span>🔍</span>
+                    Continue with Google
+                </a>
+            </div>
 
             <div class="auth-links">
                 Already have an account? <a href="login.html" class="auth-link">Sign in</a>
@@ -190,7 +203,7 @@
                 // Check domain availability one more time
                 const domainAvailable = await checkDomainAvailability(data.domain);
                 if (!domainAvailable) {
-                    Toast.error('Domain Unavailable', 'This domain is already taken. Please choose another one.');
+                    Toast.error('Shopify Domain Unavailable', 'This Shopify store domain is already registered. Please choose another one.');
                     return;
                 }
                 
@@ -241,7 +254,7 @@
                     domainStatus.className = 'domain-status domain-status--available';
                     domainStatus.innerHTML = `
                         <span class="domain-status__icon">✓</span>
-                        <span class="domain-status__text">Domain is available</span>
+                        <span class="domain-status__text">Shopify domain is available</span>
                     `;
                     domainInput.classList.add('success');
                     domainInput.classList.remove('error');
@@ -250,7 +263,7 @@
                     domainStatus.className = 'domain-status domain-status--unavailable';
                     domainStatus.innerHTML = `
                         <span class="domain-status__icon">✕</span>
-                        <span class="domain-status__text">Domain is already taken</span>
+                        <span class="domain-status__text">Shopify domain is already registered</span>
                     `;
                     domainInput.classList.add('error');
                     domainInput.classList.remove('success');
@@ -262,7 +275,7 @@
                 domainStatus.className = 'domain-status domain-status--unavailable';
                 domainStatus.innerHTML = `
                     <span class="domain-status__icon">⚠</span>
-                    <span class="domain-status__text">Unable to check domain availability</span>
+                    <span class="domain-status__text">Unable to check Shopify domain availability</span>
                 `;
                 return false;
             }
@@ -316,9 +329,16 @@
         }
 
         function validateForm(data) {
-            // Domain validation
+            // Domain validation - must be Shopify domain format
             if (!data.domain || data.domain.length < 3) {
-                Toast.error('Invalid Domain', 'Please enter a valid domain name (minimum 3 characters).');
+                Toast.error('Invalid Shopify Domain', 'Please enter a valid Shopify store domain (e.g., your-shop.myshopify.com).');
+                return false;
+            }
+            
+            // Validate Shopify domain format
+            const shopifyDomainPattern = /^[a-zA-Z0-9\-]+\.myshopify\.com$/;
+            if (!shopifyDomainPattern.test(data.domain)) {
+                Toast.error('Invalid Shopify Domain Format', 'Please use the format: your-shop.myshopify.com');
                 return false;
             }
             
@@ -349,6 +369,88 @@
             
             return true;
         }
+
+        // Google OAuth registration
+        window.handleGoogleRegister = async function() {
+            // Initialize Google OAuth
+            const googleClientId = window.GOOGLE_OAUTH_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID_HERE';
+            
+            if (googleClientId === 'YOUR_GOOGLE_CLIENT_ID_HERE') {
+                Toast.error('Configuration Error', 'Google OAuth Client ID is not configured. Please contact support.');
+                console.error('Google OAuth Client ID not configured');
+                return;
+            }
+            
+            // Wait for Google Identity Services to load
+            if (typeof google === 'undefined') {
+                Toast.error('Loading Error', 'Google Sign-In is still loading. Please try again in a moment.');
+                setTimeout(() => window.handleGoogleRegister(), 1000);
+                return;
+            }
+            
+            // Get optional Shopify domain from form if filled
+            const domainInput = document.getElementById('domain');
+            const optionalDomain = domainInput.value.trim() || null;
+            
+            google.accounts.id.initialize({
+                client_id: googleClientId,
+                callback: async function(response) {
+                    try {
+                        Toast.loading('Creating Account', 'Setting up your account with Google...');
+                        
+                        // Send ID token to backend with optional domain
+                        const result = await window.apiClient.googleOAuth(response.credential, optionalDomain);
+                        
+                        Toast.hideLoading();
+                        
+                        if (result.success) {
+                            const requiresDomainSetup = result.data?.requiresDomainSetup;
+                            Toast.success(
+                                'Registration Successful',
+                                requiresDomainSetup
+                                    ? 'Account created! Please set up your Shopify domain.'
+                                    : 'Welcome! Redirecting...'
+                            );
+                            
+                            // Redirect to dashboard or domain setup
+                            setTimeout(() => {
+                                if (window.apiClient.isAuthenticated()) {
+                                    const redirectUrl = requiresDomainSetup
+                                        ? '../account/dashboard.html?setup=shopify-domain'
+                                        : '../account/dashboard.html';
+                                    window.location.href = redirectUrl;
+                                } else {
+                                    Toast.error('Redirect Error', 'Authentication failed. Please try logging in again.');
+                                }
+                            }, 600);
+                        } else {
+                            let errorMessage = 'Registration failed. Please try again.';
+                            
+                            if (result.error === 'INVALID_TOKEN') {
+                                errorMessage = 'Invalid Google token. Please try again.';
+                            } else if (result.error === 'EMAIL_NOT_VERIFIED') {
+                                errorMessage = 'Your Google email is not verified.';
+                            } else if (result.error === 'EMAIL_EXISTS') {
+                                errorMessage = 'This email is already registered. Please sign in instead.';
+                            }
+                            
+                            Toast.error('Registration Failed', errorMessage);
+                        }
+                    } catch (error) {
+                        Toast.hideLoading();
+                        console.error('Google OAuth registration error:', error);
+                        Toast.error('Registration Error', 'An unexpected error occurred. Please try again.');
+                    }
+                }
+            });
+            
+            // Trigger Google Sign-In
+            google.accounts.id.prompt((notification) => {
+                if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                    Toast.info('Google Sign-In', 'Please use the Google Sign-In popup to continue.');
+                }
+            });
+        };
     </script>
 </body>
 </html>

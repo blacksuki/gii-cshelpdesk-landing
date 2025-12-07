@@ -78,9 +78,17 @@
 
     if (footerTarget) {
       const year = new Date().getFullYear();
+      const footerBasePath = isInAccountDir ? '../' : '';
       footerTarget.innerHTML = [
         '<footer class="footer" role="contentinfo">',
         '    <div class="container">',
+        '        <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-lg, 24px); margin-bottom: var(--spacing-md, 16px);">',
+        '            <a href="' + footerBasePath + 'terms.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Terms</a>',
+        '            <a href="' + footerBasePath + 'privacy.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Privacy</a>',
+        '            <a href="' + footerBasePath + 'refund.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Refund</a>',
+        '            <a href="' + footerBasePath + 'contact.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Contact</a>',
+        '            <a href="' + footerBasePath + 'pricing.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Pricing</a>',
+        '        </div>',
         "        <div>&copy; " +
           year +
           " giiHelpdeskAgent. All rights reserved.</div>",

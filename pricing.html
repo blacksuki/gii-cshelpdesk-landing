@@ -13,8 +13,43 @@
     <script src="js/common.js" defer></script>
     <script src="js/auth.js" defer></script>
     <style>
-        .plan-card__list { margin: 10px 0 16px 0; padding-left: 18px; }
-        .plan-card__list li { margin: 6px 0; }
+        .pricing-intro {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+        .pricing-intro h1 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text);
+        }
+        .pricing-intro p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+        }
+        .faq-section {
+            margin-top: var(--spacing-3xl);
+            padding-top: var(--spacing-2xl);
+            border-top: 1px solid var(--color-border);
+        }
+        .faq-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .faq-section li {
+            margin-bottom: var(--spacing-md);
+            padding-left: var(--spacing-lg);
+            position: relative;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+        .faq-section li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
     </style>
     <meta name="robots" content="noindex">
     
@@ -23,8 +58,10 @@
     <div id="site-header"></div>
 
     <main class="section" role="main">
-        <h1 class="section__title">Pricing</h1>
-        <p class="muted">Start your 14-day free trial. No credit card required.</p>
+        <div class="pricing-intro">
+            <h1>Pricing</h1>
+            <p>Start your 14-day free trial. No credit card required.</p>
+        </div>
 
         <div class="pricing" style="margin-top:16px;">
             <article class="plan-card" id="free" data-plan="free">
@@ -70,7 +107,7 @@
             </article>
         </div>
 
-        <section class="section" style="margin-top:24px;">
+        <section class="faq-section">
             <h2 class="section__title">FAQ & Compliance</h2>
             <ul>
                 <li><strong>Gmail & Google Workspace</strong> are supported.</li>

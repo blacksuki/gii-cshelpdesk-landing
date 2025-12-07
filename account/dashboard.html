@@ -120,6 +120,65 @@
         </div>
       </div>
 
+      <!-- Shopify Integration Card -->
+      <div class="account-card" style="margin-bottom: 32px">
+        <div class="account-card__title">
+          <span>🛍️</span>
+          Shopify Integration
+        </div>
+        <div class="account-card__content">
+          <div class="account-info">
+            <span class="account-info__label">Shopify Store Domain</span>
+            <span class="account-info__value" id="shopifyDomain"
+              >Loading...</span
+            >
+          </div>
+          <div class="account-info">
+            <span class="account-info__label">Connection Status</span>
+            <span class="account-info__value" id="shopifyConnectionStatus"
+              >Loading...</span
+            >
+          </div>
+          <div class="account-info" id="shopifyShopInfo" style="display: none;">
+            <span class="account-info__label">Shop Name</span>
+            <span class="account-info__value" id="shopifyShopName">-</span>
+          </div>
+          <div class="account-info" id="shopifyPlanInfo" style="display: none;">
+            <span class="account-info__label">Shopify Plan</span>
+            <span class="account-info__value" id="shopifyPlan">-</span>
+          </div>
+          <div style="display: flex; gap: 12px; margin-top: 16px">
+            <button
+              class="auth-btn auth-btn--secondary"
+              onclick="updateShopifyDomain()"
+              id="updateDomainBtn"
+            >
+              <span class="btn-text">Update Domain</span>
+            </button>
+            <button
+              class="auth-btn auth-btn--secondary"
+              onclick="verifyShopifyConnection()"
+              id="verifyConnectionBtn"
+            >
+              <span class="btn-text">Verify Connection</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+          </div>
+          <div id="shopifyDomainSetup" style="display: none; margin-top: 16px; padding: 16px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ffc107;">
+            <div style="font-weight: 600; margin-bottom: 8px;">⚠️ Shopify Domain Required</div>
+            <div style="font-size: 14px; color: #856404; margin-bottom: 12px;">
+              Please set up your Shopify store domain to connect your store and enable features.
+            </div>
+            <button
+              class="auth-btn"
+              onclick="setupShopifyDomain()"
+            >
+              Set Up Shopify Domain
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- Service Policy Management (Pro/Team only) -->
       <div class="account-card" style="margin-bottom: 32px">
         <div class="account-card__title">
@@ -324,6 +383,13 @@
         loadUserData();
         // loadRecentActivity();
         initPolicySection();
+        loadShopifyDomainStatus();
+        
+        // Check if user needs to set up Shopify domain
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('setup') === 'shopify-domain') {
+          setupShopifyDomain();
+        }
       });
 
       // Load user data
@@ -435,9 +501,9 @@
         }
 
         // Update account info
-        if (userData.profile) {
+        if (userData.profile || userData.email) {
           document.getElementById("userDomain").textContent =
-            userData.domain || "N/A";
+            userData.domain || "Not Set";
           document.getElementById("userEmail").textContent =
             userData.email || "N/A";
 
@@ -455,6 +521,9 @@
               lastLoginDate.toLocaleDateString();
           }
         }
+        
+        // Update Shopify domain display
+        updateShopifyDomainDisplay(userData);
       }
 
       // Load recent activity
@@ -828,6 +897,193 @@
             statusEl.style.color = "var(--color-error)";
           }
           Toast.error("Error", err.message || "Failed to save policy");
+        }
+      }
+
+      // Shopify Domain Management Functions
+      function updateShopifyDomainDisplay(userData) {
+        const domainEl = document.getElementById('shopifyDomain');
+        const statusEl = document.getElementById('shopifyConnectionStatus');
+        const setupEl = document.getElementById('shopifyDomainSetup');
+        const shopInfoEl = document.getElementById('shopifyShopInfo');
+        const planInfoEl = document.getElementById('shopifyPlanInfo');
+        
+        const domain = userData.domain || null;
+        const isVerified = userData.shopifyDomainVerified || false;
+        
+        if (domain) {
+          domainEl.textContent = domain;
+          statusEl.textContent = isVerified ? '✓ Connected' : '⚠ Not Verified';
+          statusEl.style.color = isVerified ? 'var(--color-success)' : 'var(--color-warning)';
+          setupEl.style.display = 'none';
+        } else {
+          domainEl.textContent = 'Not Set';
+          statusEl.textContent = 'Not Connected';
+          statusEl.style.color = 'var(--color-muted)';
+          setupEl.style.display = 'block';
+          shopInfoEl.style.display = 'none';
+          planInfoEl.style.display = 'none';
+        }
+      }
+      
+      async function loadShopifyDomainStatus() {
+        try {
+          const result = await window.apiClient.getAccountInfo();
+          if (result.success && result.data.user) {
+            updateShopifyDomainDisplay(result.data.user);
+          }
+        } catch (error) {
+          console.error('Error loading Shopify domain status:', error);
+        }
+      }
+      
+      function setupShopifyDomain() {
+        // Prompt user to enter Shopify domain
+        const domain = prompt('Please enter your Shopify store domain (e.g., your-shop.myshopify.com):');
+        
+        if (!domain) {
+          return;
+        }
+        
+        // Validate format
+        const shopifyDomainPattern = /^[a-zA-Z0-9\-]+\.myshopify\.com$/;
+        if (!shopifyDomainPattern.test(domain)) {
+          Toast.error('Invalid Format', 'Please use the format: your-shop.myshopify.com');
+          return;
+        }
+        
+        // Update domain
+        updateShopifyDomainValue(domain);
+      }
+      
+      async function updateShopifyDomain() {
+        const currentDomain = document.getElementById('shopifyDomain').textContent.replace('Not Set', '').trim();
+        const domain = prompt('Enter your Shopify store domain (e.g., your-shop.myshopify.com):', currentDomain);
+        
+        if (!domain) {
+          return;
+        }
+        
+        updateShopifyDomainValue(domain);
+      }
+      
+      async function updateShopifyDomainValue(domain) {
+        try {
+          Toast.loading('Updating Domain', 'Updating your Shopify domain...');
+          
+          // First check if domain is available
+          const checkResult = await window.apiClient.checkShopifyDomainAvailability(domain);
+          
+          if (!checkResult.success || !checkResult.data) {
+            Toast.hideLoading();
+            Toast.error('Check Failed', 'Unable to check domain availability. Please try again.');
+            return;
+          }
+          
+          if (!checkResult.data.available) {
+            Toast.hideLoading();
+            Toast.error('Domain Unavailable', 
+              checkResult.data.reason || 'This Shopify domain is already registered by another user.');
+            return;
+          }
+          
+          // Update domain
+          const result = await window.apiClient.updateShopifyDomain(domain);
+          
+          Toast.hideLoading();
+          
+          if (result.success) {
+            Toast.success('Domain Updated', 'Shopify domain updated successfully.');
+            
+            // Update localStorage
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            user.domain = domain;
+            localStorage.setItem('user', JSON.stringify(user));
+            
+            // Reload user data
+            await loadUserData();
+            await loadShopifyDomainStatus();
+            
+            // Suggest verification
+            setTimeout(() => {
+              if (confirm('Would you like to verify your Shopify connection now?')) {
+                verifyShopifyConnection();
+              }
+            }, 1000);
+          } else {
+            Toast.error('Update Failed', result.error || 'Failed to update Shopify domain. Please try again.');
+          }
+        } catch (error) {
+          Toast.hideLoading();
+          console.error('Update Shopify domain error:', error);
+          Toast.error('Update Error', 'An unexpected error occurred. Please try again.');
+        }
+      }
+      
+      async function verifyShopifyConnection() {
+        const verifyBtn = document.getElementById('verifyConnectionBtn');
+        const btnText = verifyBtn.querySelector('.btn-text');
+        const spinner = verifyBtn.querySelector('.spinner');
+        
+        verifyBtn.disabled = true;
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        
+        try {
+          Toast.loading('Verifying Connection', 'Checking Shopify connection...');
+          
+          const result = await window.apiClient.verifyShopifyConnection();
+          
+          Toast.hideLoading();
+          
+          if (result.success && result.data) {
+            if (result.data.verified) {
+              Toast.success('Connection Verified', 
+                `Successfully connected to ${result.data.shopName || 'your Shopify store'}!`);
+              
+              // Update display
+              document.getElementById('shopifyConnectionStatus').textContent = '✓ Connected';
+              document.getElementById('shopifyConnectionStatus').style.color = 'var(--color-success)';
+              
+              // Show shop info if available
+              if (result.data.shopName) {
+                document.getElementById('shopifyShopName').textContent = result.data.shopName;
+                document.getElementById('shopifyShopInfo').style.display = 'flex';
+              }
+              if (result.data.plan) {
+                document.getElementById('shopifyPlan').textContent = result.data.plan;
+                document.getElementById('shopifyPlanInfo').style.display = 'flex';
+              }
+              
+              // Reload user data to get updated verification status
+              await loadUserData();
+            } else {
+              Toast.warning('Connection Failed', 
+                result.data.message || 'Unable to verify Shopify connection. Please ensure you have authorized the app via Shopify OAuth.');
+              
+              document.getElementById('shopifyConnectionStatus').textContent = '⚠ Not Verified';
+              document.getElementById('shopifyConnectionStatus').style.color = 'var(--color-warning)';
+              
+              if (result.data.requiresAuth) {
+                setTimeout(() => {
+                  if (confirm('You need to authorize via Shopify OAuth. Would you like to connect now?')) {
+                    // Redirect to Shopify OAuth or show instructions
+                    Toast.info('Shopify Authorization', 'Please authorize via the Gmail Add-on or contact support for assistance.');
+                  }
+                }, 1500);
+              }
+            }
+          } else {
+            Toast.error('Verification Failed', result.error || 'Failed to verify connection. Please try again.');
+          }
+        } catch (error) {
+          Toast.hideLoading();
+          console.error('Verify Shopify connection error:', error);
+          Toast.error('Verification Error', 'An unexpected error occurred. Please try again.');
+        } finally {
+          verifyBtn.disabled = false;
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
         }
       }
 

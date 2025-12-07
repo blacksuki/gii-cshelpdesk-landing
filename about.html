@@ -9,11 +9,58 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="js/common.js" defer></script>
     <style>
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .about-content p {
+            line-height: 1.7;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
         .faq-item {
-            margin-bottom: 1.5rem;
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: var(--color-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
         }
         .faq-item h4 {
-            margin-bottom: 0.5rem;
+            margin-bottom: var(--spacing-sm);
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+        .faq-item p {
+            margin: 0;
+        }
+        .faq-item code {
+            background: var(--color-bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+        .contact-section {
+            background: var(--color-bg);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            margin-top: var(--spacing-xl);
+        }
+        .contact-section a {
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+        .contact-section a:hover {
+            text-decoration: underline;
+        }
+        .contact-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .contact-section li {
+            margin-bottom: var(--spacing-sm);
         }
     </style>
 </head>
@@ -21,9 +68,10 @@
     <div id="site-header"></div>
 
     <main class="section" role="main">
-        <h1 class="section__title">About giiHelpdeskAgent</h1>
-        <p>We build AI-powered agent for Shopify merchants, focusing on speed, privacy, and accuracy. Our agent keeps your workflow inside the inbox while leveraging Shopify data and modern LLMs.</p>
-        <p>giiHelpdesk agent is a easy using tool which can help your customer support to work more efficiently and no more training, so even intern can work as a better experienced customer support.</p>
+        <div class="about-content">
+            <h1 class="section__title">About giiHelpdeskAgent</h1>
+            <p>We build AI-powered agent for Shopify merchants, focusing on speed, privacy, and accuracy. Our agent keeps your workflow inside the inbox while leveraging Shopify data and modern LLMs.</p>
+            <p>giiHelpdesk agent is a easy using tool which can help your customer support to work more efficiently and no more training, so even intern can work as a better experienced customer support.</p>
 
         
 
@@ -47,7 +95,7 @@
             </div>
         </section>
 
-        <section class="section">
+        <section class="contact-section">
             <h2 class="section__title">Support & Contact</h2>
             <p>For any questions, issues, or feedback, please contact us at <a href="mailto:support@giihelpdesk.com">support@giihelpdesk.com</a>.</p>
             <p>You can also follow us on:</p>
@@ -56,6 +104,7 @@
                 <li><a href="#" aria-label="GitHub link">GitHub</a></li>
             </ul>
         </section>
+        </div>
     </main>
 
     <div id="site-footer"></div>

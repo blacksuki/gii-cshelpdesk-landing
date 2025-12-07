@@ -393,6 +393,56 @@ class ApiClient {
         }
     }
     
+    async googleOAuth(idToken, domain = null) {
+        try {
+            const response = await this.request(window.API_CONFIG.endpoints.auth.googleOAuth, {
+                method: 'POST',
+                body: JSON.stringify({ idToken, domain })
+            });
+            
+            // Debug logging
+            console.log('googleOAuth API response:', response);
+            
+            // Handle successful Google OAuth login similar to regular login
+            if (response && response.success && response.data) {
+                let token = response.data.token;
+                const returnedUser = response.data.user || {};
+                
+                // Extract token if it's an object
+                if (token && typeof token === 'object' && token !== null) {
+                    if (token.accessToken) {
+                        token = token.accessToken;
+                    } else if (token.token) {
+                        token = token.token;
+                    } else if (token.jwt) {
+                        token = token.jwt;
+                    }
+                }
+                
+                if (token && typeof token === 'string' && token.trim() !== '') {
+                    console.log('✅ Google OAuth successful, token found');
+                    this.setToken(token);
+                    
+                    // Store minimal user data
+                    const minimalUser = {
+                        token: token,
+                        email: returnedUser.email || undefined,
+                        domain: returnedUser.domain || undefined,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                        subscription: returnedUser.subscription || null
+                    };
+                    localStorage.setItem('user', JSON.stringify(minimalUser));
+                    console.log('✅ Stored user data to localStorage');
+                }
+            }
+            
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
     // Account methods
     async getAccountInfo() {
         try {
@@ -567,6 +617,46 @@ class ApiClient {
                 method: 'POST'
             });
             console.log('cancelSubscription API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    // Shopify Domain Management methods
+    async updateShopifyDomain(domain) {
+        try {
+            const response = await this.request(window.API_CONFIG.endpoints.account.shopifyDomain, {
+                method: 'POST',
+                body: JSON.stringify({ domain })
+            });
+            
+            console.log('updateShopifyDomain API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async verifyShopifyConnection(domain = null) {
+        try {
+            const endpoint = domain 
+                ? `${window.API_CONFIG.endpoints.account.shopifyDomainVerify}?domain=${encodeURIComponent(domain)}`
+                : window.API_CONFIG.endpoints.account.shopifyDomainVerify;
+            const response = await this.request(endpoint);
+            
+            console.log('verifyShopifyConnection API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async checkShopifyDomainAvailability(domain) {
+        try {
+            const response = await this.request(`${window.API_CONFIG.endpoints.account.shopifyDomainCheck}?domain=${encodeURIComponent(domain)}`);
+            
+            console.log('checkShopifyDomainAvailability API response:', response);
             return response;
         } catch (error) {
             return this.handleError(error);
