@@ -414,18 +414,20 @@
 
       // Populate form with profile data
       function populateForm(profileData) {
-        document.getElementById("fullName").value = profileData.fullName || "";
+        // Profile data is nested in profileData.profile
+        const profile = profileData.profile || {};
+        
+        document.getElementById("fullName").value = profile.fullName || "";
 
         // Handle email - try from profile data first, then from JWT token
         let email = profileData.email || getEmailFromToken();
         document.getElementById("email").value = email || "";
 
-        document.getElementById("phone").value = profileData.phone || "";
-        document.getElementById("company").value = profileData.company || "";
-        document.getElementById("timezone").value = profileData.timezone || "";
-        document.getElementById("language").value =
-          profileData.language || "en";
-        document.getElementById("avatar").value = profileData.avatar || "";
+        document.getElementById("phone").value = profile.phone || "";
+        document.getElementById("company").value = profile.company || "";
+        document.getElementById("timezone").value = profile.timezone || "";
+        document.getElementById("language").value = profile.language || "en";
+        document.getElementById("avatar").value = profile.avatar || "";
         
         // Populate Shopify domain
         document.getElementById("shopifyDomain").value = profileData.domain || "";
@@ -435,11 +437,11 @@
           showShopifyConnectionStatus(true, profileData.domain);
         }
         
-        // document.getElementById('loginNotifications').checked = profileData.loginNotifications || false;
+        // document.getElementById('loginNotifications').checked = profile.loginNotifications || false;
 
         // Update 2FA button based on status
         const setup2FABtn = document.getElementById("setup2FABtn");
-        if (profileData.twoFactorEnabled) {
+        if (profile.twoFactorEnabled) {
           setup2FABtn.textContent = "Manage 2FA";
           setup2FABtn.onclick = manage2FA;
         }

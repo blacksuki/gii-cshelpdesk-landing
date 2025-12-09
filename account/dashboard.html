@@ -1041,11 +1041,11 @@
               Toast.success('Connection Verified', 
                 `Successfully connected to ${result.data.shopName || 'your Shopify store'}!`);
               
-              // Update display
+              // Immediately update UI with verification result
               document.getElementById('shopifyConnectionStatus').textContent = '✓ Connected';
               document.getElementById('shopifyConnectionStatus').style.color = 'var(--color-success)';
               
-              // Show shop info if available
+              // Show shop info if available (from verification result)
               if (result.data.shopName) {
                 document.getElementById('shopifyShopName').textContent = result.data.shopName;
                 document.getElementById('shopifyShopInfo').style.display = 'flex';
@@ -1055,8 +1055,13 @@
                 document.getElementById('shopifyPlanInfo').style.display = 'flex';
               }
               
-              // Reload user data to get updated verification status
-              await loadUserData();
+              // Reload user data to get updated verification status from Firestore
+              // Wait a bit to ensure Firestore update is complete
+              setTimeout(async () => {
+                await loadUserData();
+                // Also explicitly refresh the domain status display
+                await loadShopifyDomainStatus();
+              }, 500);
             } else {
               Toast.warning('Connection Failed', 
                 result.data.message || 'Unable to verify Shopify connection. Please ensure you have authorized the app via Shopify OAuth.');
