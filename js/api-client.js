@@ -380,7 +380,10 @@ class ApiClient {
     
     async checkDomain(domain) {
         try {
-            const response = await this.request(`${window.API_CONFIG.endpoints.auth.checkDomain}?domain=${encodeURIComponent(domain)}`);
+            // The endpoint already contains ?route=..., so we need to use & instead of ?
+            const endpoint = window.API_CONFIG.endpoints.auth.checkDomain;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(`${endpoint}${separator}domain=${encodeURIComponent(domain)}`);
             
             // Debug logging
             console.log('checkDomain API response:', response);
@@ -640,9 +643,12 @@ class ApiClient {
     
     async verifyShopifyConnection(domain = null) {
         try {
-            const endpoint = domain 
-                ? `${window.API_CONFIG.endpoints.account.shopifyDomainVerify}?domain=${encodeURIComponent(domain)}`
-                : window.API_CONFIG.endpoints.account.shopifyDomainVerify;
+            let endpoint = window.API_CONFIG.endpoints.account.shopifyDomainVerify;
+            if (domain) {
+                // The endpoint already contains ?route=..., so we need to use & instead of ?
+                const separator = endpoint.includes('?') ? '&' : '?';
+                endpoint = `${endpoint}${separator}domain=${encodeURIComponent(domain)}`;
+            }
             const response = await this.request(endpoint);
             
             console.log('verifyShopifyConnection API response:', response);
@@ -654,7 +660,10 @@ class ApiClient {
     
     async checkShopifyDomainAvailability(domain) {
         try {
-            const response = await this.request(`${window.API_CONFIG.endpoints.account.shopifyDomainCheck}?domain=${encodeURIComponent(domain)}`);
+            // The endpoint already contains ?route=..., so we need to use & instead of ?
+            const endpoint = window.API_CONFIG.endpoints.account.shopifyDomainCheck;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(`${endpoint}${separator}domain=${encodeURIComponent(domain)}`);
             
             console.log('checkShopifyDomainAvailability API response:', response);
             return response;

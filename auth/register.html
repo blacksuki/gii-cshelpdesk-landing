@@ -202,7 +202,17 @@
                 
                 // Check domain availability one more time
                 const domainAvailable = await checkDomainAvailability(data.domain);
-                if (!domainAvailable) {
+                
+                // Handle different return values:
+                // - true: domain is available
+                // - false: domain is unavailable
+                // - null: check failed (network error, etc.)
+                if (domainAvailable === null) {
+                    Toast.error('Domain Check Failed', 'Unable to verify domain availability. Please check your connection and try again.');
+                    return;
+                }
+                
+                if (domainAvailable === false) {
                     Toast.error('Shopify Domain Unavailable', 'This Shopify store domain is already registered. Please choose another one.');
                     return;
                 }
@@ -246,9 +256,35 @@
                 const domainStatus = document.getElementById('domainStatus');
                 const domainInput = document.getElementById('domain');
                 
-                // Check if the domain is available
-                // The API returns { success: true, data: { available: true, ... } }
-                const isAvailable = result.success && result.data && result.data.available === true;
+                // Check if API call was successful
+                if (!result.success) {
+                    // API call failed - this is different from domain being unavailable
+                    console.error('Domain check API failed:', result.error);
+                    domainStatus.className = 'domain-status domain-status--unavailable';
+                    domainStatus.innerHTML = `
+                        <span class="domain-status__icon">⚠</span>
+                        <span class="domain-status__text">Unable to check Shopify domain availability</span>
+                    `;
+                    domainInput.classList.remove('success');
+                    domainInput.classList.remove('error');
+                    // Return null to indicate check failed (not available/unavailable)
+                    return null;
+                }
+                
+                // API call succeeded, check the availability
+                if (!result.data) {
+                    console.error('Domain check response missing data:', result);
+                    domainStatus.className = 'domain-status domain-status--unavailable';
+                    domainStatus.innerHTML = `
+                        <span class="domain-status__icon">⚠</span>
+                        <span class="domain-status__text">Invalid response from server</span>
+                    `;
+                    domainInput.classList.remove('success');
+                    domainInput.classList.remove('error');
+                    return null;
+                }
+                
+                const isAvailable = result.data.available === true;
                 
                 if (isAvailable) {
                     domainStatus.className = 'domain-status domain-status--available';
@@ -260,10 +296,12 @@
                     domainInput.classList.remove('error');
                     return true;
                 } else {
+                    // Domain is unavailable - show reason if available
+                    const reason = result.data.reason || 'Shopify domain is already registered';
                     domainStatus.className = 'domain-status domain-status--unavailable';
                     domainStatus.innerHTML = `
                         <span class="domain-status__icon">✕</span>
-                        <span class="domain-status__text">Shopify domain is already registered</span>
+                        <span class="domain-status__text">${reason}</span>
                     `;
                     domainInput.classList.add('error');
                     domainInput.classList.remove('success');
@@ -277,7 +315,8 @@
                     <span class="domain-status__icon">⚠</span>
                     <span class="domain-status__text">Unable to check Shopify domain availability</span>
                 `;
-                return false;
+                // Return null to indicate check failed
+                return null;
             }
         }
 
