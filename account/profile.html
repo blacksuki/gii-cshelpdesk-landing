@@ -290,6 +290,64 @@
           </div>
         </div>
       </div>
+      <!-- API Key Management -->
+      <div class="account-card" style="max-width: 600px; margin: 32px auto">
+        <div class="account-card__title">
+          <span>🔑</span>
+          OpenAI API Key
+        </div>
+        <div class="account-card__content">
+          <p style="font-size: 14px; color: var(--color-muted); margin-bottom: 16px;">
+            Configure your OpenAI API key for AI-powered features.
+            <a href="https://platform.openai.com/api-keys" target="_blank" style="color: var(--color-primary);">Get API key →</a>
+          </p>
+          
+          <div id="apiKeyStatus" style="margin-bottom: 16px; padding: 12px; border-radius: 8px; background-color: #f8f9fa;">
+            <span class="status-badge status-badge--inactive">Not configured</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="apiKeyInput" class="form-label">API Key</label>
+            <div style="display: flex; gap: 8px;">
+              <input
+                type="password"
+                id="apiKeyInput"
+                class="form-input"
+                placeholder="sk-..."
+                style="flex: 1;"
+              />
+              <button
+                type="button"
+                class="auth-btn auth-btn--secondary"
+                onclick="toggleApiKeyVisibility()"
+                style="padding: 0 16px;"
+              >
+                👁️
+              </button>
+            </div>
+          </div>
+          
+          <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <button
+              type="button"
+              class="auth-btn"
+              onclick="saveApiKey()"
+            >
+              Save API Key
+            </button>
+            <button
+              type="button"
+              class="auth-btn auth-btn--danger"
+              onclick="deleteApiKey()"
+              id="deleteKeyBtn"
+              style="display: none;"
+            >
+              Delete Key
+            </button>
+          </div>
+        </div>
+      </div>
+
 
       <!-- Danger Zone -->
       <div
@@ -826,6 +884,81 @@
             </div>
           `;
         }
+
+      // ========================================
+      // API Key Management Functions
+      // ========================================
+      
+      async function loadApiKeyStatus() {
+        try {
+          const response = await window.apiClient.request('GET', '/apiRouter?route=account/api-key');
+          
+          const statusDiv = document.getElementById('apiKeyStatus');
+          const deleteBtn = document.getElementById('deleteKeyBtn');
+          
+          if (response.configured) {
+            statusDiv.innerHTML = `
+              <span class="status-badge status-badge--active">✓ Configured</span>
+              <div style="margin-top: 8px; font-size: 14px; color: var(--color-text-secondary);">
+                <div>Last used: ${response.lastUsed || 'Never'}</div>
+                <div>Usage: ${response.usageCount || 0} requests</div>
+              </div>
+            `;
+            deleteBtn.style.display = 'inline-block';
+          } else {
+            statusDiv.innerHTML = '<span class="status-badge status-badge--inactive">Not configured</span>';
+            deleteBtn.style.display = 'none';
+          }
+        } catch (error) {
+          console.error('Error loading API key status:', error);
+        }
+      }
+
+      async function saveApiKey() {
+        const apiKey = document.getElementById('apiKeyInput').value.trim();
+        
+        if (!apiKey || !apiKey.startsWith('sk-')) {
+          Toast.error('Error', 'Invalid API key format. Must start with "sk-"');
+          return;
+        }
+        
+        try {
+          await window.apiClient.request('POST', '/apiRouter?route=account/api-key', {
+            apiKey: apiKey
+          });
+          
+          Toast.success('Success', 'API key saved successfully');
+          document.getElementById('apiKeyInput').value = '';
+          await loadApiKeyStatus();
+          
+        } catch (error) {
+          Toast.error('Error', error.message || 'Failed to save API key');
+        }
+      }
+
+      async function deleteApiKey() {
+        if (!confirm('Are you sure you want to delete your API key?')) {
+          return;
+        }
+        
+        try {
+          await window.apiClient.request('DELETE', '/apiRouter?route=account/api-key');
+          Toast.success('Success', 'API key deleted successfully');
+          await loadApiKeyStatus();
+        } catch (error) {
+          Toast.error('Error', 'Failed to delete API key');
+        }
+      }
+
+      function toggleApiKeyVisibility() {
+        const input = document.getElementById('apiKeyInput');
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+
+      // Load API key status on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        loadApiKeyStatus();
+      });
       }
     </script>
   </body>

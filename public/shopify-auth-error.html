@@ -232,8 +232,8 @@
         }, 1000);
         
         function retryAuth() {
-            // Redirect to the authorization initiation URL
-            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/initiateShopifyAuth?shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
+            // Redirect to the authorization initiation URL using handleRouter
+            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/handleRouter?route=initiateShopifyAuth&shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
             window.location.href = authUrl;
         }
         

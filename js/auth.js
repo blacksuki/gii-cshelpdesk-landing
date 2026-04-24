@@ -14,32 +14,45 @@
    * Initialize authentication
    */
   function initAuth() {
+    console.log('[auth.js initAuth] Starting...');
     // Check for existing user session
     const storedUser = localStorage.getItem("user");
+    console.log('[auth.js initAuth] storedUser:', storedUser ? 'EXISTS' : 'NULL');
+    
     if (storedUser) {
       try {
         const user = JSON.parse(storedUser);
+        console.log('[auth.js initAuth] Parsed user:', { hasToken: !!user.token, hasEmail: !!user.email });
+        
         if (user.token && user.email) {
           currentUser = user;
           authToken = user.token;
 
           // Validate token (basic check)
-          if (isTokenExpired(user.token)) {
+          const expired = isTokenExpired(user.token);
+          console.log('[auth.js initAuth] Token expired?', expired);
+          
+          if (expired) {
+            console.error('[auth.js initAuth] ❌ TOKEN EXPIRED - Calling logout()');
             logout();
             return;
           }
 
+          console.log('[auth.js initAuth] ✅ Token valid, updating UI');
           // Update UI for logged-in state
           updateUIForAuthState(true);
+        } else {
+          console.warn('[auth.js initAuth] User data incomplete');
         }
       } catch (error) {
-        console.error("Error parsing stored user:", error);
+        console.error("[auth.js initAuth] Error parsing stored user:", error);
         localStorage.removeItem("user");
       }
     }
 
     // Update UI for current auth state
     updateUIForAuthState(!!currentUser);
+    console.log('[auth.js initAuth] Complete. currentUser:', !!currentUser);
   }
 
   /**
@@ -143,12 +156,17 @@
     authToken = null;
     localStorage.removeItem("user");
 
+    // Clear API client token
+    if (window.apiClient) {
+      window.apiClient.clearToken();
+    }
+
     // Update UI
     updateUIForAuthState(false);
 
     // Redirect to login page if on protected page
     if (window.location.pathname.includes("/account/")) {
-      window.location.href = "/auth/login.html";
+      window.location.href = "../auth/login.html";
     }
   }
 

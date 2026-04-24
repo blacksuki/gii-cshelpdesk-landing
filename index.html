@@ -16,14 +16,47 @@
   <body>
     <div id="site-header"></div>
 
+    <!-- 2026 Free Promotion Banner -->
+    <section class="promo-banner-2026" aria-labelledby="promo-2026-title">
+      <div class="promo-banner-2026__inner">
+        <div class="promo-banner-2026__badge">🎉 LIMITED TIME OFFER</div>
+        <h2 id="promo-2026-title" class="promo-banner-2026__title">
+          FREE Throughout 2026!
+        </h2>
+        <p class="promo-banner-2026__subtitle">
+          Get full access to all premium features at no cost for the entire year
+        </p>
+        <div class="promo-banner-2026__features">
+          <div class="promo-feature">
+            <span class="promo-feature__icon">✨</span>
+            <span class="promo-feature__text">All Plans Free</span>
+          </div>
+          <div class="promo-feature">
+            <span class="promo-feature__icon">🚀</span>
+            <span class="promo-feature__text">Unlimited Seats</span>
+          </div>
+          <div class="promo-feature">
+            <span class="promo-feature__icon">🔓</span>
+            <span class="promo-feature__text">Full Features</span>
+          </div>
+        </div>
+        <div class="promo-banner-2026__note">
+          <strong>Note:</strong> You'll need your own OpenAI API key to use the AI features
+        </div>
+        <a href="auth/register.html" class="promo-banner-2026__cta" id="claimAccessBtn">
+          Claim Your Free Access Now →
+        </a>
+      </div>
+    </section>
+
     <!-- Quick Start Section - Moved to top -->
     <section class="quick-start section" aria-labelledby="quick-start-title">
       <div class="section__inner">
         <h2 id="quick-start-title" class="section__title">
-          Start Your Free Trial Today
+          Start Your Free Access Today
         </h2>
         <p class="quick-start__intro">
-          Get up and running in just a few simple steps. No credit card required.
+          Get up and running in just a few simple steps. No credit card required, completely free in 2026.
         </p>
         <div class="steps-container">
           <div class="step-item">
@@ -274,28 +307,58 @@
           Toast.error("Shopify Authorization Failed", urlParams.get("message"));
         }
 
-        // Manage the state of the 'Start Trial' button based on auth status
-        manageStartTrialButtonState();
+        // Manage the state of CTA buttons based on auth status
+        manageCTAButtonsState();
       });
 
-      function manageStartTrialButtonState() {
+      function manageCTAButtonsState() {
+        // Check if user is logged in by checking for user data in localStorage
+        const storedUser = localStorage.getItem("user");
+        let isLoggedIn = false;
+        
+        if (storedUser) {
+          try {
+            const user = JSON.parse(storedUser);
+            isLoggedIn = !!(user.token && user.email);
+          } catch (error) {
+            console.error("Error parsing stored user:", error);
+            localStorage.removeItem("user");
+          }
+        }
+
+        // Update "Claim Your Free Access Now" button in promo banner
+        const claimAccessBtn = document.getElementById("claimAccessBtn");
+        if (claimAccessBtn) {
+          if (isLoggedIn) {
+            claimAccessBtn.textContent = "Go to Dashboard →";
+            claimAccessBtn.href = "account/dashboard.html";
+            claimAccessBtn.setAttribute("aria-label", "Go to your dashboard");
+          } else {
+            claimAccessBtn.textContent = "Claim Your Free Access Now →";
+            claimAccessBtn.href = "auth/register.html";
+            claimAccessBtn.setAttribute("aria-label", "Register for free access");
+          }
+        }
+
+        // Update "Begin Free Trial" button in quick start section
         const startTrialBtn = document.getElementById("startTrialBtn");
-        if (!startTrialBtn) return;
-
-        // Check for a token in localStorage to determine login state.
-        const token = localStorage.getItem("token");
-
-        if (token) {
-          // USER IS LOGGED IN: Change the button to a dashboard link.
-          startTrialBtn.textContent = "Go to Dashboard";
-          startTrialBtn.href = "account/dashboard.html";
-          startTrialBtn.setAttribute("aria-label", "Go to your dashboard");
-        } else {
-          // USER IS NOT LOGGED IN: Ensure the button points to the login page
-          // with the correct parameters for redirection after login.
-          startTrialBtn.href = "auth/login.html?redirect=index&action=start_trial";
+        if (startTrialBtn) {
+          if (isLoggedIn) {
+            startTrialBtn.textContent = "Go to Dashboard";
+            startTrialBtn.href = "account/dashboard.html";
+            startTrialBtn.setAttribute("aria-label", "Go to your dashboard");
+          } else {
+            startTrialBtn.textContent = "Begin Free Trial";
+            startTrialBtn.href = "auth/login.html";
+            startTrialBtn.setAttribute("aria-label", "Begin your free trial");
+          }
         }
       }
+
+      // Listen for auth state changes and update buttons
+      document.addEventListener("authStateChanged", function(event) {
+        manageCTAButtonsState();
+      });
     </script>
   </body>
 </html>

@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "local-serve": "npx serve . -l 3456",
+    "build": "echo 'Static site, no build needed'"
+  },
   "dependencies": {
     "resend": "^6.0.2"
   }

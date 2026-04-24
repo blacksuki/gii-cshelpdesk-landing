@@ -178,6 +178,153 @@
           </div>
         </div>
       </div>
+      <!-- API Key Management Card -->
+      <div class="account-card" style="margin-bottom: 32px">
+        <div class="account-card__title">
+          <span>🔑</span>
+          API Key Management
+        </div>
+        <div class="account-card__content">
+          <!-- API Key Status -->
+          <div class="account-info">
+            <span class="account-info__label">OpenAI API Key</span>
+            <span class="account-info__value" id="apiKeyStatus">
+              <span class="subscription-badge subscription-badge--free">Not Configured</span>
+            </span>
+          </div>
+          
+          <!-- Token Usage Statistics (显示当配置了API Key时) -->
+          <div id="tokenUsageSection" style="display: none; margin-top: 16px; padding: 16px; background-color: #f8f9fa; border-radius: 8px;">
+            <div style="font-weight: 600; margin-bottom: 12px;">📊 Token Usage Statistics</div>
+            
+            <!-- Monthly Usage -->
+            <div style="margin-bottom: 12px;">
+              <div style="font-size: 14px; color: var(--color-muted); margin-bottom: 4px;">Monthly Usage</div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                <span>Total Tokens: <strong id="monthlyTokens">0</strong></span>
+                <span>Calls: <strong id="monthlyCalls">0</strong></span>
+                <span>Avg/Call: <strong id="monthlyAvg">0</strong></span>
+              </div>
+            </div>
+            
+            <!-- Daily Usage -->
+            <div style="margin-bottom: 12px;">
+              <div style="font-size: 14px; color: var(--color-muted); margin-bottom: 4px;">Today's Usage</div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px;">
+                <span>Total Tokens: <strong id="dailyTokens">0</strong></span>
+                <span>Calls: <strong id="dailyCalls">0</strong></span>
+                <span>Avg/Call: <strong id="dailyAvg">0</strong></span>
+              </div>
+            </div>
+            
+            <!-- Total Usage -->
+            <div style="border-top: 1px solid #e0e0e0; padding-top: 8px; margin-top: 8px;">
+              <div style="font-size: 14px;">
+                <span style="color: var(--color-muted);">Total Tokens Used:</span>
+                <strong id="totalTokens" style="font-size: 16px; color: var(--color-primary);">0</strong>
+              </div>
+            </div>
+            
+            <!-- Last Used -->
+            <div style="font-size: 12px; color: var(--color-muted); margin-top: 8px;">
+              Last used: <span id="apiKeyLastUsed">Never</span>
+            </div>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div style="display: flex; gap: 12px; margin-top: 16px;">
+            <button
+              class="auth-btn auth-btn--primary"
+              onclick="openApiKeyModal()"
+              id="configureApiKeyBtn"
+            >
+              <span class="btn-text">Configure API Key</span>
+            </button>
+            <button
+              class="auth-btn auth-btn--warning"
+              onclick="deleteApiKeyConfirm()"
+              id="deleteApiKeyBtn"
+              style="display: none;"
+            >
+              <span class="spinner" style="display: none;"></span>
+              <span class="btn-text">Delete API Key</span>
+            </button>
+            <button
+              class="auth-btn auth-btn--secondary"
+              onclick="refreshApiKeyStatus()"
+              id="refreshApiKeyBtn"
+            >
+              <span class="btn-text">Refresh</span>
+              <span class="spinner" style="display: none;"></span>
+            </button>
+          </div>
+          
+          <!-- Info Message -->
+          <div style="margin-top: 16px; padding: 12px; background-color: #e3f2fd; border-radius: 8px; border-left: 4px solid #2196f3;">
+            <div style="font-size: 14px; color: #1565c0;">
+              <strong>💡 Why configure your own API Key?</strong>
+              <ul style="margin: 8px 0 0 20px; font-size: 13px;">
+                <li>Use your own OpenAI credits</li>
+                <li>Track your token usage</li>
+                <li>No sharing with other users</li>
+                <li>Falls back to system key if not configured</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- V3.5 NEW: Store Policies Overview (Pro/Team only) -->
+      <div class="account-card" style="margin-bottom: 32px" id="policiesOverviewCard">
+        <div class="account-card__title">
+          <span>📋</span>
+          Store Policies Overview
+        </div>
+        <div class="account-card__content">
+          <div id="policiesOverviewGate" style="display: none; color: var(--color-muted); padding: 16px;">
+            Store policies management is available for Pro and Team plans only.
+            <div style="margin-top: 12px;">
+              <a href="/pricing.html" class="auth-btn auth-btn--secondary" style="text-decoration: none; display: inline-block;">
+                Upgrade to Pro
+              </a>
+            </div>
+          </div>
+          
+          <div id="policiesOverviewContent" style="display: none;">
+            <!-- Refund Policy Status -->
+            <div class="account-info" style="padding: 12px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 600;">🔄 Refund Policy</span>
+                <span id="refundPolicyStatus" class="policy-status-badge">Not Set</span>
+              </div>
+              <div id="refundPolicySummary" style="font-size: 14px; color: var(--color-muted); line-height: 1.5;">
+                No refund policy configured
+              </div>
+            </div>
+
+            <!-- Shipping Policy Status -->
+            <div class="account-info" style="padding: 12px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 16px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-weight: 600;">🚚 Shipping Policy</span>
+                <span id="shippingPolicyStatus" class="policy-status-badge">Not Set</span>
+              </div>
+              <div id="shippingPolicySummary" style="font-size: 14px; color: var(--color-muted); line-height: 1.5;">
+                No shipping policy configured
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+              <a href="policy-editor.html" class="auth-btn auth-btn--secondary" style="text-decoration: none; text-align: center;">
+                Edit Policies
+              </a>
+              <!-- <button class="auth-btn auth-btn--secondary" onclick="refreshPoliciesOverview()">
+                Refresh
+              </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- Service Policy Management (Pro/Team only) -->
       <div class="account-card" style="margin-bottom: 32px">
@@ -194,86 +341,61 @@
             This feature is available for Pro and Team plans only.
           </div>
           <div id="policyForm" style="display: none">
-            <!-- Refund Policy Section -->
+            <!-- Refund Policy Display (Read-only) -->
             <div style="margin-bottom: 24px">
               <div style="margin-bottom: 8px; font-weight: 500">
-                Refund Policy (max 2000 words)
+                Refund Policy
               </div>
-              <textarea
-                id="refundPolicyText"
-                placeholder="Enter your refund policy details here (max 2000 words)..."
-                style="
-                  width: 100%;
-                  min-height: 120px;
-                  padding: 8px;
-                  margin-bottom: 8px;
-                  resize: vertical;
-                "
-                maxlength="12000"
-              ></textarea>
-              <div style="font-size: 12px; color: var(--color-muted)">
-                Word count: <span id="refundWordCount">0</span>/2000 words, you
-                can just copy and paste the content from your Shopify store and
-                save it here.
+              <div id="refundPolicyDisplay" style="
+                width: 100%;
+                min-height: 120px;
+                padding: 12px;
+                background: #f8f9fa;
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+                font-family: 'Monaco', 'Menlo', monospace;
+                font-size: 13px;
+                line-height: 1.6;
+                white-space: pre-wrap;
+                overflow-x: auto;
+              ">
+                No refund policy configured. Visit Policy Editor to set up.
               </div>
-              <button
-                class="auth-btn auth-btn--secondary"
-                onclick="submitPolicy('refund')"
-                style="margin-top: 8px"
-              >
-                Save Refund Policy
-              </button>
-              <div
-                id="refundPolicyStatus"
-                style="
-                  margin-top: 8px;
-                  color: var(--color-muted);
-                  font-size: 12px;
-                "
-              ></div>
+              <div style="font-size: 12px; color: var(--color-muted); margin-top: 8px;">
+                <span id="refundPolicyDate">--</span>
+              </div>
             </div>
 
-            <!-- Shipping Policy Section -->
+            <!-- Shipping Policy Display (Read-only) -->
             <div style="margin-bottom: 24px">
               <div style="margin-bottom: 8px; font-weight: 500">
-                Shipping Policy (max 2000 words)
+                Shipping Policy
               </div>
-              <textarea
-                id="shippingPolicyText"
-                placeholder="Enter your shipping policy details here (max 2000 words)..."
-                style="
-                  width: 100%;
-                  min-height: 120px;
-                  padding: 8px;
-                  margin-bottom: 8px;
-                  resize: vertical;
-                "
-                maxlength="12000"
-              ></textarea>
-              <div style="font-size: 12px; color: var(--color-muted)">
-                Word count: <span id="shippingWordCount">0</span>/2000 words,
-                you can just copy and paste the content from your Shopify store
-                and save it here.
+              <div id="shippingPolicyDisplay" style="
+                width: 100%;
+                min-height: 120px;
+                padding: 12px;
+                background: #f8f9fa;
+                border: 1px solid #e0e0e0;
+                border-radius: 4px;
+                font-family: 'Monaco', 'Menlo', monospace;
+                font-size: 13px;
+                line-height: 1.6;
+                white-space: pre-wrap;
+                overflow-x: auto;
+              ">
+                No shipping policy configured. Visit Policy Editor to set up.
               </div>
-              <button
-                class="auth-btn auth-btn--secondary"
-                onclick="submitPolicy('shipping')"
-                style="margin-top: 8px"
-              >
-                Save Shipping Policy
-              </button>
-              <div
-                id="shippingPolicyStatus"
-                style="
-                  margin-top: 8px;
-                  color: var(--color-muted);
-                  font-size: 12px;
-                "
-              ></div>
+              <div style="font-size: 12px; color: var(--color-muted); margin-top: 8px;">
+                <span id="shippingPolicyDate">--</span>
+              </div>
             </div>
 
-            <!-- <div style="display:flex; gap: 12px; margin-top: 16px;">
-              <a href="/policyView.html" class="auth-btn auth-btn--secondary" style="text-decoration:none;">View Policies</a>
+            <!-- Edit Policies Button -->
+            <!-- <div style="display: flex; gap: 12px; margin-top: 16px;">
+              <a href="policy-editor.html" class="auth-btn auth-btn--secondary" style="text-decoration: none; text-align: center;">
+                Edit Policies
+              </a>
             </div> -->
           </div>
         </div>
@@ -384,6 +506,8 @@
         // loadRecentActivity();
         initPolicySection();
         loadShopifyDomainStatus();
+        loadPoliciesOverview(); // V3.5 NEW: Load policies overview
+        loadApiKeyStatus(); // Load API Key status
         
         // Check if user needs to set up Shopify domain
         const urlParams = new URLSearchParams(window.location.search);
@@ -400,19 +524,33 @@
           if (result.success) {
             console.log("loadUserData: result.data.user", result.data.user);
             try {
-              // 1. 获取当前user数据（若不存在则初始化为空对象）
-              let user = JSON.parse(localStorage.getItem("user")) || {};
+              // 1. 获取当前user数据
+              const storedUserStr = localStorage.getItem("user");
+              console.log("[loadUserData] Stored user string:", storedUserStr ? storedUserStr.substring(0, 100) + '...' : 'null');
+              
+              let user = storedUserStr ? JSON.parse(storedUserStr) : {};
+              console.log("[loadUserData] Parsed user:", {
+                hasToken: !!user.token,
+                hasEmail: !!user.email,
+                hasSubscription: !!user.subscription
+              });
 
-              // 2. 更新subscription部分（确保user对象存在）
+              // 2. 更新subscription部分（确保保留token和email）
               if (result?.data?.user?.subscription) {
                 user.subscription = result.data.user.subscription;
+                console.log("[loadUserData] Updated subscription");
               }
 
-              // 3. 存回localStorage
-              localStorage.setItem("user", JSON.stringify(user));
+              // 3. 存回localStorage（确保不覆盖token和email）
+              if (user.token && user.email) {
+                localStorage.setItem("user", JSON.stringify(user));
+                console.log("[loadUserData] Saved user to localStorage");
+              } else {
+                console.error("[loadUserData] ❌ Cannot save user without token/email:", user);
+              }
             } catch (error) {
               console.error(
-                "update user.subscription failedi, please logout and login again:",
+                "[loadUserData] update user.subscription failed, please logout and login again:",
                 error
               );
               // 可在此处添加备用逻辑（如提示用户、重试等）
@@ -721,6 +859,116 @@
       function viewDocumentation() {
         window.location.href = "/policyView.html";
       }
+
+      // V3.5 NEW: Load and display policies overview
+      async function loadPoliciesOverview() {
+        try {
+          const user = JSON.parse(localStorage.getItem("user") || "{}");
+          const plan = (user?.subscription?.plan || "").toLowerCase();
+          const eligible = plan === "pro" || plan === "team";
+          
+          // Show/hide based on plan eligibility
+          document.getElementById("policiesOverviewGate").style.display = eligible ? "none" : "block";
+          document.getElementById("policiesOverviewContent").style.display = eligible ? "block" : "none";
+          
+          if (!eligible) return;
+          
+          const shopDomain = user.domain;
+          if (!shopDomain) {
+            updatePolicyStatusBadge("refundPolicyStatus", "error", "No Domain");
+            updatePolicyStatusBadge("shippingPolicyStatus", "error", "No Domain");
+            return;
+          }
+          
+          // Load refund policy
+          try {
+            const refundResult = await window.apiClient.getServicePolicy(shopDomain, "refund");
+            if (refundResult?.success && refundResult?.data?.parsedData) {
+              const summary = generatePolicySummary(refundResult.data.parsedData, refundResult.data.updatedAt);
+              document.getElementById("refundPolicySummary").textContent = summary;
+              updatePolicyStatusBadge("refundPolicyStatus", "active", "Active");
+            } else {
+              document.getElementById("refundPolicySummary").textContent = "No refund policy configured";
+              updatePolicyStatusBadge("refundPolicyStatus", "inactive", "Not Set");
+            }
+          } catch (error) {
+            console.error("Error loading refund policy:", error);
+            document.getElementById("refundPolicySummary").textContent = "Error loading policy";
+            updatePolicyStatusBadge("refundPolicyStatus", "error", "Error");
+          }
+          
+          // Load shipping policy
+          try {
+            const shippingResult = await window.apiClient.getServicePolicy(shopDomain, "shipping");
+            if (shippingResult?.success && shippingResult?.data?.parsedData) {
+              const summary = generatePolicySummary(shippingResult.data.parsedData, shippingResult.data.updatedAt);
+              document.getElementById("shippingPolicySummary").textContent = summary;
+              updatePolicyStatusBadge("shippingPolicyStatus", "active", "Active");
+            } else {
+              document.getElementById("shippingPolicySummary").textContent = "No shipping policy configured";
+              updatePolicyStatusBadge("shippingPolicyStatus", "inactive", "Not Set");
+            }
+          } catch (error) {
+            console.error("Error loading shipping policy:", error);
+            document.getElementById("shippingPolicySummary").textContent = "Error loading policy";
+            updatePolicyStatusBadge("shippingPolicyStatus", "error", "Error");
+          }
+        } catch (error) {
+          console.error("Error in loadPoliciesOverview:", error);
+        }
+      }
+
+      // V3.5 UPDATED: Generate policy summary - show update date instead of content
+      function generatePolicySummary(parsedData, updatedAt) {
+        if (!parsedData || typeof parsedData !== 'object') {
+          return "Policy data available";
+        }
+        
+        // Show update date instead of policy content
+        if (updatedAt) {
+          const date = new Date(updatedAt);
+          return `Last updated: ${date.toLocaleDateString()} at ${date.toLocaleTimeString()}`;
+        }
+        
+        return "Policy configured";
+      }
+
+      // V3.5 NEW: Update policy status badge
+      function updatePolicyStatusBadge(elementId, status, text) {
+        const badge = document.getElementById(elementId);
+        badge.textContent = text;
+        badge.className = "policy-status-badge";
+        
+        // Add status-specific styling
+        if (status === "active") {
+          badge.style.backgroundColor = "#d4edda";
+          badge.style.color = "#155724";
+          badge.style.border = "1px solid #c3e6cb";
+        } else if (status === "inactive") {
+          badge.style.backgroundColor = "#f8d7da";
+          badge.style.color = "#721c24";
+          badge.style.border = "1px solid #f5c6cb";
+        } else if (status === "error") {
+          badge.style.backgroundColor = "#fff3cd";
+          badge.style.color = "#856404";
+          badge.style.border = "1px solid #ffeaa7";
+        }
+        
+        badge.style.padding = "4px 12px";
+        badge.style.borderRadius = "12px";
+        badge.style.fontSize = "12px";
+        badge.style.fontWeight = "600";
+        badge.style.display = "inline-block";
+      }
+
+      // V3.5 NEW: Refresh policies overview
+      async function refreshPoliciesOverview() {
+        Toast.loading("Refreshing Policies", "Loading latest policy information...");
+        await loadPoliciesOverview();
+        Toast.hideLoading();
+        Toast.success("Policies Refreshed", "Policy information has been updated");
+      }
+
       // Service Policy logic
       function initPolicySection() {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -742,7 +990,7 @@
         }
       }
 
-      // Load existing policies from API
+      // Load existing policies for read-only display
       async function loadExistingPolicies() {
         try {
           const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -751,153 +999,36 @@
           if (!shopDomain) return;
 
           // Load refund policy
-          const refundResult = await window.apiClient.getServicePolicy(
-            shopDomain,
-            "refund"
-          );
-          if (
-            refundResult &&
-            refundResult.success &&
-            refundResult.data &&
-            refundResult.data.parsedData
-          ) {
-            fmtData = jsonToKeyValue(refundResult.data.parsedData);
-            document.getElementById("refundPolicyText").value = fmtData || "";
-            updateWordCount("refund");
+          const refundResult = await window.apiClient.getServicePolicy(shopDomain, "refund");
+          if (refundResult?.success && refundResult?.data?.parsedData) {
+            const formatted = jsonToKeyValue(refundResult.data.parsedData);
+            document.getElementById("refundPolicyDisplay").textContent = formatted;
+            document.getElementById("refundPolicyDate").textContent =
+              "Last updated: " + new Date(refundResult.data.updatedAt).toLocaleString();
           }
 
           // Load shipping policy
-          const shippingResult = await window.apiClient.getServicePolicy(
-            shopDomain,
-            "shipping"
-          );
-          if (
-            shippingResult &&
-            shippingResult.success &&
-            shippingResult.data &&
-            shippingResult.data.parsedData
-          ) {
-            fmtData = jsonToKeyValue(shippingResult.data.parsedData);
-            document.getElementById("shippingPolicyText").value = fmtData || "";
-            updateWordCount("shipping");
+          const shippingResult = await window.apiClient.getServicePolicy(shopDomain, "shipping");
+          if (shippingResult?.success && shippingResult?.data?.parsedData) {
+            const formatted = jsonToKeyValue(shippingResult.data.parsedData);
+            document.getElementById("shippingPolicyDisplay").textContent = formatted;
+            document.getElementById("shippingPolicyDate").textContent =
+              "Last updated: " + new Date(shippingResult.data.updatedAt).toLocaleString();
           }
         } catch (error) {
           console.error("Error loading existing policies:", error);
         }
       }
 
-      // Setup word counters for both policy text areas
+      // Setup word counters (no longer needed - removed)
       function setupWordCounters() {
-        const refundTextarea = document.getElementById("refundPolicyText");
-        const shippingTextarea = document.getElementById("shippingPolicyText");
-
-        refundTextarea.addEventListener("input", () =>
-          updateWordCount("refund")
-        );
-        shippingTextarea.addEventListener("input", () =>
-          updateWordCount("shipping")
-        );
+        // No longer needed with read-only display
       }
 
-      // Update word count display
-      function updateWordCount(policyType) {
-        const textarea = document.getElementById(`${policyType}PolicyText`);
-        const wordCountEl = document.getElementById(`${policyType}WordCount`);
-
-        if (!textarea || !wordCountEl) return;
-
-        const text = textarea.value.trim();
-        const wordCount = text ? text.split(/\s+/).length : 0;
-        wordCountEl.textContent = wordCount;
-
-        // Update color based on word count
-        if (wordCount > 2000) {
-          wordCountEl.style.color = "var(--color-error)";
-        } else if (wordCount > 1500) {
-          wordCountEl.style.color = "var(--color-warning)";
-        } else {
-          wordCountEl.style.color = "var(--color-muted)";
-        }
-      }
-
-      // Submit policy (refund or shipping)
+      // Submit policy (no longer needed - removed)
       async function submitPolicy(policyType) {
-        try {
-          const textarea = document.getElementById(`${policyType}PolicyText`);
-          const statusEl = document.getElementById(`${policyType}PolicyStatus`);
-
-          if (!textarea || !statusEl) return;
-
-          const content = textarea.value.trim();
-          if (!content) {
-            Toast.error(
-              "Validation",
-              `Please enter your ${policyType} policy content.`
-            );
-            return;
-          }
-
-          // Check word count
-          const wordCount = content.split(/\s+/).length;
-          if (wordCount > 2000) {
-            Toast.error(
-              "Validation",
-              `${policyType} policy exceeds 2000 words (${wordCount} words). Please reduce the content.`
-            );
-            return;
-          }
-
-          statusEl.textContent = `Saving ${policyType} policy...`;
-          statusEl.style.color = "var(--color-info)";
-
-          Toast.loading("Saving", `Processing ${policyType} policy...`);
-
-          const user = JSON.parse(localStorage.getItem("user") || "{}");
-          const shopDomain = user.domain;
-
-          if (!shopDomain) {
-            Toast.error(
-              "Error",
-              "Shop domain not found. Please refresh and try again."
-            );
-            return;
-          }
-
-          const res = await window.apiClient.uploadServicePolicy(
-            shopDomain,
-            policyType,
-            content
-          );
-
-          Toast.hideLoading();
-
-          if (res) {
-            statusEl.textContent = `${policyType} policy saved successfully.`;
-            statusEl.style.color = "var(--color-success)";
-            Toast.success(
-              "Saved",
-              `${
-                policyType.charAt(0).toUpperCase() + policyType.slice(1)
-              } policy saved and processed successfully.`
-            );
-          } else {
-            statusEl.textContent = `Failed to save ${policyType} policy: ${
-              res?.error || "Unknown error"
-            }`;
-            statusEl.style.color = "var(--color-error)";
-            Toast.error("Error", res?.error || "Failed to save policy");
-          }
-        } catch (err) {
-          Toast.hideLoading();
-          const statusEl = document.getElementById(`${policyType}PolicyStatus`);
-          if (statusEl) {
-            statusEl.textContent = `Error: ${
-              err.message || "Failed to save policy"
-            }`;
-            statusEl.style.color = "var(--color-error)";
-          }
-          Toast.error("Error", err.message || "Failed to save policy");
-        }
+        // Policies are now edited in policy-editor.html
+        Toast.info("Edit Policies", "Please use the Policy Editor to edit policies");
       }
 
       // Shopify Domain Management Functions
@@ -1101,6 +1232,483 @@
       function logout() {
         handleLogout();
       }
+
+      // ==========================================
+      // API Key Management Functions
+      // ==========================================
+
+      /**
+       * Load and display API key status
+       */
+      async function loadApiKeyStatus() {
+        try {
+          // Check both OpenAI and Qwen providers
+          const providers = ['openai', 'qwen'];
+          let configuredProvider = null;
+          let statusData = null;
+          
+          for (const provider of providers) {
+            const response = await window.apiClient.getApiKeyStatus(provider);
+            if (response.success && response.data.configured) {
+              configuredProvider = provider;
+              statusData = response.data;
+              break;
+            }
+          }
+          
+          if (configuredProvider && statusData) {
+            // API Key is configured
+            const providerName = configuredProvider.charAt(0).toUpperCase() + configuredProvider.slice(1);
+            const updatedAt = statusData.updatedAt ? new Date(statusData.updatedAt).toLocaleString() : 'N/A';
+            
+            document.getElementById('apiKeyStatus').innerHTML =
+              `<span class="subscription-badge subscription-badge--active">${providerName}</span>` +
+              `<div style="font-size: 12px; color: var(--color-muted); margin-top: 4px;">Updated: ${updatedAt}</div>`;
+            
+            // Show delete button
+            document.getElementById('deleteApiKeyBtn').style.display = 'inline-block';
+            document.getElementById('deleteApiKeyBtn').setAttribute('data-provider', configuredProvider);
+            
+            // Update button text
+            document.getElementById('configureApiKeyBtn').querySelector('.btn-text').textContent = 'Update API Key';
+            
+            // Show token usage section
+            const tokenUsageSection = document.getElementById('tokenUsageSection');
+            tokenUsageSection.style.display = 'block';
+            
+            // Update token usage statistics
+            if (statusData.tokenUsage) {
+              const usage = statusData.tokenUsage;
+              
+              // Monthly stats
+              document.getElementById('monthlyTokens').textContent =
+                usage.monthly.totalTokens.toLocaleString();
+              document.getElementById('monthlyCalls').textContent =
+                usage.monthly.callCount.toLocaleString();
+              document.getElementById('monthlyAvg').textContent =
+                Math.round(usage.monthly.averageTokensPerCall).toLocaleString();
+              
+              // Daily stats
+              document.getElementById('dailyTokens').textContent =
+                usage.daily.totalTokens.toLocaleString();
+              document.getElementById('dailyCalls').textContent =
+                usage.daily.callCount.toLocaleString();
+              document.getElementById('dailyAvg').textContent =
+                Math.round(usage.daily.averageTokensPerCall).toLocaleString();
+              
+              // Total tokens
+              document.getElementById('totalTokens').textContent =
+                usage.total.toLocaleString();
+            }
+            
+            // Update last used
+            if (statusData.lastUsed) {
+              const lastUsed = new Date(statusData.lastUsed);
+              document.getElementById('apiKeyLastUsed').textContent =
+                lastUsed.toLocaleString();
+            }
+            
+          } else {
+            // API Key not configured
+            document.getElementById('apiKeyStatus').innerHTML = 
+              '<span class="subscription-badge subscription-badge--free">Not Configured</span>';
+            
+            // Hide delete button
+            document.getElementById('deleteApiKeyBtn').style.display = 'none';
+            
+            // Hide token usage section
+            document.getElementById('tokenUsageSection').style.display = 'none';
+            
+            // Update button text
+            document.getElementById('configureApiKeyBtn').querySelector('.btn-text').textContent = 'Configure API Key';
+          }
+          
+        } catch (error) {
+          console.error('Error loading API key status:', error);
+          Toast.error('Failed to load API key status');
+        }
+      }
+
+      /**
+       * Open API Key configuration modal
+       */
+      function openApiKeyModal() {
+        document.getElementById('apiKeyModal').style.display = 'flex';
+        document.getElementById('modalOverlay').style.display = 'block';
+        document.getElementById('apiKeyInput').value = '';
+        document.getElementById('apiKeyValidation').style.display = 'none';
+      }
+
+      /**
+       * Close API Key configuration modal
+       */
+      function closeApiKeyModal() {
+        document.getElementById('apiKeyModal').style.display = 'none';
+        document.getElementById('modalOverlay').style.display = 'none';
+      }
+
+      /**
+       * Toggle API Key visibility
+       */
+      function toggleApiKeyVisibility() {
+        const input = document.getElementById('apiKeyInput');
+        const checkbox = document.getElementById('showApiKey');
+        input.type = checkbox.checked ? 'text' : 'password';
+      }
+
+      /**
+       * Update provider information when selection changes
+       */
+      function updateProviderInfo() {
+        const provider = document.getElementById('apiKeyProvider').value;
+        const providerInfo = document.getElementById('providerInfo');
+        const guideTitle = document.getElementById('guideTitle');
+        const guideSteps = document.getElementById('guideSteps');
+        
+        if (provider === 'openai') {
+          providerInfo.textContent = 'OpenAI GPT models';
+          guideTitle.textContent = '🔗 How to get your OpenAI API Key:';
+          guideSteps.innerHTML = `
+            <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #1976d2;">OpenAI Platform</a></li>
+            <li>Sign in or create an account</li>
+            <li>Navigate to API Keys section</li>
+            <li>Click "Create new secret key"</li>
+            <li>Copy and paste the key here</li>
+          `;
+        } else if (provider === 'qwen') {
+          providerInfo.textContent = 'Alibaba Cloud Qwen models';
+          guideTitle.textContent = '🔗 How to get your Qwen API Key:';
+          guideSteps.innerHTML = `
+            <li>Visit <a href="https://dashscope.console.aliyun.com/apiKey" target="_blank" style="color: #1976d2;">Alibaba Cloud DashScope</a></li>
+            <li>Sign in or create an account</li>
+            <li>Navigate to API Key management</li>
+            <li>Click "Create new API Key"</li>
+            <li>Copy and paste the key here</li>
+          `;
+        }
+      }
+
+      /**
+       * Save API Key from modal
+       */
+      async function saveApiKeyFromModal() {
+        const apiKey = document.getElementById('apiKeyInput').value.trim();
+        const provider = document.getElementById('apiKeyProvider').value;
+        const saveBtn = document.getElementById('saveApiKeyBtn');
+        const btnText = saveBtn.querySelector('.btn-text');
+        const spinner = saveBtn.querySelector('.spinner');
+        
+        // Validation
+        if (!apiKey) {
+          showValidationMessage('Please enter an API key', 'error');
+          return;
+        }
+        
+        // Provider-specific validation
+        if (provider === 'openai') {
+          if (!apiKey.startsWith('sk-')) {
+            showValidationMessage('Invalid API key format. OpenAI keys start with "sk-"', 'error');
+            return;
+          }
+        } else if (provider === 'qwen') {
+          if (!apiKey.startsWith('sk-')) {
+            showValidationMessage('Invalid API key format. Qwen keys start with "sk-"', 'error');
+            return;
+          }
+        }
+        
+        // Show loading
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        saveBtn.disabled = true;
+        
+        try {
+          const response = await window.apiClient.saveApiKey(apiKey, provider);
+          
+          if (response.success) {
+            Toast.success('API Key saved successfully!');
+            closeApiKeyModal();
+            
+            // Reload API key status
+            await loadApiKeyStatus();
+          } else {
+            // Show detailed error message
+            const errorMsg = response.error?.message || 'Failed to save API key';
+            const suggestedAction = response.error?.suggestedAction;
+            
+            let fullMessage = errorMsg;
+            if (suggestedAction) {
+              fullMessage += '\n\n' + suggestedAction;
+            }
+            
+            showValidationMessage(fullMessage, 'error');
+          }
+          
+        } catch (error) {
+          console.error('Error saving API key:', error);
+          showValidationMessage('Failed to save API key. Please try again.', 'error');
+        } finally {
+          // Hide loading
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+          saveBtn.disabled = false;
+        }
+      }
+
+      /**
+       * Show validation message in modal
+       */
+      function showValidationMessage(message, type) {
+        const validationDiv = document.getElementById('apiKeyValidation');
+        const messageDiv = document.getElementById('validationMessage');
+        
+        validationDiv.style.display = 'block';
+        messageDiv.textContent = message;
+        
+        if (type === 'error') {
+          validationDiv.style.backgroundColor = '#ffebee';
+          validationDiv.style.borderLeft = '4px solid #f44336';
+          messageDiv.style.color = '#c62828';
+        } else if (type === 'success') {
+          validationDiv.style.backgroundColor = '#e8f5e9';
+          validationDiv.style.borderLeft = '4px solid #4caf50';
+          messageDiv.style.color = '#2e7d32';
+        }
+      }
+
+      /**
+       * Delete API Key with confirmation
+       */
+      async function deleteApiKeyConfirm() {
+        if (!confirm('Are you sure you want to delete your API key? This action cannot be undone.')) {
+          return;
+        }
+        
+        const deleteBtn = document.getElementById('deleteApiKeyBtn');
+        const provider = deleteBtn.getAttribute('data-provider') || 'openai';
+        const btnText = deleteBtn.querySelector('.btn-text');
+        const spinner = deleteBtn.querySelector('.spinner');
+        
+        // Show loading
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        deleteBtn.disabled = true;
+        
+        try {
+          const response = await window.apiClient.deleteApiKey(provider);
+          
+          if (response.success) {
+            Toast.success('API Key deleted successfully');
+            
+            // Reload API key status
+            await loadApiKeyStatus();
+          } else {
+            Toast.error('Failed to delete API key');
+          }
+          
+        } catch (error) {
+          console.error('Error deleting API key:', error);
+          Toast.error('Failed to delete API key');
+        } finally {
+          // Hide loading
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+          deleteBtn.disabled = false;
+        }
+      }
+
+      /**
+       * Refresh API Key status
+       */
+      async function refreshApiKeyStatus() {
+        const refreshBtn = document.getElementById('refreshApiKeyBtn');
+        const btnText = refreshBtn.querySelector('.btn-text');
+        const spinner = refreshBtn.querySelector('.spinner');
+        
+        // Show loading
+        btnText.style.display = 'none';
+        spinner.style.display = 'inline-block';
+        refreshBtn.disabled = true;
+        
+        try {
+          await loadApiKeyStatus();
+          Toast.success('API Key status refreshed');
+        } catch (error) {
+          console.error('Error refreshing API key status:', error);
+          Toast.error('Failed to refresh status');
+        } finally {
+          // Hide loading
+          btnText.style.display = 'inline';
+          spinner.style.display = 'none';
+          refreshBtn.disabled = false;
+        }
+      }
+    </script>
+    
+    <!-- API Key Configuration Modal -->
+    <div id="apiKeyModal" class="modal" style="display: none;">
+      <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+          <h2>Configure API Key</h2>
+          <button class="modal-close" onclick="closeApiKeyModal()">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <!-- Provider Selection -->
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500;">
+              Provider
+            </label>
+            <select id="apiKeyProvider" class="auth-input" onchange="updateProviderInfo()">
+              <option value="openai">OpenAI</option>
+              <option value="qwen">Qwen</option>
+              <!-- Future: Gemini, Kimi -->
+            </select>
+            <div id="providerInfo" style="font-size: 12px; color: var(--color-muted); margin-top: 4px;">
+              OpenAI GPT models
+            </div>
+          </div>
+          
+          <!-- API Key Input -->
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 500;">
+              API Key <span style="color: red;">*</span>
+            </label>
+            <input
+              type="password"
+              id="apiKeyInput"
+              class="auth-input"
+              placeholder="sk-..."
+              autocomplete="off"
+              style="width: 100%; min-width: 400px;"
+              size="40"
+            />
+            <div style="font-size: 12px; color: var(--color-muted); margin-top: 4px;">
+              Your API key is encrypted and stored securely. We never see your key in plain text.
+            </div>
+          </div>
+          
+          <!-- Show/Hide API Key -->
+          <div style="margin-bottom: 20px;">
+            <label style="display: flex; align-items: center; cursor: pointer;">
+              <input type="checkbox" id="showApiKey" onchange="toggleApiKeyVisibility()" style="margin-right: 8px;">
+              <span style="font-size: 14px;">Show API Key</span>
+            </label>
+          </div>
+          
+          <!-- Validation Status -->
+          <div id="apiKeyValidation" style="display: none; margin-bottom: 20px; padding: 12px; border-radius: 8px;">
+            <div id="validationMessage"></div>
+          </div>
+          
+          <!-- How to get API Key -->
+          <div id="apiKeyGuide" style="margin-bottom: 20px; padding: 12px; background-color: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
+            <div style="font-size: 14px; color: #856404;">
+              <strong id="guideTitle">🔗 How to get your OpenAI API Key:</strong>
+              <ol id="guideSteps" style="margin: 8px 0 0 20px; font-size: 13px;">
+                <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank" style="color: #1976d2;">OpenAI Platform</a></li>
+                <li>Sign in or create an account</li>
+                <li>Navigate to API Keys section</li>
+                <li>Click "Create new secret key"</li>
+                <li>Copy and paste the key here</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button class="auth-btn auth-btn--secondary" onclick="closeApiKeyModal()">
+            Cancel
+          </button>
+          <button class="auth-btn auth-btn--primary" onclick="saveApiKeyFromModal()" id="saveApiKeyBtn">
+            <span class="btn-text">Save API Key</span>
+            <span class="spinner" style="display: none;"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay" style="display: none;" onclick="closeApiKeyModal()"></div>
+
+    <style>
+      /* Modal Styles */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        max-width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        z-index: 1001;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .modal-header h2 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        color: #666;
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-close:hover {
+        color: #333;
+      }
+
+      .modal-body {
+        padding: 24px;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding: 16px 24px;
+        border-top: 1px solid #e0e0e0;
+      }
+    </style>
+
     </script>
   </body>
 </html>

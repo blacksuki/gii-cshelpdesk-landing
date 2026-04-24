@@ -253,8 +253,8 @@
     </div>
 
     <script>
-        // Replace with your actual Cloud Function URL
-        const SUBSCRIBE_FUNCTION_URL = "https://us-central1-your-project-id.cloudfunctions.net/subscribeAndAuthorize";
+        // V3.3+: Use unified handleRouter endpoint
+        const SUBSCRIBE_FUNCTION_URL = "https://us-central1-giicsagent.cloudfunctions.net/handleRouter?route=subscribeAndAuthorize";
         
         document.getElementById("subscribeForm").addEventListener("submit", async function(event) {
             event.preventDefault();

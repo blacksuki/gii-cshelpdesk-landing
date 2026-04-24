@@ -105,17 +105,14 @@
 // Authentication check
 function checkAuthentication() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-//   console.log("checkAuthentication: user", user);
-//   console.log("checkAuthentication: user.token", user.token);
   if (!user.token) {
+    console.log("❌ No token found in localStorage");
     Toast.error(
       "Authentication Required",
       "Please sign in to access your dashboard."
     );
     setTimeout(() => {
-      //debug not redirect
-      console.log("checkAuthentication: not redirect");
-      // window.location.href = '../auth/login.html';
+      window.location.href = '../auth/login.html';
     }, 2000);
     return;
   }

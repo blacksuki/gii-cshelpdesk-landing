@@ -58,24 +58,26 @@ const API_ENDPOINTS = {
         billingHistory: '/apiRouter?route=account/billing-history',
         servicePolicyGet: '/apiRouter?route=account/service-policy',
         servicePolicyUpload: '/apiRouter?route=account/service-policy/upload',
+        shopPolicies: '/apiRouter?route=account/shop-policies',
         shopifyDomain: '/apiRouter?route=account/shopify-domain',
         shopifyDomainVerify: '/apiRouter?route=account/shopify-domain/verify',
-        shopifyDomainCheck: '/apiRouter?route=account/shopify-domain/check'
+        shopifyDomainCheck: '/apiRouter?route=account/shopify-domain/check',
+        apiKey: '/apiRouter?route=account/api-key'  // POST: save, GET: status, DELETE: delete
     },
     
-    // Subscription endpoints - now using unified apiRouter
+    // Subscription endpoints - mixed routing (status uses handleRouter, others use apiRouter)
     subscription: {
-        status: '/getSubscriptionStatus',
+        status: '/handleRouter?route=getSubscriptionStatus',  // Handler endpoint (used by Gmail add-on)
         plans: '/subscription-plans',
         upgrade: '/apiRouter?route=subscription/upgrade',
         cancel: '/apiRouter?route=subscription/cancel'
     },
     
-    // Shopify integration endpoints (unchanged - not part of apiRouter)
+    // Shopify integration endpoints - now using unified handleRouter
     shopify: {
-        auth: '/shopifyAuthCallback',
-        initiate: '/initiateShopifyAuth',
-        orders: '/callShopifyGraphQL'
+        auth: '/handleRouter?route=shopifyAuthCallback',
+        initiate: '/handleRouter?route=initiateShopifyAuth',
+        orders: '/handleRouter?route=callShopifyGraphQL'
     }
 };
 
@@ -135,5 +137,7 @@ window.API_CONFIG = {
     getApiUrl,
     getEnvironment,
     endpoints: API_ENDPOINTS,
-    config: API_CONFIG
+    config: API_CONFIG,
+    // Google OAuth Client ID - Replace with your actual client ID from Google Cloud Console
+    googleClientId: '225456207726-9eqlvbeolroqurk3u3dmlmvialt7ocpk.apps.googleusercontent.com'
 };

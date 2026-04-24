@@ -158,10 +158,11 @@ class ApiClient {
     async handleResponse(response) {
         // Handle 401 Unauthorized
         if (response.status === 401) {
+            console.error('[api-client] ❌ 401 Unauthorized - Redirecting to login');
             this.clearToken();
             // Redirect to login page
             if (window.location.pathname.includes('/account/')) {
-                window.location.href = '/auth/login.html';
+                window.location.href = '../auth/login.html';
             }
             throw new Error('Authentication required, or EMAIL_NOT_VERIFIED');
         }
@@ -186,13 +187,21 @@ class ApiClient {
             const data = await response.json();
             
             if (!response.ok) {
-                throw new Error(data.error || data.message || `HTTP ${response.status}`);
+                // Return the full error response for proper handling
+                return {
+                    success: false,
+                    error: data.error || data.message || `HTTP ${response.status}`,
+                    ...data  // Include all error details (suggestedAction, errorCode, etc.)
+                };
             }
             
             return data;
         } catch (parseError) {
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                return {
+                    success: false,
+                    error: `HTTP ${response.status}: ${response.statusText}`
+                };
             }
             return { success: true };
         }
@@ -573,6 +582,19 @@ class ApiClient {
         }
     }
     
+    async getShopPolicies(shopDomain) {
+        try {
+            const domain = shopDomain || (JSON.parse(localStorage.getItem('user') || '{}').domain);
+            // Note: shopPolicies already contains '?route=...', so we use '&' for additional params
+            const endpoint = `${window.API_CONFIG.endpoints.account.shopPolicies}&shopDomain=${encodeURIComponent(domain || '')}`;
+            const response = await this.request(endpoint);
+            console.log('getShopPolicies response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
     // Subscription methods
     async getSubscriptionStatus(userEmail, shopDomain) {
         try {
@@ -671,12 +693,83 @@ class ApiClient {
             return this.handleError(error);
         }
     }
+    // ==========================================
+    // API Key Management Methods
+    // ==========================================
+    
+    /**
+     * Save user's API key
+     * @param {string} apiKey - The API key to save
+     * @param {string} provider - Provider name (openai, gemini, kimi, qwen)
+     * @returns {Promise<Object>} API response
+     */
+    async saveApiKey(apiKey, provider = 'openai') {
+        try {
+            const response = await this.request(
+                window.API_CONFIG.endpoints.account.apiKey,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ apiKey, provider })
+                }
+            );
+            console.log('saveApiKey API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    /**
+     * Get API key status (not the key itself)
+     * @param {string} provider - Provider name (openai, gemini, kimi, qwen)
+     * @returns {Promise<Object>} API key status with token usage stats
+     */
+    async getApiKeyStatus(provider = 'openai') {
+        try {
+            const endpoint = window.API_CONFIG.endpoints.account.apiKey;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(
+                `${endpoint}${separator}provider=${provider}`,
+                {
+                    method: 'GET'
+                }
+            );
+            console.log('getApiKeyStatus API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    /**
+     * Delete user's API key
+     * @param {string} provider - Provider name (openai, gemini, kimi, qwen)
+     * @returns {Promise<Object>} API response
+     */
+    async deleteApiKey(provider = 'openai') {
+        try {
+            const endpoint = window.API_CONFIG.endpoints.account.apiKey;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(
+                `${endpoint}${separator}provider=${provider}`,
+                {
+                    method: 'DELETE'
+                }
+            );
+            console.log('deleteApiKey API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
     
     // Logout
     logout() {
+        console.log('[api-client] logout() called');
         this.clearToken();
         if (window.location.pathname.includes('/account/')) {
-            window.location.href = '/auth/login.html';
+            window.location.href = '../auth/login.html';
         }
     }
 }
