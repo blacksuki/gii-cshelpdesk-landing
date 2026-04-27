@@ -487,6 +487,20 @@ class ApiClient {
         }
     }
     
+    async getQuota() {
+        try {
+            const response = await this.request(window.API_CONFIG.endpoints.account.quota);
+            
+            // Debug logging
+            console.log('getQuota API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
     async getBillingInfo() {
         try {
             const response = await this.request(window.API_CONFIG.endpoints.account.billing);

@@ -508,6 +508,7 @@
         loadShopifyDomainStatus();
         loadPoliciesOverview(); // V3.5 NEW: Load policies overview
         loadApiKeyStatus(); // Load API Key status
+        loadQuotaInfo(); // V3.6 NEW: Load quota usage info
         
         // Check if user needs to set up Shopify domain
         const urlParams = new URLSearchParams(window.location.search);
@@ -627,15 +628,21 @@
             //     : "Expired";
           }
 
-          // Set email limit based on plan
+          // Email limit will be loaded by loadQuotaInfo() function
+          // Keep fallback display in case quota API fails
           const emailLimits = {
             free: "max 100",
             trial: "max 100",
             pro: "1,000/month",
             team: "5,000/month",
           };
-          document.getElementById("emailLimit").textContent =
-            emailLimits[sub.plan.toLowerCase()] || "max 100";
+          const fallbackLimit = emailLimits[sub.plan.toLowerCase()] || "max 100";
+          
+          // Only set fallback if quota hasn't been loaded yet
+          const emailLimitElement = document.getElementById("emailLimit");
+          if (!emailLimitElement.dataset.quotaLoaded) {
+            emailLimitElement.textContent = fallbackLimit;
+          }
         }
 
         // Update account info
@@ -662,6 +669,70 @@
         
         // Update Shopify domain display
         updateShopifyDomainDisplay(userData);
+      }
+
+      // Load quota usage info (V3.6 NEW)
+      async function loadQuotaInfo() {
+        try {
+          const result = await window.apiClient.getQuota();
+          
+          if (result.success && result.data && result.data.quota) {
+            const quota = result.data.quota;  // Access nested quota object
+            const emailLimitElement = document.getElementById("emailLimit");
+            
+            // Use systemKeyEmails as "used" count (emails that count towards quota)
+            const used = quota.systemKeyEmails || 0;
+            const limit = quota.limit || 0;
+            
+            // Format display based on quota data
+            let displayText = '';
+            
+            if (limit === -1) {
+              // Unlimited
+              displayText = `${used}/Unlimited`;
+            } else {
+              // Limited quota
+              displayText = `${used}/${limit}`;
+              
+              // Add period info for context
+              if (quota.period === 'trial') {
+                displayText += ' (14-day trial)';
+              } else if (quota.period === 'monthly') {
+                displayText += '/month';
+              } else if (quota.period === 'daily') {
+                displayText += '/day';
+              }
+            }
+            
+            // Update display
+            emailLimitElement.textContent = displayText;
+            emailLimitElement.dataset.quotaLoaded = 'true';
+            
+            // Optional: Add visual indicator if quota is running low
+            const usagePercent = limit > 0 ? (used / limit) * 100 : 0;
+            if (usagePercent >= 90) {
+              emailLimitElement.style.color = '#d32f2f'; // Red for high usage
+            } else if (usagePercent >= 75) {
+              emailLimitElement.style.color = '#f57c00'; // Orange for medium-high usage
+            } else {
+              emailLimitElement.style.color = ''; // Default color
+            }
+            
+            console.log('✅ Quota info loaded:', {
+              used,
+              limit,
+              period: quota.period,
+              userKeyEmails: quota.userKeyEmails,
+              totalEmails: quota.totalEmails
+            });
+          } else {
+            console.warn('⚠️ Failed to load quota info, using fallback display');
+            // Fallback is already set by updateDashboard()
+          }
+        } catch (error) {
+          console.error('❌ Error loading quota info:', error);
+          // Fallback is already set by updateDashboard()
+        }
       }
 
       // Load recent activity
