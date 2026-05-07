@@ -1,81 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>giiHelpdesk — AI Helpdesk for Shopify</title>
-    <meta name="description" content="AI-powered Gmail Add-on for Shopify merchants. 14-day free trial, zero content storage.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
-    <link rel="stylesheet" href="css/style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giibot — AI Helpdesk Agent for Shopify</title>
+    <meta
+      name="description"
+      content="AI-powered Gmail Add-on for Shopify merchants. 14-day free trial, zero content storage."
+    />
+    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+    <link rel="stylesheet" href="css/style.css" />
     <script src="js/common.js" defer></script>
     <script src="js/auth.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="site-header"></div>
 
-    <section class="hero" aria-labelledby="hero-title">
-        <div class="hero__inner">
-            <div>
-                <h1 id="hero-title" class="hero__title">Your AI Customer Service Intern for Shopify</h1>
-                <p class="hero__subtitle">14-day free trial → Paddle billing → Seamless Gmail sidebar. Minimal data footprint. Ready out of the box.</p>
-                <a class="hero__cta" href="pricing.html#free" aria-label="Start free trial" id="startTrialBtn">Start free trial</a>
-            </div>
-            <div class="hero__media" aria-hidden="true"></div>
+    <!-- 2026 Free Promotion Banner -->
+    <section class="promo-banner-2026" aria-labelledby="promo-2026-title">
+      <div class="promo-banner-2026__inner">
+        <div class="promo-banner-2026__badge">🎉 LIMITED TIME OFFER</div>
+        <h2 id="promo-2026-title" class="promo-banner-2026__title">
+          FREE Throughout 2026!
+        </h2>
+        <p class="promo-banner-2026__subtitle">
+          Get full access to all premium features at no cost for the entire year
+        </p>
+        <div class="promo-banner-2026__features">
+          <div class="promo-feature">
+            <span class="promo-feature__icon">✨</span>
+            <span class="promo-feature__text">All Plans Free</span>
+          </div>
+          <div class="promo-feature">
+            <span class="promo-feature__icon">🚀</span>
+            <span class="promo-feature__text">Unlimited Seats</span>
+          </div>
+          <div class="promo-feature">
+            <span class="promo-feature__icon">🔓</span>
+            <span class="promo-feature__text">Full Features</span>
+          </div>
         </div>
+        <div class="promo-banner-2026__note">
+          <strong>Note:</strong> You'll need your own OpenAI API key to use the AI features
+        </div>
+        <a href="auth/register.html" class="promo-banner-2026__cta" id="claimAccessBtn">
+          Claim Your Free Access Now →
+        </a>
+      </div>
     </section>
 
-    <main class="section" role="main">
-        <h2 class="section__title">What you get</h2>
-        <div class="features">
-            <article class="feature-card">
-                <h3 class="feature-card__title">Smart intent analysis</h3>
-                <p class="feature-card__desc">Detect WISMO / refund / other, extract order IDs and key details.</p>
-            </article>
-            <article class="feature-card">
-                <h3 class="feature-card__title">Auto draft generation</h3>
-                <p class="feature-card__desc">Personalized drafts from email + Shopify data. You stay in control.</p>
-            </article>
-            <article class="feature-card">
-                <h3 class="feature-card__title">Shopify integration</h3>
-                <p class="feature-card__desc">Orders, shipping, refunds and history at your fingertips in Gmail.</p>
-            </article>
+    <!-- Quick Start Section - Moved to top -->
+    <section class="quick-start section" aria-labelledby="quick-start-title">
+      <div class="section__inner">
+        <h2 id="quick-start-title" class="section__title">
+          Start Your Free Access Today
+        </h2>
+        <p class="quick-start__intro">
+          Get up and running in just a few simple steps. No credit card required, completely free in 2026.
+        </p>
+        <div class="steps-container">
+          <div class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3 class="step-title">Add Gmail Extension</h3>
+              <p class="step-desc">Install our Gmail Add-on directly from your inbox</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3 class="step-title">Connect Shopify Store</h3>
+              <p class="step-desc">Securely authorize access to your Shopify account</p>
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3 class="step-title">Review AI Suggestions</h3>
+              <p class="step-desc">Open any customer email to see intelligent response drafts</p>
+            </div>
+          </div>
         </div>
+        <div class="quick-start__cta-wrapper">
+          <a
+            class="quick-start__cta"
+            href="/auth/login.html"
+            aria-label="Begin your free trial"
+            id="startTrialBtn"
+            >Begin Free Trial</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section - Moved up and redesigned -->
+    <main class="features-section section" role="main">
+      <div class="section__inner">
+        <h2 class="section__title">Powerful Features at Your Fingertips</h2>
+        <p class="section__subtitle">
+          Everything you need to transform your customer support workflow
+        </p>
+        <div class="features-grid">
+          <article class="feature-item">
+            <div class="feature-icon">🧠</div>
+            <h3 class="feature-item__title">Intelligent Intent Recognition</h3>
+            <p class="feature-item__desc">
+              Automatically identifies customer intent types like order tracking, refund requests, and more. Extracts relevant order numbers and critical information instantly.
+            </p>
+          </article>
+          <article class="feature-item">
+            <div class="feature-icon">✍️</div>
+            <h3 class="feature-item__title">Automated Response Drafts</h3>
+            <p class="feature-item__desc">
+              Creates customized email drafts by combining customer messages with your Shopify data. You maintain full control and can edit before sending.
+            </p>
+          </article>
+          <article class="feature-item">
+            <div class="feature-icon">🔗</div>
+            <h3 class="feature-item__title">Deep Shopify Connectivity</h3>
+            <p class="feature-item__desc">
+              Access complete order information, shipping status, refund history, and customer data directly within your Gmail interface.
+            </p>
+          </article>
+        </div>
+      </div>
     </main>
 
-    <section class="section" aria-labelledby="get-started-title">
-        <h2 id="get-started-title" class="section__title">Get started in minutes</h2>
-        <ul>
-            <li>Install the Gmail Add-on</li>
-            <li>Authorize your Shopify store</li>
-            <li>Open a customer email and review AI suggestions</li>
-        </ul>
+    <!-- Hero Section - Redesigned with different layout -->
+    <section class="hero-alt" aria-labelledby="hero-alt-title">
+      <div class="hero-alt__inner">
+        <div class="hero-alt__media" aria-hidden="true">
+          <img src="images/hero-image.png" alt="AI Customer Service Agent for Shopify" />
+        </div>
+        <div class="hero-alt__content">
+          <h1 id="hero-alt-title" class="hero-alt__title">
+            Your AI-Powered Customer Support Assistant
+          </h1>
+          <p class="hero-alt__subtitle">
+            giiHelpdeskAgent transforms how you handle customer service:
+          </p>
+          <div class="benefits-list">
+            <div class="benefit-item">
+              <span class="benefit-icon">📧</span>
+              <div class="benefit-text">
+                <strong>Integrated Gmail Experience</strong>
+                <span>Work directly within your inbox without switching between applications</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <span class="benefit-icon">🛍️</span>
+              <div class="benefit-text">
+                <strong>Native Shopify Connection</strong>
+                <span>Retrieve order details, product info, and refund data seamlessly from your inbox</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <span class="benefit-icon">🤝</span>
+              <div class="benefit-text">
+                <strong>Collaborative Workflow</strong>
+                <span>AI generates drafts that you review and approve before sending to customers</span>
+              </div>
+            </div>
+            <div class="benefit-item">
+              <span class="benefit-icon">🔒</span>
+              <div class="benefit-text">
+                <strong>Privacy-First Approach</strong>
+                <span>We don't store your data, ensuring complete privacy and security</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Application Scenarios - Redesigned layout -->
+    <section class="use-cases section" aria-labelledby="use-cases-title">
+      <div class="section__inner">
+        <h2 id="use-cases-title" class="section__title">Real-World Use Cases</h2>
+        <p class="section__subtitle">
+          See how giiHelpdeskAgent solves common customer service challenges
+        </p>
+        <div class="use-cases-container">
+          <!-- Use Case 1 -->
+          <article class="use-case-card">
+            <div class="use-case-header">
+              <span class="use-case-number">01</span>
+              <h3 class="use-case-title">Order Status & Shipping Inquiries</h3>
+            </div>
+            <div class="use-case-body">
+              <div class="use-case-field">
+                <span class="field-label">Common Email Patterns:</span>
+                <span class="field-value">"Where is my order?", "When will I receive my package?"</span>
+              </div>
+              <div class="use-case-field">
+                <span class="field-label">Business Challenge:</span>
+                <span class="field-value">High volume of repetitive questions, manual Shopify lookups, delayed responses across time zones</span>
+              </div>
+              <div class="use-case-solution">
+                <span class="solution-label">Our Solution:</span>
+                <span class="solution-value">AI interprets customer intent, automatically queries Shopify for tracking data, and provides accurate responses</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Use Case 2 -->
+          <article class="use-case-card">
+            <div class="use-case-header">
+              <span class="use-case-number">02</span>
+              <h3 class="use-case-title">Returns & Refund Processing</h3>
+            </div>
+            <div class="use-case-body">
+              <div class="use-case-field">
+                <span class="field-label">Common Email Patterns:</span>
+                <span class="field-value">Return requests, chargeback notifications</span>
+              </div>
+              <div class="use-case-field">
+                <span class="field-label">Business Challenge:</span>
+                <span class="field-value">Complex multi-step workflow: email verification → RMA creation → Shopify updates → warehouse notifications. Easy to miss steps</span>
+              </div>
+              <div class="use-case-solution">
+                <span class="solution-label">Our Solution:</span>
+                <span class="solution-value">Helps reduce chargeback rates and dispute scores, preventing penalties from payment processors like Stripe and PayPal</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Use Case 3 -->
+          <article class="use-case-card">
+            <div class="use-case-header">
+              <span class="use-case-number">03</span>
+              <h3 class="use-case-title">Abandoned Shopping Cart Recovery</h3>
+            </div>
+            <div class="use-case-body">
+              <div class="use-case-field">
+                <span class="field-label">Common Email Patterns:</span>
+                <span class="field-value">Follow-up emails sent 1-3 hours after checkout abandonment</span>
+              </div>
+              <div class="use-case-field">
+                <span class="field-label">Business Challenge:</span>
+                <span class="field-value">Cart abandonment rates around 70%, traditional email campaigns have low open rates under 15%, lack of personalized offers</span>
+              </div>
+              <div class="use-case-solution">
+                <span class="solution-label">Our Solution:</span>
+                <span class="solution-value">Even a 1% improvement in conversion directly increases revenue. Our AI creates personalized offers in real-time</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Use Case 4 -->
+          <article class="use-case-card">
+            <div class="use-case-header">
+              <span class="use-case-number">04</span>
+              <h3 class="use-case-title">Subscription & Membership Renewals</h3>
+            </div>
+            <div class="use-case-body">
+              <div class="use-case-field">
+                <span class="field-label">Common Email Patterns:</span>
+                <span class="field-value">Automated notifications from subscription apps like Recharge or Skio</span>
+              </div>
+              <div class="use-case-field">
+                <span class="field-label">Business Challenge:</span>
+                <span class="field-value">Manual renewal reminder emails, missed notifications cause customer churn, generic messaging lacks engagement</span>
+              </div>
+              <div class="use-case-solution">
+                <span class="solution-label">Our Solution:</span>
+                <span class="solution-value">Decreases passive churn by 20-30%, leading to measurable improvements in renewal rates</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Use Case 5 -->
+          <article class="use-case-card">
+            <div class="use-case-header">
+              <span class="use-case-number">05</span>
+              <h3 class="use-case-title">Negative Review & Complaint Management</h3>
+            </div>
+            <div class="use-case-body">
+              <div class="use-case-field">
+                <span class="field-label">Common Email Patterns:</span>
+                <span class="field-value">Low ratings (1-3 stars), social media mentions and tags</span>
+              </div>
+              <div class="use-case-field">
+                <span class="field-label">Business Challenge:</span>
+                <span class="field-value">Slow responses allow negative reviews to gain visibility, which significantly reduces advertising conversion rates</span>
+              </div>
+              <div class="use-case-solution">
+                <span class="solution-label">Our Solution:</span>
+                <span class="solution-value">Enables rapid damage control to protect brand reputation, with ROI that far exceeds traditional PR investments</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
     </section>
 
     <div id="site-footer"></div>
 
     <script>
-        // Check authentication for Start free trial button
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuthenticationForStartTrial();
-        });
-
-        // Authentication check for start trial button
-        function checkAuthenticationForStartTrial() {
-            const startTrialBtn = document.getElementById('startTrialBtn');
-            if (startTrialBtn) {
-                startTrialBtn.addEventListener('click', function(e) {
-                    const user = JSON.parse(localStorage.getItem('user') || '{}');
-                    const isLoggedIn = !!user.token;
-                    
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        // Redirect to login page
-                        window.location.href = 'auth/login.html?redirect=index&action=start_trial';
-                    }
-                });
-            }
+      document.addEventListener("DOMContentLoaded", function () {
+        // Handle redirects with status messages from other pages
+        const urlParams = new URLSearchParams(window.location.search);
+        const shopifyCallbackStatus = urlParams.get("status");
+        if (shopifyCallbackStatus === "success") {
+          Toast.success("Login Successful", "Welcome back!");
+        } else if (shopifyCallbackStatus === "error") {
+          Toast.error("Shopify Authorization Failed", urlParams.get("message"));
         }
-    </script>
 
-</body>
+        // Manage the state of CTA buttons based on auth status
+        manageCTAButtonsState();
+      });
+
+      function manageCTAButtonsState() {
+        // Check if user is logged in by checking for user data in localStorage
+        const storedUser = localStorage.getItem("user");
+        let isLoggedIn = false;
+        
+        if (storedUser) {
+          try {
+            const user = JSON.parse(storedUser);
+            isLoggedIn = !!(user.token && user.email);
+          } catch (error) {
+            console.error("Error parsing stored user:", error);
+            localStorage.removeItem("user");
+          }
+        }
+
+        // Update "Claim Your Free Access Now" button in promo banner
+        const claimAccessBtn = document.getElementById("claimAccessBtn");
+        if (claimAccessBtn) {
+          if (isLoggedIn) {
+            claimAccessBtn.textContent = "Go to Dashboard →";
+            claimAccessBtn.href = "account/dashboard.html";
+            claimAccessBtn.setAttribute("aria-label", "Go to your dashboard");
+          } else {
+            claimAccessBtn.textContent = "Claim Your Free Access Now →";
+            claimAccessBtn.href = "auth/register.html";
+            claimAccessBtn.setAttribute("aria-label", "Register for free access");
+          }
+        }
+
+        // Update "Begin Free Trial" button in quick start section
+        const startTrialBtn = document.getElementById("startTrialBtn");
+        if (startTrialBtn) {
+          if (isLoggedIn) {
+            startTrialBtn.textContent = "Go to Dashboard";
+            startTrialBtn.href = "account/dashboard.html";
+            startTrialBtn.setAttribute("aria-label", "Go to your dashboard");
+          } else {
+            startTrialBtn.textContent = "Begin Free Trial";
+            startTrialBtn.href = "auth/login.html";
+            startTrialBtn.setAttribute("aria-label", "Begin your free trial");
+          }
+        }
+      }
+
+      // Listen for auth state changes and update buttons
+      document.addEventListener("authStateChanged", function(event) {
+        manageCTAButtonsState();
+      });
+    </script>
+  </body>
 </html>

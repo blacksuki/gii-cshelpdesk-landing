@@ -1,5 +1,5 @@
 /**
- * Login Error Handler for giiHelpdesk
+ * Login Error Handler for giiHelpdeskAgent
  * Handles login failures, token issues, and provides user-friendly error messages
  */
 

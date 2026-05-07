@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — giiHelpdesk</title>
+    <title>Sign In — giiHelpdeskAgent</title>
     <meta name="description" content="Sign in to your giiHelpdesk account">
+    <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="../css/auth.css">
     <script src="../js/toast.js"></script>
     <script src="../js/api-config.js"></script>
     <script src="../js/api-client.js"></script>
     <script src="../js/auth.js"></script>
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <div class="auth-container">
@@ -65,10 +68,8 @@
             </div>
 
             <div class="social-login">
-                <a href="#" class="social-btn" onclick="handleGoogleLogin()">
-                    <span>🔍</span>
-                    Continue with Google
-                </a>
+                <!-- Google Sign-In button container -->
+                <div id="googleBtnContainer" style="display: flex; justify-content: center; width: 100%;"></div>
             </div>
 
             <div class="auth-links">
@@ -147,24 +148,6 @@
                     // No need to manually store user data here
                     console.log('Login successful, token should be stored by API client');
                     
-                    // // Debug: Check if token was actually stored
-                    // setTimeout(() => {
-                    //     console.log('=== TOKEN STORAGE DEBUG ===');
-                    //     console.log('localStorage user:', localStorage.getItem('user'));
-                    //     console.log('API Client token:', window.apiClient.token);
-                    //     console.log('API Client isAuthenticated:', window.apiClient.isAuthenticated());
-                    //     console.log('==========================');
-                        
-                    //     // Check if we can proceed with redirect
-                    //     if (window.apiClient.isAuthenticated()) {
-                    //         console.log('✅ Token verified, proceeding with redirect...');
-                    //     } else {
-                    //         console.error('❌ Token not found, cannot proceed with redirect');
-                    //         Toast.error('Login Error', 'Authentication token not found. Please try again.');
-                    //         return;
-                    //     }
-                    // }, 200);
-                    
                     // Check for redirect parameters
                     const urlParams = new URLSearchParams(window.location.search);
                     const redirect = urlParams.get('redirect');
@@ -218,11 +201,110 @@
             }
             });
 
-            // Google OAuth login
-            window.handleGoogleLogin = function() {
-                Toast.info('Google Login', 'Google OAuth integration coming soon!');
-                // TODO: Implement Google OAuth
-            };
+            // Google OAuth login initialization
+            function initGoogleLogin() {
+                const googleClientId = window.API_CONFIG.googleClientId || '';
+                
+                if (!googleClientId || googleClientId.includes('your-client-id-here')) {
+                    console.warn('Google OAuth Client ID not configured or using placeholder');
+                    document.getElementById('googleBtnContainer').innerHTML = `
+                        <button class="social-btn" onclick="Toast.error('Config Error', 'Google Login is not configured.')" style="width: 100%;">
+                            <span>🔍</span> Continue with Google (Not Configured)
+                        </button>`;
+                    return;
+                }
+                
+                if (typeof google === 'undefined') {
+                    console.log('Google library not loaded, retrying...');
+                    setTimeout(initGoogleLogin, 500);
+                    return;
+                }
+                
+                google.accounts.id.initialize({
+                    client_id: googleClientId,
+                    callback: handleGoogleCredentialResponse,
+                    auto_select: false,
+                    cancel_on_tap_outside: true
+                });
+                
+                google.accounts.id.renderButton(
+                    document.getElementById('googleBtnContainer'),
+                    { 
+                        theme: 'outline', 
+                        size: 'large', 
+                        width: document.querySelector('.auth-card').offsetWidth - 80,
+                        text: 'continue_with',
+                        shape: 'rectangular',
+                        logo_alignment: 'left'
+                    }
+                );
+            }
+
+            async function handleGoogleCredentialResponse(response) {
+                try {
+                    Toast.loading('Authenticating', 'Signing in with Google...');
+                    
+                    // Send ID token to backend
+                    const result = await window.apiClient.googleOAuth(response.credential);
+                    
+                    Toast.hideLoading();
+                    
+                    if (result.success) {
+                        const isNewUser = result.data?.requiresDomainSetup;
+                        Toast.success(
+                            isNewUser ? 'Welcome!' : 'Login Successful',
+                            isNewUser 
+                                ? 'Account created! Please set up your Shopify domain.'
+                                : 'Welcome back! Redirecting...'
+                        );
+                        
+                        // Check for redirect parameters
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirect = urlParams.get('redirect');
+                        const plan = urlParams.get('plan');
+                        const action = urlParams.get('action');
+                        
+                        let redirectUrl = '../account/dashboard.html';
+                        
+                        // If new user without domain, redirect to domain setup
+                        if (isNewUser) {
+                            redirectUrl = '../account/dashboard.html?setup=shopify-domain';
+                        } else if (redirect === 'pricing' && plan) {
+                            redirectUrl = `../pricing.html?plan=${plan}`;
+                        } else if (redirect === 'index' && action === 'start_trial') {
+                            redirectUrl = '../pricing.html#free';
+                        }
+                        
+                        // Redirect after token verification
+                        setTimeout(() => {
+                            if (window.apiClient.isAuthenticated()) {
+                                window.location.href = redirectUrl;
+                            } else {
+                                Toast.error('Redirect Error', 'Authentication failed. Please try logging in again.');
+                            }
+                        }, 600);
+                    } else {
+                        let errorMessage = 'Google login failed. Please try again.';
+                        
+                        if (result.error === 'INVALID_TOKEN') {
+                            errorMessage = 'Invalid Google token. Please try again.';
+                        } else if (result.error === 'EMAIL_NOT_VERIFIED') {
+                            errorMessage = 'Your Google email is not verified.';
+                        } else if (result.error === 'AUTH_MISMATCH') {
+                            errorMessage = result.data?.message || 'This email is registered with a different authentication method.';
+                        }
+                        
+                        Toast.error('Login Failed', errorMessage);
+                    }
+                } catch (error) {
+                    Toast.hideLoading();
+                    console.error('Google OAuth error:', error);
+                    Toast.error('Login Error', 'An unexpected error occurred. Please try again.');
+                }
+            }
+
+            // Start Google login initialization
+            initGoogleLogin();
         });
     </script>
 </body>

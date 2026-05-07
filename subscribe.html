@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscribe to giiHelpDeskAgent</title>
+    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
     <style>
         * {
             margin: 0;
@@ -252,8 +253,8 @@
     </div>
 
     <script>
-        // Replace with your actual Cloud Function URL
-        const SUBSCRIBE_FUNCTION_URL = "https://us-central1-your-project-id.cloudfunctions.net/subscribeAndAuthorize";
+        // V3.3+: Use unified handleRouter endpoint
+        const SUBSCRIBE_FUNCTION_URL = "https://us-central1-giicsagent.cloudfunctions.net/handleRouter?route=subscribeAndAuthorize";
         
         document.getElementById("subscribeForm").addEventListener("submit", async function(event) {
             event.preventDefault();

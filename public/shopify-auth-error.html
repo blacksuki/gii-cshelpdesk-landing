@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopify Authorization Error - giiHelpDeskAgent</title>
+    <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <style>
         * {
             margin: 0;
@@ -231,8 +232,8 @@
         }, 1000);
         
         function retryAuth() {
-            // Redirect to the authorization initiation URL
-            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/initiateShopifyAuth?shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
+            // Redirect to the authorization initiation URL using handleRouter
+            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/handleRouter?route=initiateShopifyAuth&shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
             window.location.href = authUrl;
         }
         

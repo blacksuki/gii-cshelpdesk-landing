@@ -1,5 +1,5 @@
 /**
- * Unified API Client for giiHelpdesk
+ * Unified API Client for giiHelpdeskAgent
  * Handles all API calls with authentication, retry logic, and error handling
  */
 
@@ -60,7 +60,8 @@ class ApiClient {
             email: existingUser.email,
             domain: existingUser.domain,
             createdAt: existingUser.createdAt || new Date().toISOString(),
-            updatedAt: new Date().toISOString()
+            updatedAt: new Date().toISOString(),
+            subscription: existingUser.subscription || null
         };
         
         // 存储到 localStorage
@@ -157,12 +158,13 @@ class ApiClient {
     async handleResponse(response) {
         // Handle 401 Unauthorized
         if (response.status === 401) {
+            console.error('[api-client] ❌ 401 Unauthorized - Redirecting to login');
             this.clearToken();
             // Redirect to login page
             if (window.location.pathname.includes('/account/')) {
-                window.location.href = '/auth/login.html';
+                window.location.href = '../auth/login.html';
             }
-            throw new Error('Authentication required');
+            throw new Error('Authentication required, or EMAIL_NOT_VERIFIED');
         }
         
         // Handle 403 Forbidden
@@ -185,13 +187,21 @@ class ApiClient {
             const data = await response.json();
             
             if (!response.ok) {
-                throw new Error(data.error || data.message || `HTTP ${response.status}`);
+                // Return the full error response for proper handling
+                return {
+                    success: false,
+                    error: data.error || data.message || `HTTP ${response.status}`,
+                    ...data  // Include all error details (suggestedAction, errorCode, etc.)
+                };
             }
             
             return data;
         } catch (parseError) {
             if (!response.ok) {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                return {
+                    success: false,
+                    error: `HTTP ${response.status}: ${response.statusText}`
+                };
             }
             return { success: true };
         }
@@ -289,7 +299,8 @@ class ApiClient {
                             email: returnedUser.email || credentials?.email || undefined,
                             domain: returnedUser.domain || undefined,
                             createdAt: new Date().toISOString(),
-                            updatedAt: new Date().toISOString()
+                            updatedAt: new Date().toISOString(),
+                            subscription: returnedUser.subscription || null
                         };
                         localStorage.setItem('user', JSON.stringify(minimalUser));
                         console.log('✅ Stored {token,email,domain} to localStorage');
@@ -378,13 +389,66 @@ class ApiClient {
     
     async checkDomain(domain) {
         try {
-            const response = await this.request(`${window.API_CONFIG.endpoints.auth.checkDomain}?domain=${encodeURIComponent(domain)}`);
+            // The endpoint already contains ?route=..., so we need to use & instead of ?
+            const endpoint = window.API_CONFIG.endpoints.auth.checkDomain;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(`${endpoint}${separator}domain=${encodeURIComponent(domain)}`);
             
             // Debug logging
             console.log('checkDomain API response:', response);
             
             // The API returns { success: true, data: { available: true, ... } }
             // We should return the same structure to maintain consistency
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async googleOAuth(idToken, domain = null) {
+        try {
+            const response = await this.request(window.API_CONFIG.endpoints.auth.googleOAuth, {
+                method: 'POST',
+                body: JSON.stringify({ idToken, domain })
+            });
+            
+            // Debug logging
+            console.log('googleOAuth API response:', response);
+            
+            // Handle successful Google OAuth login similar to regular login
+            if (response && response.success && response.data) {
+                let token = response.data.token;
+                const returnedUser = response.data.user || {};
+                
+                // Extract token if it's an object
+                if (token && typeof token === 'object' && token !== null) {
+                    if (token.accessToken) {
+                        token = token.accessToken;
+                    } else if (token.token) {
+                        token = token.token;
+                    } else if (token.jwt) {
+                        token = token.jwt;
+                    }
+                }
+                
+                if (token && typeof token === 'string' && token.trim() !== '') {
+                    console.log('✅ Google OAuth successful, token found');
+                    this.setToken(token);
+                    
+                    // Store minimal user data
+                    const minimalUser = {
+                        token: token,
+                        email: returnedUser.email || undefined,
+                        domain: returnedUser.domain || undefined,
+                        createdAt: new Date().toISOString(),
+                        updatedAt: new Date().toISOString(),
+                        subscription: returnedUser.subscription || null
+                    };
+                    localStorage.setItem('user', JSON.stringify(minimalUser));
+                    console.log('✅ Stored user data to localStorage');
+                }
+            }
+            
             return response;
         } catch (error) {
             return this.handleError(error);
@@ -415,6 +479,20 @@ class ApiClient {
             
             // Debug logging
             console.log('updateProfile API response:', response);
+            
+            // Return the API response directly to maintain consistency
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async getQuota() {
+        try {
+            const response = await this.request(window.API_CONFIG.endpoints.account.quota);
+            
+            // Debug logging
+            console.log('getQuota API response:', response);
             
             // Return the API response directly to maintain consistency
             return response;
@@ -478,11 +556,76 @@ class ApiClient {
             return this.handleError(error);
         }
     }
+
+    // Service Policy methods
+    async getServicePolicy(shopDomain, policyType) {
+        try {
+            const domain = shopDomain || (JSON.parse(localStorage.getItem('user') || '{}').domain);
+            // Note: servicePolicyGet already contains '?route=...', so we use '&' for additional params
+            const endpoint = `${window.API_CONFIG.endpoints.account.servicePolicyGet}&shopDomain=${encodeURIComponent(domain || '')}&policyType=${encodeURIComponent(policyType || '')}`;
+            const response = await this.request(endpoint);
+            console.log('getServicePolicy response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+
+    async uploadServicePolicy(shopDomain, policyType, content ) {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const subscription = user.subscription || null;
+            // Client-side gate: Pro/Team only
+            const plan = (subscription && subscription.plan || '').toLowerCase();
+            if (plan !== 'pro' && plan !== 'team') {
+                throw new Error('Service policy is available for Pro/Team plans only');
+            }
+            const response = await this.request(window.API_CONFIG.endpoints.account.servicePolicyUpload, {
+                method: 'POST',
+                body: JSON.stringify({
+                    shopDomain: shopDomain || user.domain,
+                    policyType,
+                    content: content,
+                    userSubscription: subscription
+                })
+            });
+            console.log('uploadServicePolicy response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async getShopPolicies(shopDomain) {
+        try {
+            const domain = shopDomain || (JSON.parse(localStorage.getItem('user') || '{}').domain);
+            // Note: shopPolicies already contains '?route=...', so we use '&' for additional params
+            const endpoint = `${window.API_CONFIG.endpoints.account.shopPolicies}&shopDomain=${encodeURIComponent(domain || '')}`;
+            const response = await this.request(endpoint);
+            console.log('getShopPolicies response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
     
     // Subscription methods
-    async getSubscriptionStatus() {
+    async getSubscriptionStatus(userEmail, shopDomain) {
         try {
-            const response = await this.request(window.API_CONFIG.endpoints.subscription.status);
+            // Derive from localStorage if not provided
+            if (!userEmail || !shopDomain) {
+                const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+                userEmail = userEmail || storedUser.email;
+                shopDomain = shopDomain || storedUser.domain;
+            }
+
+            const response = await this.request(
+                window.API_CONFIG.endpoints.subscription.status,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ userEmail, shopDomain })
+                }
+            );
             
             // Debug logging
             console.log('getSubscriptionStatus API response:', response);
@@ -496,7 +639,7 @@ class ApiClient {
 
     async upgradeSubscription(plan, seats) {
         try {
-            const response = await this.request('/upgradeSubscription', {
+            const response = await this.request(window.API_CONFIG.endpoints.subscription.upgrade, {
                 method: 'POST',
                 body: JSON.stringify({ plan, seats })
             });
@@ -509,7 +652,7 @@ class ApiClient {
 
     async cancelSubscription() {
         try {
-            const response = await this.request('/cancelSubscription', {
+            const response = await this.request(window.API_CONFIG.endpoints.subscription.cancel, {
                 method: 'POST'
             });
             console.log('cancelSubscription API response:', response);
@@ -519,11 +662,128 @@ class ApiClient {
         }
     }
     
+    // Shopify Domain Management methods
+    async updateShopifyDomain(domain) {
+        try {
+            const response = await this.request(window.API_CONFIG.endpoints.account.shopifyDomain, {
+                method: 'POST',
+                body: JSON.stringify({ domain })
+            });
+            
+            console.log('updateShopifyDomain API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async verifyShopifyConnection(domain = null) {
+        try {
+            let endpoint = window.API_CONFIG.endpoints.account.shopifyDomainVerify;
+            if (domain) {
+                // The endpoint already contains ?route=..., so we need to use & instead of ?
+                const separator = endpoint.includes('?') ? '&' : '?';
+                endpoint = `${endpoint}${separator}domain=${encodeURIComponent(domain)}`;
+            }
+            const response = await this.request(endpoint);
+            
+            console.log('verifyShopifyConnection API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    async checkShopifyDomainAvailability(domain) {
+        try {
+            // The endpoint already contains ?route=..., so we need to use & instead of ?
+            const endpoint = window.API_CONFIG.endpoints.account.shopifyDomainCheck;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(`${endpoint}${separator}domain=${encodeURIComponent(domain)}`);
+            
+            console.log('checkShopifyDomainAvailability API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    // ==========================================
+    // API Key Management Methods
+    // ==========================================
+    
+    /**
+     * Save user's API key
+     * @param {string} apiKey - The API key to save
+     * @param {string} provider - Provider name (openai, gemini, kimi, qwen)
+     * @returns {Promise<Object>} API response
+     */
+    async saveApiKey(apiKey, provider = 'openai') {
+        try {
+            const response = await this.request(
+                window.API_CONFIG.endpoints.account.apiKey,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({ apiKey, provider })
+                }
+            );
+            console.log('saveApiKey API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    /**
+     * Get API key status (not the key itself)
+     * @param {string} provider - Provider name (openai, gemini, kimi, qwen)
+     * @returns {Promise<Object>} API key status with token usage stats
+     */
+    async getApiKeyStatus(provider = 'openai') {
+        try {
+            const endpoint = window.API_CONFIG.endpoints.account.apiKey;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(
+                `${endpoint}${separator}provider=${provider}`,
+                {
+                    method: 'GET'
+                }
+            );
+            console.log('getApiKeyStatus API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    /**
+     * Delete user's API key
+     * @param {string} provider - Provider name (openai, gemini, kimi, qwen)
+     * @returns {Promise<Object>} API response
+     */
+    async deleteApiKey(provider = 'openai') {
+        try {
+            const endpoint = window.API_CONFIG.endpoints.account.apiKey;
+            const separator = endpoint.includes('?') ? '&' : '?';
+            const response = await this.request(
+                `${endpoint}${separator}provider=${provider}`,
+                {
+                    method: 'DELETE'
+                }
+            );
+            console.log('deleteApiKey API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+    
+    
     // Logout
     logout() {
+        console.log('[api-client] logout() called');
         this.clearToken();
         if (window.location.pathname.includes('/account/')) {
-            window.location.href = '/auth/login.html';
+            window.location.href = '../auth/login.html';
         }
     }
 }

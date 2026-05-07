@@ -1,5 +1,5 @@
 /**
- * Toast notification library for giiHelpdesk
+ * Toast notification library for giiHelpdeskAgent
  * Provides consistent notification system across all pages
  */
 

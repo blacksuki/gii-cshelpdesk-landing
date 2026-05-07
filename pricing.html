@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing — giiHelpdesk</title>
+    <title>Pricing — giiHelpdeskAgent</title>
     <meta name="description" content="Choose a plan: Free trial, Pro, or Team.">
+    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="css/style.css">
     <!-- Paddle Billing v2 loader -->
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
@@ -12,8 +13,71 @@
     <script src="js/common.js" defer></script>
     <script src="js/auth.js" defer></script>
     <style>
-        .plan-card__list { margin: 10px 0 16px 0; padding-left: 18px; }
-        .plan-card__list li { margin: 6px 0; }
+        .pricing-intro {
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+        .pricing-intro h1 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text);
+        }
+        .pricing-intro p {
+            font-size: 18px;
+            color: var(--color-text-secondary);
+        }
+        .pricing-intro .promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            margin: 24px auto;
+            max-width: 600px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .plan-card__price-old {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        .plan-card__price-new {
+            color: #10B981;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .plan-card__price-note {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+        .faq-section {
+            margin-top: var(--spacing-3xl);
+            padding-top: var(--spacing-2xl);
+            border-top: 1px solid var(--color-border);
+        }
+        .faq-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .faq-section li {
+            margin-bottom: var(--spacing-md);
+            padding-left: var(--spacing-lg);
+            position: relative;
+            color: var(--color-text-secondary);
+            line-height: 1.7;
+        }
+        .faq-section li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
     </style>
     <meta name="robots" content="noindex">
     
@@ -22,8 +86,13 @@
     <div id="site-header"></div>
 
     <main class="section" role="main">
-        <h1 class="section__title">Pricing</h1>
-        <p class="muted">Start your 14-day free trial. No credit card required.</p>
+        <div class="pricing-intro">
+            <h1>Pricing</h1>
+            <p>Start your 14-day free trial. No credit card required.</p>
+            <div class="promo-banner">
+                🎉 Special Offer: All plans FREE throughout 2026! 🎉
+            </div>
+        </div>
 
         <div class="pricing" style="margin-top:16px;">
             <article class="plan-card" id="free" data-plan="free">
@@ -32,38 +101,48 @@
                 <div class="plan-card__price">$0</div>
                 <ul class="plan-card__list">
                     <li>1 seat</li>
-                    <li>50 emails / month</li>
-                    <li>Gmail Add-on</li>
+                    <li>max 100 emails</li>
+                    <li>Agentic/Hybrid/Manual mode</li>
+                    <li>Gmail Add-on + Shopify integration</li>
+                    <li>-</li>
                 </ul>
                 <button class="paddle-btn" data-plan="free" aria-label="Start free trial" id="freePlanBtn">Get Started</button>
             </article>
 
             <article class="plan-card" data-plan="pro">
-                <span class="plan-card__badge"></span>
+                <span class="plan-card__badge">POPULAR - FREE IN 2026</span>
                 <h2>Pro</h2>
-                <div class="plan-card__price">$79 / mo</div>
+                <div class="plan-card__price-old">$79 / mo</div>
+                <div class="plan-card__price-new">$0 / mo</div>
+                <div class="plan-card__price-note">Free throughout 2026</div>
                 <ul class="plan-card__list">
-                    <li>1 seat</li>
+                    <li>2 seat</li>
                     <li>1,000 emails / month</li>
-                    <li>Shopify integration</li>
+                    <li>Agentic/Hybrid/Manual mode</li>
+                    <li>Gmail Add-on + Shopify integration</li>
+                    <li>refund and shipping policy check</li>
                 </ul>
-                <button class="paddle-btn" data-plan="pro" aria-label="Buy Pro" id="proPlanBtn" data-success-url="account/dashboard.html">Buy Pro</button>
+                <button class="paddle-btn" data-plan="pro" aria-label="Buy Pro" id="proPlanBtn" data-success-url="account/dashboard.html">Get Pro Free</button>
             </article>
 
             <article class="plan-card" data-plan="team">
-                <span class="plan-card__badge"></span>
+                <span class="plan-card__badge">HIGH PERFORMANCE - FREE IN 2026</span>
                 <h2>Team</h2>
-                <div class="plan-card__price">$199 / mo</div>
+                <div class="plan-card__price-old">$179 / mo</div>
+                <div class="plan-card__price-new">$0 / mo</div>
+                <div class="plan-card__price-note">Free throughout 2026</div>
                 <ul class="plan-card__list">
-                    <li>Unlimited seats</li>
+                    <li>10 seats</li>
                     <li>5,000 emails / month</li>
-                    <li>Priority support</li>
+                    <li>Agentic/Hybrid/Manual mode</li>
+                    <li>Gmail Add-on + Shopify integration</li>
+                    <li>refund and shipping policy check</li>
                 </ul>
-                <button class="paddle-btn" data-plan="team" aria-label="Buy Team" id="teamPlanBtn" data-success-url="account/dashboard.html">Buy Team</button>
+                <button class="paddle-btn" data-plan="team" aria-label="Buy Team" id="teamPlanBtn" data-success-url="account/dashboard.html">Get Team Free</button>
             </article>
         </div>
 
-        <section class="section" style="margin-top:24px;">
+        <section class="faq-section">
             <h2 class="section__title">FAQ & Compliance</h2>
             <ul>
                 <li><strong>Gmail & Google Workspace</strong> are supported.</li>
@@ -80,6 +159,7 @@
         // Check authentication on page load
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthenticationForPricing();
+            applySubscriptionUIState();
         });
 
         // Authentication check for pricing page
@@ -93,7 +173,8 @@
                 const proBtn = document.getElementById('proPlanBtn');
                 const teamBtn = document.getElementById('teamPlanBtn');
                 
-                if (freeBtn) {
+                if (freeBtn && !isLoggedIn) {
+                    //only show for non-logged in users
                     freeBtn.addEventListener('click', function(e) {
                         e.preventDefault();
                         redirectToLogin('free');
@@ -115,12 +196,65 @@
                 }
             } else {
                 // User is logged in, check for plan parameter
-                const urlParams = new URLSearchParams(window.location.search);
-                const plan = urlParams.get('plan');
+                console.log("checkAuthenticationForPricing: user plan is ", user.subscription.plan);
+                const plan = user.subscription.plan;
                 
                 if (plan) {
                     // Highlight the selected plan
                     highlightSelectedPlan(plan);
+                }
+            }
+        }
+
+        // Apply subscription state to pricing UI
+        function applySubscriptionUIState() {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const sub = user.subscription || null;
+
+            const freeBtn = document.getElementById('freePlanBtn');
+            const proBtn = document.getElementById('proPlanBtn');
+            const teamBtn = document.getElementById('teamPlanBtn');
+
+            const proBadge = document.querySelector('[data-plan="pro"] .plan-card__badge');
+            const teamBadge = document.querySelector('[data-plan="team"] .plan-card__badge');
+
+            // Default: nothing to do if no subscription info
+            if (!sub || !sub.status) {
+                return;
+            }
+
+            // 1) After login, free button disabled for all logged-in users
+            if (freeBtn) {
+                freeBtn.disabled = true;
+                freeBtn.textContent = 'Free trial';
+                freeBtn.setAttribute('aria-disabled', 'true');
+            }
+
+            // 2) Manage Pro/Team based on plan
+            // Normalize plan
+            const plan = (sub.plan || '').toLowerCase();
+            const isActive = sub.status === 'active';
+
+            if (plan === 'pro' && isActive) {
+                if (proBadge) { proBadge.textContent += '  (Subscribed)'; }
+                if (proBtn) {
+                    proBtn.disabled = true;
+                    proBtn.textContent = 'Current Plan';
+                    proBtn.setAttribute('aria-disabled', 'true');
+                }
+            }
+
+            if (plan === 'team' && isActive) {
+                if (teamBadge) { teamBadge.textContent += '  (Subscribed)'; }
+                if (proBtn) {
+                    proBtn.disabled = true;
+                    proBtn.textContent = 'Pro Plan';
+                    proBtn.setAttribute('aria-disabled', 'true');
+                }
+                if (teamBtn) {
+                    teamBtn.disabled = true;
+                    teamBtn.textContent = 'Current Plan';
+                    teamBtn.setAttribute('aria-disabled', 'true');
                 }
             }
         }
@@ -134,6 +268,7 @@
             
             // Highlight the selected plan
             const selectedCard = document.querySelector(`[data-plan="${plan}"]`).closest('.plan-card');
+            console.log("highlightSelectedPlan: selectedCard", selectedCard);
             if (selectedCard) {
                 selectedCard.style.border = '2px solid var(--color-primary)';
                 selectedCard.style.boxShadow = '0 0 0 3px rgba(10, 117, 255, 0.1)';

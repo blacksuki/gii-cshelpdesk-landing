@@ -57,15 +57,15 @@
           ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? 'dashboard.html' : 'account/dashboard.html') + '">Account</a>';
         }
       } else {
-        // Show Start free trial link for non-logged in users
-        ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? '../pricing.html#free' : 'pricing.html#free') + '">Start free trial</a>';
+        // Show Login link for non-logged in users
+        ctaButton = '<a class="nav__cta" href="' + (isInAccountDir ? '../auth/login.html' : 'auth/login.html') + '">Login</a>';
       }
 
       headerTarget.innerHTML = [
         '<header class="site-header" role="banner">',
         '    <div class="site-header__inner">',
-        '        <a class="logo" href="' + (isInAccountDir ? '../index.html' : '/index.html') + '" aria-label="giiHelpdesk home">',
-        "            <span>giiHelpdesk</span>",
+        '        <a class="logo" href="' + (isInAccountDir ? '../index.html' : '/index.html') + '" aria-label="giiHelpdeskAgent home">',
+        "            <span>giiHelpdeskAgent</span>",
         "        </a>",
         '        <nav class="nav" role="navigation" aria-label="Primary">',
         adjustedNavLinks.join(""),
@@ -78,12 +78,20 @@
 
     if (footerTarget) {
       const year = new Date().getFullYear();
+      const footerBasePath = isInAccountDir ? '../' : '';
       footerTarget.innerHTML = [
         '<footer class="footer" role="contentinfo">',
         '    <div class="container">',
+        '        <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-lg, 24px); margin-bottom: var(--spacing-md, 16px);">',
+        '            <a href="' + footerBasePath + 'terms.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Terms</a>',
+        '            <a href="' + footerBasePath + 'privacy.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Privacy</a>',
+        '            <a href="' + footerBasePath + 'refund.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Refund</a>',
+        '            <a href="' + footerBasePath + 'contact.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Contact</a>',
+        '            <a href="' + footerBasePath + 'pricing.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Pricing</a>',
+        '        </div>',
         "        <div>&copy; " +
           year +
-          " giiHelpdesk. All rights reserved.</div>",
+          " giiHelpdeskAgent. All rights reserved.</div>",
         '        <div class="muted" style="margin-top:6px;">We do not store any email content.</div>',
         "    </div>",
         "</footer>",
@@ -97,17 +105,14 @@
 // Authentication check
 function checkAuthentication() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-//   console.log("checkAuthentication: user", user);
-//   console.log("checkAuthentication: user.token", user.token);
   if (!user.token) {
+    console.log("❌ No token found in localStorage");
     Toast.error(
       "Authentication Required",
       "Please sign in to access your dashboard."
     );
     setTimeout(() => {
-      //debug not redirect
-      console.log("checkAuthentication: not redirect");
-      // window.location.href = '../auth/login.html';
+      window.location.href = '../auth/login.html';
     }, 2000);
     return;
   }
@@ -133,4 +138,40 @@ function handleLogout() {
       }, 1500);
     }
   }
+}
+
+/**
+ * Convert JSON object to key-value string
+ *
+ * @param {*} jsonObj
+ * @return {*} 
+ */
+function jsonToKeyValue(jsonObj, prefix = '', result = []) {
+  // 遍历当前对象的所有属性
+  Object.entries(jsonObj).forEach(([key, value]) => {
+      // 构建带前缀的键名（处理嵌套情况）
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+      
+      // 检查值是否为对象且不为null（排除null和数组）
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          // 如果是对象则递归处理
+          jsonToKeyValue(value, fullKey, result);
+      } else if (Array.isArray(value)) {
+          // 处理数组
+          value.forEach((item, index) => {
+              const arrayKey = `${fullKey}[${index}]`;
+              if (typeof item === 'object' && item !== null) {
+                  // 数组中的对象也递归处理
+                  jsonToKeyValue(item, arrayKey, result);
+              } else {
+                  result.push(`${arrayKey} - ${item}`);
+              }
+          });
+      } else {
+          // 基本类型直接添加
+          result.push(`${fullKey} - ${value}`);
+      }
+  });
+  
+  return result.join('\n');
 }

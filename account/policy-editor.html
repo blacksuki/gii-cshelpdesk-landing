@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Policy Editor — giiHelpdeskAgent</title>
+    <meta name="description" content="Edit your store policies" />
+    <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
+    <link rel="stylesheet" href="../css/auth.css" />
+    <script src="../js/toast.js" defer></script>
+    <script src="../js/api-config.js" defer></script>
+    <script src="../js/api-client.js" defer></script>
+    <script src="../js/auth.js" defer></script>
+    <style>
+      .editor-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      
+      .editor-header {
+        margin-bottom: 32px;
+      }
+      
+      .editor-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 24px;
+        border-bottom: 2px solid #e0e0e0;
+      }
+      
+      .editor-tab {
+        padding: 12px 24px;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 500;
+        color: #666;
+        transition: all 0.2s;
+      }
+      
+      .editor-tab:hover {
+        color: #333;
+        background-color: #f5f5f5;
+      }
+      
+      .editor-tab.active {
+        color: #1a73e8;
+        border-bottom-color: #1a73e8;
+      }
+      
+      .editor-panel {
+        display: none;
+      }
+      
+      .editor-panel.active {
+        display: block;
+      }
+      
+      .editor-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+      
+      @media (max-width: 768px) {
+        .editor-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      
+      .editor-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+      
+      .editor-section h3 {
+        margin: 0 0 16px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .editor-textarea {
+        width: 100%;
+        min-height: 400px;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        resize: vertical;
+      }
+      
+      .editor-textarea:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+      }
+      
+      .editor-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #666;
+      }
+      
+      .word-count {
+        font-weight: 500;
+      }
+      
+      .word-count.warning {
+        color: #f57c00;
+      }
+      
+      .word-count.error {
+        color: #d32f2f;
+      }
+      
+      .preview-content {
+        min-height: 400px;
+        padding: 16px;
+        background: #f9f9f9;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 14px;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
+      
+      .preview-content.empty {
+        color: #999;
+        font-style: italic;
+      }
+      
+      .preview-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        color: #666;
+      }
+      
+      .editor-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        margin-top: 24px;
+      }
+      
+      .btn-parse {
+        background-color: #7c4dff;
+      }
+      
+      .btn-parse:hover {
+        background-color: #6a3de8;
+      }
+      
+      .policy-tips {
+        background: #e3f2fd;
+        border-left: 4px solid #1976d2;
+        padding: 16px;
+        margin-bottom: 24px;
+        border-radius: 4px;
+      }
+      
+      .policy-tips h4 {
+        margin: 0 0 8px 0;
+        color: #1565c0;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      
+      .policy-tips ul {
+        margin: 8px 0 0 0;
+        padding-left: 20px;
+        font-size: 13px;
+        color: #424242;
+      }
+      
+      .policy-tips li {
+        margin-bottom: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="site-header"></div>
+
+    <div class="editor-container">
+      <div class="editor-header">
+        <h1 class="account-title">Store Policies Editor</h1>
+        <p class="account-subtitle">
+          Edit and manage your refund and shipping policies
+        </p>
+      </div>
+
+      <!-- Policy Tips -->
+      <div class="policy-tips">
+        <h4>💡 Tips for Writing Effective Policies</h4>
+        <ul>
+          <li>Be clear and concise - customers should easily understand your terms</li>
+          <li>Include specific timeframes (e.g., "30-day return window")</li>
+          <li>Mention any conditions or exceptions</li>
+          <li>Use the AI Parse Preview to see how your policy will be understood</li>
+          <li>Maximum 2000 words per policy</li>
+        </ul>
+      </div>
+
+      <!-- Editor Tabs -->
+      <div class="editor-tabs">
+        <button class="editor-tab active" onclick="switchTab('refund')">
+          🔄 Refund Policy
+        </button>
+        <button class="editor-tab" onclick="switchTab('shipping')">
+          🚚 Shipping Policy
+        </button>
+      </div>
+
+      <!-- Refund Policy Panel -->
+      <div id="refundPanel" class="editor-panel active">
+        <div class="editor-grid">
+          <!-- Left: Shop Policy from Shopify (Editable) -->
+          <div class="editor-section">
+            <h3>Shop Policy</h3>
+            <textarea
+              id="refundShopPolicyText"
+              class="editor-textarea"
+              placeholder="Shop policy will be loaded automatically from your Shopify store..."
+            ></textarea>
+            <div class="editor-info">
+              <span style="color: #999;">Edit the shop policy above, then click "Update Policy" to format it</span>
+            </div>
+          </div>
+
+          <!-- Right: Formatted Policy Display (Read-only) -->
+          <div class="editor-section">
+            <h3>Refund Policy (Formatted)</h3>
+            <div id="refundPolicyDisplay" class="preview-content">
+              Formatted policy will appear here after clicking "Update Policy"
+            </div>
+            <div class="editor-info">
+              <span id="refundLastUpdated" style="color: #999;">Not updated</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- All buttons at bottom -->
+        <div class="editor-actions">
+          <a href="dashboard.html" class="auth-btn auth-btn--secondary" style="text-decoration: none;">
+            Cancel
+          </a>
+          <button class="auth-btn auth-btn--secondary" onclick="updatePolicy('refund')">
+            🔄 Update Policy
+          </button>
+          <button class="auth-btn" onclick="savePolicy('refund')">
+            💾 Save Refund Policy
+          </button>
+        </div>
+      </div>
+
+      <!-- Shipping Policy Panel -->
+      <div id="shippingPanel" class="editor-panel">
+        <div class="editor-grid">
+          <!-- Left: Shop Policy from Shopify (Editable) -->
+          <div class="editor-section">
+            <h3>Shop Policy</h3>
+            <textarea
+              id="shippingShopPolicyText"
+              class="editor-textarea"
+              placeholder="Shop policy will be loaded automatically from your Shopify store..."
+            ></textarea>
+            <div class="editor-info">
+              <span style="color: #999;">Edit the shop policy above, then click "Update Policy" to format it</span>
+            </div>
+          </div>
+
+          <!-- Right: Formatted Policy Display (Read-only) -->
+          <div class="editor-section">
+            <h3>Shipping Policy (Formatted)</h3>
+            <div id="shippingPolicyDisplay" class="preview-content">
+              Formatted policy will appear here after clicking "Update Policy"
+            </div>
+            <div class="editor-info">
+              <span id="shippingLastUpdated" style="color: #999;">Not updated</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- All buttons at bottom -->
+        <div class="editor-actions">
+          <a href="dashboard.html" class="auth-btn auth-btn--secondary" style="text-decoration: none;">
+            Cancel
+          </a>
+          <button class="auth-btn auth-btn--secondary" onclick="updatePolicy('shipping')">
+            🔄 Update Policy
+          </button>
+          <button class="auth-btn" onclick="savePolicy('shipping')">
+            💾 Save Shipping Policy
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="site-footer"></div>
+
+    <script>
+      // Authentication check
+      function checkAuthentication() {
+        console.log('[policy-editor checkAuthentication] Starting...');
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        console.log('[policy-editor checkAuthentication] User:', { hasToken: !!user.token, hasEmail: !!user.email });
+        
+        if (!user.token) {
+          console.error('[policy-editor checkAuthentication] ❌ NO TOKEN - Redirecting to login');
+          Toast.error(
+            "Authentication Required",
+            "Please sign in to access policy editor."
+          );
+          setTimeout(() => {
+            window.location.href = "../auth/login.html";
+          }, 2000);
+          return;
+        }
+
+        // Verify token is valid and not expired
+        try {
+          const tokenPayload = JSON.parse(atob(user.token.split(".")[1]));
+          console.log('[policy-editor checkAuthentication] Token exp:', new Date(tokenPayload.exp * 1000), 'Now:', new Date());
+          
+          if (tokenPayload.exp * 1000 < Date.now()) {
+            console.error('[policy-editor checkAuthentication] ❌ TOKEN EXPIRED - Redirecting to login');
+            Toast.error("Session Expired", "Please sign in again.");
+            setTimeout(() => {
+              window.location.href = "../auth/login.html";
+            }, 2000);
+            return;
+          }
+          
+          console.log('[policy-editor checkAuthentication] ✅ Token is valid');
+        } catch (error) {
+          console.error('[policy-editor checkAuthentication] ❌ TOKEN VALIDATION ERROR:', error);
+          Toast.error("Authentication Error", "Please sign in again.");
+          setTimeout(() => {
+            window.location.href = "../auth/login.html";
+          }, 2000);
+          return;
+        }
+      }
+
+      // Check authentication on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        checkAuthentication();
+        checkPlanEligibility();
+        loadExistingPolicies();
+        setupWordCounters();
+      });
+
+      // Check if user has Pro/Team plan
+      function checkPlanEligibility() {
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+        const plan = (user?.subscription?.plan || "").toLowerCase();
+        const eligible = plan === "pro" || plan === "team";
+
+        if (!eligible) {
+          Toast.error(
+            "Upgrade Required",
+            "Store policies are only available for Pro and Team plans"
+          );
+          setTimeout(() => {
+            window.location.href = "/pricing.html";
+          }, 2000);
+        }
+      }
+
+      // Switch between tabs
+      function switchTab(policyType) {
+        // Update tab buttons
+        document.querySelectorAll(".editor-tab").forEach((tab) => {
+          tab.classList.remove("active");
+        });
+        event.target.classList.add("active");
+
+        // Update panels
+        document.querySelectorAll(".editor-panel").forEach((panel) => {
+          panel.classList.remove("active");
+        });
+        document.getElementById(policyType + "Panel").classList.add("active");
+      }
+
+      // Load existing policies from Firestore and fetch from Shopify
+      async function loadExistingPolicies() {
+        try {
+          const user = JSON.parse(localStorage.getItem("user") || "{}");
+          const shopDomain = user.domain;
+
+          if (!shopDomain) {
+            Toast.warning("No Domain", "Please set up your shop domain first");
+            return;
+          }
+
+          // Load saved formatted policies from Firestore
+          const refundResult = await window.apiClient.getServicePolicy(shopDomain, "refund");
+          if (refundResult?.success && refundResult?.data?.parsedData) {
+            const formatted = jsonToKeyValue(refundResult.data.parsedData);
+            document.getElementById("refundPolicyDisplay").innerHTML =
+              `<pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${formatted}</pre>`;
+            document.getElementById("refundLastUpdated").textContent =
+              "Last saved: " + new Date(refundResult.data.updatedAt || Date.now()).toLocaleString();
+            window.refundParsedData = refundResult.data.parsedData;
+          }
+
+          const shippingResult = await window.apiClient.getServicePolicy(shopDomain, "shipping");
+          if (shippingResult?.success && shippingResult?.data?.parsedData) {
+            const formatted = jsonToKeyValue(shippingResult.data.parsedData);
+            document.getElementById("shippingPolicyDisplay").innerHTML =
+              `<pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${formatted}</pre>`;
+            document.getElementById("shippingLastUpdated").textContent =
+              "Last saved: " + new Date(shippingResult.data.updatedAt || Date.now()).toLocaleString();
+            window.shippingParsedData = shippingResult.data.parsedData;
+          }
+
+          // Auto-fetch shop policies from Shopify
+          await fetchShopPolicy('refund');
+          await fetchShopPolicy('shipping');
+        } catch (error) {
+          console.error("Error loading policies:", error);
+          Toast.error("Load Error", "Failed to load existing policies");
+        }
+      }
+
+      // Fetch shop policy from Shopify
+      async function fetchShopPolicy(policyType) {
+        try {
+          Toast.loading("Fetching Policy", "Loading policy from Shopify...");
+          
+          const user = JSON.parse(localStorage.getItem("user") || "{}");
+          const shopDomain = user.domain;
+          
+          if (!shopDomain) {
+            Toast.hideLoading();
+            Toast.error("No Domain", "Please set up your Shopify domain first");
+            return;
+          }
+          
+          const result = await window.apiClient.getShopPolicies(shopDomain);
+          
+          Toast.hideLoading();
+          
+          if (result?.success && result?.data) {
+            const policyData = result.data[policyType];
+            
+            if (policyData?.body) {
+              // Display in shop policy textarea
+              document.getElementById(`${policyType}ShopPolicyText`).value = policyData.body;
+              Toast.success("Policy Fetched", `${policyType} policy loaded from Shopify`);
+            } else {
+              Toast.warning("No Policy", `No ${policyType} policy found in your Shopify store`);
+            }
+          } else {
+            Toast.error("Fetch Failed", result?.error || "Failed to fetch shop policy");
+          }
+        } catch (error) {
+          console.error("Error fetching shop policy:", error);
+          Toast.hideLoading();
+          Toast.error("Fetch Error", "An error occurred while fetching the policy");
+        }
+      }
+
+      // Update policy - parse and format for database
+      async function updatePolicy(policyType) {
+        const textarea = document.getElementById(`${policyType}ShopPolicyText`);
+        const display = document.getElementById(`${policyType}PolicyDisplay`);
+        const text = textarea.value.trim();
+        
+        if (!text) {
+          Toast.warning("Empty Policy", "Please fetch or enter shop policy first");
+          return;
+        }
+        
+        display.innerHTML = '<div class="preview-loading">🔄 Formatting policy...</div>';
+        
+        try {
+          const user = JSON.parse(localStorage.getItem("user") || "{}");
+          const shopDomain = user.domain;
+          
+          // Call API to parse policy (dry run mode)
+          const result = await window.apiClient.uploadServicePolicy(
+            shopDomain,
+            policyType,
+            text
+          );
+          
+          if (result?.success && result?.data?.parsedData) {
+            // Display formatted data
+            const formatted = jsonToKeyValue(result.data.parsedData);
+            display.innerHTML = `<pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${formatted}</pre>`;
+            
+            // Store parsed data temporarily for saving
+            window[`${policyType}ParsedData`] = result.data.parsedData;
+            
+            document.getElementById(`${policyType}LastUpdated`).textContent =
+              "Updated: " + new Date().toLocaleString();
+            
+            Toast.success("Policy Updated", "Policy formatted and ready to save");
+          } else {
+            display.innerHTML = '<div style="color: #d32f2f;">❌ Failed to format policy</div>';
+            Toast.error("Update Failed", "Failed to format policy");
+          }
+        } catch (error) {
+          console.error("Error updating policy:", error);
+          display.innerHTML = '<div style="color: #d32f2f;">❌ Error: ' + error.message + '</div>';
+          Toast.error("Update Error", "Failed to update policy");
+        }
+      }
+
+      // Setup word counters (removed - no longer needed)
+      function setupWordCounters() {
+        // No longer needed with new design
+      }
+
+      // Save policy
+      async function savePolicy(policyType) {
+        const textarea = document.getElementById(`${policyType}ShopPolicyText`);
+        const text = textarea.value.trim();
+        
+        if (!text) {
+          Toast.warning("Empty Policy", "Please fetch or enter shop policy first");
+          return;
+        }
+        
+        if (!window[`${policyType}ParsedData`]) {
+          Toast.warning("Not Updated", "Please click 'Update Policy' before saving");
+          return;
+        }
+        
+        Toast.loading("Saving Policy", "Saving your policy...");
+        
+        try {
+          const user = JSON.parse(localStorage.getItem("user") || "{}");
+          const shopDomain = user.domain;
+          
+          const result = await window.apiClient.uploadServicePolicy(
+            shopDomain,
+            policyType,
+            text
+          );
+          
+          Toast.hideLoading();
+          
+          if (result?.success) {
+            Toast.success("Policy Saved", `Your ${policyType} policy has been saved successfully`);
+            document.getElementById(`${policyType}LastUpdated`).textContent =
+              "Last saved: " + new Date().toLocaleString();
+          } else {
+            Toast.error("Save Failed", result?.error || "Failed to save policy");
+          }
+        } catch (error) {
+          console.error("Error saving policy:", error);
+          Toast.hideLoading();
+          Toast.error("Save Error", "An error occurred while saving the policy");
+        }
+      }
+
+      // Helper function to convert JSON to key-value text (recursive)
+      function jsonToKeyValue(obj, indent = 0) {
+        if (!obj || typeof obj !== 'object') return String(obj || '');
+        
+        const indentStr = '  '.repeat(indent);
+        const lines = [];
+        
+        for (const [key, value] of Object.entries(obj)) {
+          if (value === null || value === undefined) {
+            lines.push(`${indentStr}${key}: (not set)`);
+          } else if (typeof value === 'object' && !Array.isArray(value)) {
+            // Nested object
+            lines.push(`${indentStr}${key}:`);
+            lines.push(jsonToKeyValue(value, indent + 1));
+          } else if (Array.isArray(value)) {
+            // Array
+            lines.push(`${indentStr}${key}: ${value.join(', ')}`);
+          } else {
+            // Primitive value
+            lines.push(`${indentStr}${key}: ${value}`);
+          }
+        }
+        
+        return lines.join('\n');
+      }
+    </script>
+  </body>
+</html>

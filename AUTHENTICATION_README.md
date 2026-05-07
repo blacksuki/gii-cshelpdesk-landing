@@ -212,9 +212,27 @@ FIRESTORE_DATABASE_ID=giihelpdesk01
 JWT_SECRET=your-jwt-secret-key
 JWT_EXPIRY=7d
 
-# Email Configuration (SendGrid)
-SENDGRID_API_KEY=your-sendgrid-api-key
-SENDGRID_FROM_EMAIL=noreply@giihelpdesk.com
+## 1. 生成 32 字节随机串，base64 编码
+JWT_SECRET=$(openssl rand -base64 32)
+
+## 2. 可选：去掉换行符（macOS 的 base64 默认不带换行，保险起见）
+JWT_SECRET="${JWT_SECRET//[$'\t\r\n ']/}"
+
+## 3. 创建 Secret（如已存在则改为添加新版本）
+echo -n "$JWT_SECRET" | gcloud secrets create JWT_SECRET \
+  --data-file=- \
+  --replication-policy="automatic" \
+  --project="$(gcloud config get-value project)"
+
+## 若 Secret 已存在，则改为：
+echo -n "$JWT_SECRET" | gcloud secrets versions add JWT_SECRET --data-file=-
+
+## 一行复制即用（自动判断是否存在）生成并写入/轮换 JWT_SECRET
+JWT_SECRET=$(openssl rand -base64 32) \
+  && { gcloud secrets describe JWT_SECRET >/dev/null 2>&1 \
+       && echo -n "$JWT_SECRET" | gcloud secrets versions add JWT_SECRET --data-file=- \
+       || echo -n "$JWT_SECRET" | gcloud secrets create JWT_SECRET --data-file=- --replication-policy=automatic; } \
+  && echo "JWT_SECRET 已保存到 Secret Manager"
 
 # Paddle Configuration
 PADDLE_VENDOR_ID=your-vendor-id

@@ -1,13 +1,13 @@
 /**
- * API Configuration for giiHelpdesk
+ * API Configuration for giiHelpdeskAgent
  * Centralized configuration for different environments
  */
 
 const API_CONFIG = {
     // Development environment (local testing)
     development: {
-        // baseURL: 'http://localhost:8088',
-        baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
+        baseURL: 'http://localhost:8088',
+        // baseURL: 'https://us-central1-giicsagent.cloudfunctions.net',
         timeout: 30000,
         retryAttempts: 3,
         retryDelay: 2000
@@ -37,38 +37,48 @@ const API_CONFIG = {
  * @type {Object}
  */
 const API_ENDPOINTS = {
-    // Authentication endpoints
+    // Authentication endpoints - now using unified apiRouter
     auth: {
-        register: '/auth-register',
-        login: '/auth-login',
-        forgot: '/auth-forgot',
-        reset: '/auth-reset',
-        verify: '/auth-verify',
-        checkDomain: '/auth-check-domain'
+        register: '/apiRouter?route=auth/register',
+        login: '/apiRouter?route=auth/login',
+        forgot: '/apiRouter?route=auth/forgot',
+        reset: '/apiRouter?route=auth/reset',
+        verify: '/apiRouter?route=auth/verify',
+        checkDomain: '/apiRouter?route=auth/check-domain',
+        googleOAuth: '/apiRouter?route=auth/google-oauth'
     },
     
-    // Account management endpoints
+    // Account management endpoints - now using unified apiRouter
     account: {
-        me: '/account-me',
-        profile: '/account-profile',
-        activity: '/account-activity',
-        billing: '/account-billing',
-        paymentMethods: '/account-payment-methods',
-        billingHistory: '/account-billing-history'
+        me: '/apiRouter?route=account/me',
+        profile: '/apiRouter?route=account/profile',
+        activity: '/apiRouter?route=account/activity',
+        billing: '/apiRouter?route=account/billing',
+        paymentMethods: '/apiRouter?route=account/payment-methods',
+        billingHistory: '/apiRouter?route=account/billing-history',
+        servicePolicyGet: '/apiRouter?route=account/service-policy',
+        servicePolicyUpload: '/apiRouter?route=account/service-policy/upload',
+        shopPolicies: '/apiRouter?route=account/shop-policies',
+        shopifyDomain: '/apiRouter?route=account/shopify-domain',
+        shopifyDomainVerify: '/apiRouter?route=account/shopify-domain/verify',
+        shopifyDomainCheck: '/apiRouter?route=account/shopify-domain/check',
+        apiKey: '/apiRouter?route=account/api-key',  // POST: save, GET: status, DELETE: delete
+        quota: '/apiRouter?route=account/quota'  // GET: quota usage info
     },
     
-    // Subscription endpoints
+    // Subscription endpoints - mixed routing (status uses handleRouter, others use apiRouter)
     subscription: {
-        status: '/getSubscriptionStatus',
+        status: '/handleRouter?route=getSubscriptionStatus',  // Handler endpoint (used by Gmail add-on)
         plans: '/subscription-plans',
-        upgrade: '/upgradeSubscription'
+        upgrade: '/apiRouter?route=subscription/upgrade',
+        cancel: '/apiRouter?route=subscription/cancel'
     },
     
-    // Shopify integration endpoints
+    // Shopify integration endpoints - now using unified handleRouter
     shopify: {
-        auth: '/shopifyAuthCallback',
-        initiate: '/initiateShopifyAuth',
-        orders: '/callShopifyGraphQL'
+        auth: '/handleRouter?route=shopifyAuthCallback',
+        initiate: '/handleRouter?route=initiateShopifyAuth',
+        orders: '/handleRouter?route=callShopifyGraphQL'
     }
 };
 
@@ -128,5 +138,7 @@ window.API_CONFIG = {
     getApiUrl,
     getEnvironment,
     endpoints: API_ENDPOINTS,
-    config: API_CONFIG
+    config: API_CONFIG,
+    // Google OAuth Client ID - Replace with your actual client ID from Google Cloud Console
+    googleClientId: '225456207726-9eqlvbeolroqurk3u3dmlmvialt7ocpk.apps.googleusercontent.com'
 };
