@@ -508,7 +508,10 @@
         loadShopifyDomainStatus();
         loadPoliciesOverview(); // V3.5 NEW: Load policies overview
         loadApiKeyStatus(); // Load API Key status
+<<<<<<< Updated upstream
         loadQuotaInfo(); // V3.6 NEW: Load quota usage info
+=======
+>>>>>>> Stashed changes
         
         // Check if user needs to set up Shopify domain
         const urlParams = new URLSearchParams(window.location.search);
@@ -1313,8 +1316,13 @@
        */
       async function loadApiKeyStatus() {
         try {
+<<<<<<< Updated upstream
           // Check both OpenAI and Qwen providers
           const providers = ['openai', 'qwen'];
+=======
+          // Check all supported providers
+          const providers = ['gemini', 'openai', 'qwen'];
+>>>>>>> Stashed changes
           let configuredProvider = null;
           let statusData = null;
           
@@ -1456,6 +1464,20 @@
             <li>Click "Create new API Key"</li>
             <li>Copy and paste the key here</li>
           `;
+<<<<<<< Updated upstream
+=======
+        } else if (provider === 'gemini') {
+          providerInfo.textContent = 'Google Gemini models';
+          guideTitle.textContent = '🔗 How to get your Gemini API Key:';
+          guideSteps.innerHTML = `
+            <li>Visit <a href="https://makersuite.google.com/app/apikey" target="_blank" style="color: #1976d2;">Google AI Studio</a></li>
+            <li>Sign in with your Google account</li>
+            <li>Click "Get API Key" or "Create API Key"</li>
+            <li>Select or create a Google Cloud project</li>
+            <li>Copy the API key (starts with "AIza")</li>
+            <li>Paste the key here</li>
+          `;
+>>>>>>> Stashed changes
         }
       }
 
@@ -1486,6 +1508,14 @@
             showValidationMessage('Invalid API key format. Qwen keys start with "sk-"', 'error');
             return;
           }
+<<<<<<< Updated upstream
+=======
+        } else if (provider === 'gemini') {
+          if (!apiKey.startsWith('AIza')) {
+            showValidationMessage('Invalid API key format. Gemini keys start with "AIza"', 'error');
+            return;
+          }
+>>>>>>> Stashed changes
         }
         
         // Show loading
@@ -1633,7 +1663,12 @@
             <select id="apiKeyProvider" class="auth-input" onchange="updateProviderInfo()">
               <option value="openai">OpenAI</option>
               <option value="qwen">Qwen</option>
+<<<<<<< Updated upstream
               <!-- Future: Gemini, Kimi -->
+=======
+              <option value="gemini">Google Gemini</option>
+              <!-- Future: Kimi -->
+>>>>>>> Stashed changes
             </select>
             <div id="providerInfo" style="font-size: 12px; color: var(--color-muted); margin-top: 4px;">
               OpenAI GPT models

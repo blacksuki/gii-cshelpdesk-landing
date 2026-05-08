@@ -1,4 +1,65 @@
-我来为您提供环境配置的具体方法，设置Firebase、SendGrid、Paddle的环境变量。
+# Landing Site 测试与配置指南
+
+本文档介绍如何本地测试 `gii-cshelpdesk-landing` 站点以及相关的环境配置。
+
+---
+
+## 🌐 Landing Site 本地测试方法
+
+您可以选择以下任一方法在本地启动并测试站点。
+
+### 1. 使用 Vercel CLI (推荐)
+这是最接近生产环境的方法，因为它会处理 `vercel.json` 中的重写和头部配置。
+
+```bash
+# 安装 Vercel CLI (如未安装)
+npm install -g vercel
+
+# 在项目根目录启动开发服务器，并监听 3456 端口
+# 注意：不要在 package.json 的 dev 脚本中调用 vercel dev，否则会导致递归执行错误
+vercel dev --listen 3456
+```
+或者，使用我为您准备的备选脚本：
+```bash
+npm run local-serve
+```
+之后访问：`http://localhost:3456`
+
+### 2. 使用 VS Code Live Server 插件
+如果您使用 Visual Studio Code，这是最简单的方法。
+
+1. 在扩展商店搜索并安装 **Live Server**。
+2. 打开 `index.html`。
+3. 点击右下角的 **Go Live** 状态栏按钮，或者右键点击 HTML 文件选择 **Open with Live Server**。
+
+### 3. 使用 Python (Mac 自带)
+无需安装任何工具，直接使用 macOS 自带的 Python 模块。
+
+```bash
+# 在项目根目录运行
+python3 -m http.server 3456
+```
+之后访问：`http://localhost:3456`
+
+### 4. 使用 npx serve
+如果您已安装 Node.js，可以使用此命令启动一个快速的静态服务器。
+
+```bash
+npx serve .
+```
+
+---
+
+## 🔑 Google Login 本地测试说明
+
+由于 Google OAuth 有来源限制（Authorized JavaScript origins），在本地测试 Google 登录时请注意：
+
+1. **设置 Redirect URI**: 在 Google Cloud Console 的凭据设置中，将 `http://localhost:3456` 添加到 **Authorized JavaScript origins**。
+2. **API 配置**: 确保 `js/api-config.js` 中的 `googleClientId` 已正确设置。
+3. **域名设置**: 本地登录成功后，如果是新用户，系统会引导至 `dashboard.html?setup=shopify-domain`。
+
+---
+
 
 ## 🔧 环境配置具体方法
 

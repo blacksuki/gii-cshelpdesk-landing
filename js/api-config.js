@@ -62,8 +62,12 @@ const API_ENDPOINTS = {
         shopifyDomain: '/apiRouter?route=account/shopify-domain',
         shopifyDomainVerify: '/apiRouter?route=account/shopify-domain/verify',
         shopifyDomainCheck: '/apiRouter?route=account/shopify-domain/check',
+<<<<<<< Updated upstream
         apiKey: '/apiRouter?route=account/api-key',  // POST: save, GET: status, DELETE: delete
         quota: '/apiRouter?route=account/quota'  // GET: quota usage info
+=======
+        apiKey: '/apiRouter?route=account/api-key'  // POST: save, GET: status, DELETE: delete
+>>>>>>> Stashed changes
     },
     
     // Subscription endpoints - mixed routing (status uses handleRouter, others use apiRouter)
