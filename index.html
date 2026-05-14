@@ -16,38 +16,6 @@
   <body>
     <div id="site-header"></div>
 
-    <!-- 2026 Free Promotion Banner -->
-    <section class="promo-banner-2026" aria-labelledby="promo-2026-title">
-      <div class="promo-banner-2026__inner">
-        <div class="promo-banner-2026__badge">🎉 LIMITED TIME OFFER</div>
-        <h2 id="promo-2026-title" class="promo-banner-2026__title">
-          FREE Throughout 2026!
-        </h2>
-        <p class="promo-banner-2026__subtitle">
-          Get full access to all premium features at no cost for the entire year
-        </p>
-        <div class="promo-banner-2026__features">
-          <div class="promo-feature">
-            <span class="promo-feature__icon">✨</span>
-            <span class="promo-feature__text">All Plans Free</span>
-          </div>
-          <div class="promo-feature">
-            <span class="promo-feature__icon">🚀</span>
-            <span class="promo-feature__text">Unlimited Seats</span>
-          </div>
-          <div class="promo-feature">
-            <span class="promo-feature__icon">🔓</span>
-            <span class="promo-feature__text">Full Features</span>
-          </div>
-        </div>
-        <div class="promo-banner-2026__note">
-          <strong>Note:</strong> You'll need your own OpenAI API key to use the AI features
-        </div>
-        <a href="auth/register.html" class="promo-banner-2026__cta" id="claimAccessBtn">
-          Claim Your Free Access Now →
-        </a>
-      </div>
-    </section>
 
     <!-- Quick Start Section - Moved to top -->
     <section class="quick-start section" aria-labelledby="quick-start-title">
@@ -56,7 +24,7 @@
           Start Your Free Access Today
         </h2>
         <p class="quick-start__intro">
-          Get up and running in just a few simple steps. No credit card required, completely free in 2026.
+          Get up and running in just a few simple steps. No credit card required.
         </p>
         <div class="steps-container">
           <div class="step-item">
@@ -326,7 +294,7 @@
           }
         }
 
-        // Update "Claim Your Free Access Now" button in promo banner
+        // Update "Get Started" button
         const claimAccessBtn = document.getElementById("claimAccessBtn");
         if (claimAccessBtn) {
           if (isLoggedIn) {
@@ -334,9 +302,9 @@
             claimAccessBtn.href = "account/dashboard.html";
             claimAccessBtn.setAttribute("aria-label", "Go to your dashboard");
           } else {
-            claimAccessBtn.textContent = "Claim Your Free Access Now →";
+            claimAccessBtn.textContent = "Get Started →";
             claimAccessBtn.href = "auth/register.html";
-            claimAccessBtn.setAttribute("aria-label", "Register for free access");
+            claimAccessBtn.setAttribute("aria-label", "Register for an account");
           }
         }
 
