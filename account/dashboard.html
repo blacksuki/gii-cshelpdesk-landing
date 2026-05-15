@@ -1313,8 +1313,8 @@
        */
       async function loadApiKeyStatus() {
         try {
-          // Check both OpenAI and Qwen providers
-          const providers = ['openai', 'qwen'];
+          // Check all supported providers
+          const providers = ['gemini', 'openai', 'qwen'];
           let configuredProvider = null;
           let statusData = null;
           
@@ -1456,6 +1456,17 @@
             <li>Click "Create new API Key"</li>
             <li>Copy and paste the key here</li>
           `;
+        } else if (provider === 'gemini') {
+          providerInfo.textContent = 'Google Gemini models';
+          guideTitle.textContent = '🔗 How to get your Gemini API Key:';
+          guideSteps.innerHTML = `
+            <li>Visit <a href="https://makersuite.google.com/app/apikey" target="_blank" style="color: #1976d2;">Google AI Studio</a></li>
+            <li>Sign in with your Google account</li>
+            <li>Click "Get API Key" or "Create API Key"</li>
+            <li>Select or create a Google Cloud project</li>
+            <li>Copy the API key (starts with "AIza")</li>
+            <li>Paste the key here</li>
+          `;
         }
       }
 
@@ -1484,6 +1495,11 @@
         } else if (provider === 'qwen') {
           if (!apiKey.startsWith('sk-')) {
             showValidationMessage('Invalid API key format. Qwen keys start with "sk-"', 'error');
+            return;
+          }
+        } else if (provider === 'gemini') {
+          if (!apiKey.startsWith('AIza')) {
+            showValidationMessage('Invalid API key format. Gemini keys start with "AIza"', 'error');
             return;
           }
         }
@@ -1633,7 +1649,8 @@
             <select id="apiKeyProvider" class="auth-input" onchange="updateProviderInfo()">
               <option value="openai">OpenAI</option>
               <option value="qwen">Qwen</option>
-              <!-- Future: Gemini, Kimi -->
+              <option value="gemini">Google Gemini</option>
+              <!-- Future: Kimi -->
             </select>
             <div id="providerInfo" style="font-size: 12px; color: var(--color-muted); margin-top: 4px;">
               OpenAI GPT models

@@ -1,214 +1,554 @@
-# CS-AI Agent Landing Page
+# giiHelpdesk Landing Website
 
-专为Shopify商家设计的智能客服AI助手的产品介绍页面。
-
-## 功能特性
-
-- 响应式设计，支持桌面和移动端
-- 现代化UI设计
-- 产品功能介绍
-- 使用步骤说明
-- 联系方式和支持信息
-
-## 技术栈
-- 纯HTML/CSS/JavaScript
-- 响应式设计
-- 部署在Vercel
-
-### 3.1 页面结构
-- `/`           主图演示,功能说明
-- `/features`   功能对比表（vs Zendesk、Gorgias）
-- `/pricing`    3 个 Plan（见下）
-- `/case`       展示多个 Shopify 商家故事（姓名 + GMV + 节省 %），每次下拉追加3个新item
-- `/about`      团队介绍 + 推特链接
-- `/privacy`    GDPR/CCPA 合规条款
-
-### 3.2 定价与席位购买
-| Plan   | Price      | Seats | Limit         |
-|--------|------------|-------|--------------|
-| Free   | 14 天试用  | 1     | 50 封/月      |
-| Pro    | $79/月     | 1     | 1000 封/月    |
-| Team   | $199/月    | 不限     | 5000 封/月    |
-
-- Paddle 支付 → 创建 `subscription_id`
-- Webhook → Cloud Function 写入 Firestore
-  - `users/{email}/subscription = {planId, expiry, seats}`
-- 试用到期逻辑：Cloud Scheduler 每天 00:00 跑批，超期 → 降级计划
-- 封禁逻辑：滥用 API 返回 429，前端提示升级
-
-### 3.3 技术细节
-- Paddle webhook 验证：`/webhook/paddle`
-- 计费维度：以「Google 登录账号」为 1 个 seat，无需关心邮箱后缀
-- 权限隔离：每个客服看到的邮件内容实时，但草稿/标签操作记录写入 userProperties，天然区分操作人
-- 上线 checklist：在网站 FAQ 中说明「支持 Gmail 及 Google Workspace 自定义域名邮箱」
-###  合规清单
-- OAuth Scope 最小：`gmail.readonly`, `gmail.modify`
-- 隐私政策：明确“我们**不存储**任何邮件内容”
-- DPA：Paddle 自动签署
-
-## Summary
- 最小数据留存 + 最小 OAuth 范围，把“AI 客服实习生”塞进 Gmail 边栏，14 天免费试用，主攻北美 Shopify 小 B 
-
-
- ----------kimi---------------
-
-# 🔧 Cursor Prompt：
-
-# giiHelpdeskAgent Landing Page（Shopify 智能客服 AI）
-
-## 1️⃣ 项目定位
-为北美 Shopify 小 B 商户打造的「AI 客服实习生」产品介绍与购买站点。  
-核心卖点：14 天免费试用 → Paddle 付费 → 直接插入 Gmail 边栏，最小数据留存，开箱即用。
-限制：纯英文内容网站。以gii-cshelpdesk-Landing为项目目录，public目录下的文件保留。
-
-## 2️⃣ 技术约束
-- 纯 HTML / CSS / JavaScript（不许用框架）
-- 100 % 响应式，桌面 + 移动端
-- 部署在 Vercel（根目录提供 `vercel.json`）
-- 目录规范：
-  /
-  ├─ index.html            主页（功能介绍 + 主图演示）
-  ├─ features.html         功能对比表（vs Zendesk / Gorgias）
-  ├─ pricing.html          3 个 Plan 卡片 + Paddle Checkout
-  ├─ case.html             商家案例瀑布流，下拉追加3条
-  ├─ about.html            团队介绍 + 推特链接
-  ├─ privacy.html          GDPR / CCPA 合规条款
-  ├─ /css/style.css
-  ├─ /js/
-  │   ├─ paddle.js         Paddle 初始化 + Checkout（占位 VENDOR_ID & PRODUCT_IDs）
-  │   ├─ cases.js          案例瀑布流加载逻辑（IntersectionObserver）
-  │   └─ common.js         头部/底部注入 + 导航高亮
-  └─ vercel.json           重定向 & 路由
-
-## 3️⃣ 页面需求逐条拆解
-
-### 3.1 主页 `/`
-- Hero：一句话价值主张 + 主图演示（gif / mp4 占位）
-- 三段式功能介绍（图标 + 标题 + 1 行描述）
-- 14 天免费试用按钮（跳转到 pricing.html#free）
-
-### 3.2 功能对比 `/features.html`
-- 表格：行 = 功能，列 = 我们 vs Zendesk vs Gorgias
-- 最后一列高亮我们独有的绿色勾
-- 响应式：手机端左右滑动
-
-### 3.3 定价 `/pricing.html`
-| Plan | Price | Seats | Limit |
-|---|---|---|---|
-| Free | 14 天试用 | 1 | 50 封/月 |
-| Pro | $79/月 | 1 | 1000 封/月 |
-| Team | $199/月 | 不限 | 5000 封/月 |
-
-- 每卡片包含：
-  - Plan 名 + Badge（Free 为「14-day trial」）
-  - Price 大号字体
-  - Paddle Checkout 按钮（`<button class="paddle-btn" data-plan="free|pro|team">`）
-- Paddle 脚本：`<script src="https://cdn.paddle.com/paddle/paddle.js"></script>`  
-  Paddle.Initialize('YOUR_VENDOR_ID')  
-  点击按钮 → Paddle.Checkout.open({ product: planId })
-
-### 3.4 商家案例 `/case.html`
-- 初始加载 3 条案例：
-  ```
-  { avatar, name, store, gmv, saved }
-  ```
-- 下拉到底自动追加 3 条（无限滚动）
-- 卡片布局：头像 + 姓名 + 店铺名 + "GMV: $X, Saved Y%"
-
-### 3.5 关于我们 `/about.html`
-- 简约介绍团队，侧重技术
-
-### 3.6 隐私政策 `/privacy.html`
-- 直接引用 GDPR + CCPA 标准模板
-- 关键句加粗：「我们不存储任何邮件内容」
-
-## 4️⃣ 计费 & 合规提示（仅前端文案）
-- FAQ 第一条：「支持 Gmail 及 Google Workspace 自定义域名邮箱」
-- 隐私声明：OAuth 最小权限（gmail.readonly + gmail.modify），无邮件内容留存
-- DPA：由 Paddle 自动签署
-
-## 5️⃣ 样式 & 交互
-- 主色：#0A75FF（科技蓝）
-- 圆角：8px
-- 按钮 hover：亮度 110 %
-- 移动端断点：768px
-- 案例瀑布流使用 CSS Grid + IntersectionObserver 加载
-
-## 6️⃣ 开发顺序（Cursor 请按此迭代）
-1. 建立目录结构 + 空文件
-2. 写全局 CSS 变量（颜色 / 圆角 / 字体）
-3. index.html  功能介绍
-4. pricing.html 搭卡片 + Paddle Checkout（占位 vendor_id）
-5. features.html & about.html & privacy.html 纯静态
-6. case.html 完成无限滚动（mock 数据）
-7. 响应式细节 & Lighthouse 100 分
-8. 输出 README：如何本地 serve / 如何替换 Paddle vendor_id / 如何部署 Vercel
-
-## 7️⃣ 命名约定
-- class 名：BEM（block__element--modifier）
-- 图片放 `/assets/img/`
-- JS 变量 camelCase
-- 注释用英文
-
-## 8️⃣ 交付检查单
-- [ ] 全部页面 Lighthouse 100
-- [ ] 移动端手势无横向滚动
-- [ ] Paddle Checkout 按钮正确弹出
-- [ ] 案例瀑布流无限加载
-- [ ] 隐私条款可打印
-- [ ] README 完整
-
-完成以上即视为项目 ready for Vercel deploy。
+> **Marketing & User Portal for CS-AI Agent System**  
+> **Target Market**: North America Shopify Small Business Market  
+> **Version**: 1.0  
+> **Last Updated**: 2026-04-16
 
 ---
 
-## 本地预览
+## 📋 **Project Overview**
 
-1. 在项目根目录运行一个静态服务器（任选其一）：
+The giiHelpdesk Landing Website is a comprehensive marketing and user portal for the CS-AI Agent System. It provides product information, user authentication, account management, and subscription handling for Shopify merchants.
 
+### **Key Features**
+- 🎨 **Modern Responsive Design**: Mobile-first approach with clean, professional UI
+- 🔐 **Complete Authentication System**: Registration, login, password reset, email verification
+- 👤 **User Account Management**: Dashboard, profile settings, billing management
+- 💳 **Paddle Integration**: Subscription management and payment processing
+- 🔗 **Shopify Integration**: Domain validation and OAuth flow
+- 🌐 **Google OAuth**: One-click sign-in with Google accounts
+- 📱 **Fully Responsive**: Optimized for desktop, tablet, and mobile devices
+
+---
+
+## 🏗️ **Project Structure**
+
+```
+gii-cshelpdesk-landing/
+├── index.html              # Homepage with product features
+├── features.html           # Feature comparison (vs competitors)
+├── pricing.html            # Subscription plans and pricing
+├── case.html              # Customer success stories
+├── about.html             # About us and team
+├── contact.html           # Contact form
+├── privacy.html           # Privacy policy
+├── terms.html             # Terms of service
+├── refund.html            # Refund policy
+│
+├── auth/                  # Authentication pages
+│   ├── register.html      # User registration
+│   ├── login.html         # User login
+│   ├── forgot.html        # Forgot password
+│   └── reset.html         # Password reset
+│
+├── account/               # User account pages
+│   ├── dashboard.html     # Main dashboard
+│   ├── profile.html       # Profile settings
+│   └── billing.html       # Subscription & billing
+│
+├── css/
+│   ├── style.css          # Main landing page styles
+│   └── auth.css           # Authentication & account styles
+│
+├── js/
+│   ├── common.js          # Shared utilities (header/footer injection)
+│   ├── toast.js           # Toast notification system
+│   ├── auth.js            # Authentication utilities
+│   ├── api-config.js      # API configuration (unified router endpoints)
+│   ├── api-client.js      # Unified API client with retry logic
+│   ├── paddle.js          # Paddle payment integration
+│   └── cases.js           # Customer case studies loader
+│
+├── images/                # Logo and assets
+├── public/                # Public assets (Shopify OAuth success/error pages)
+├── package.json           # Dependencies (resend for emails)
+└── vercel.json            # Vercel deployment configuration
+```
+
+---
+
+## 🎯 **Core Features**
+
+### **1. Marketing Pages**
+
+#### Homepage (`index.html`)
+- Hero section with value proposition
+- Quick start guide (3-step process)
+- Feature highlights
+- Social proof and testimonials
+- CTA buttons for trial signup
+
+#### Features Page (`features.html`)
+- Detailed feature descriptions
+- Comparison with competitors (Zendesk, Gorgias)
+- Use case scenarios
+- Integration capabilities
+
+#### Pricing Page (`pricing.html`)
+- Three subscription tiers:
+  - **Free Trial**: 14 days, 1 seat, 50 emails/month
+  - **Pro**: $79/month, 1 seat, 1,000 emails/month
+  - **Team**: $199/month, unlimited seats, 5,000 emails/month
+- Paddle Checkout integration
+- Feature comparison table
+
+#### Case Studies (`case.html`)
+- Customer success stories
+- Infinite scroll loading (3 items at a time)
+- Metrics: GMV, cost savings, efficiency gains
+
+### **2. Authentication System**
+
+#### User Registration (`auth/register.html`)
+- **Domain-based registration**: Shopify domain as unique identifier
+- **Email verification**: Verification email sent on signup
+- **14-day free trial**: Automatic trial subscription creation
+- **Password strength validation**: Real-time strength indicator
+- **Domain availability check**: Real-time domain validation
+- **Google OAuth**: One-click registration with Google
+
+#### User Login (`auth/login.html`)
+- **Email/password authentication**: Traditional login
+- **Google OAuth**: One-click sign-in
+- **JWT token management**: Secure session handling
+- **Remember me**: Optional persistent login
+- **Redirect handling**: Return to intended page after login
+
+#### Password Management
+- **Forgot Password** (`auth/forgot.html`): Email-based reset link
+- **Reset Password** (`auth/reset.html`): Token-validated password reset
+- **Password requirements**: Minimum 8 characters, mixed case, numbers
+
+### **3. Account Management**
+
+#### Dashboard (`account/dashboard.html`)
+- **Subscription status**: Current plan, expiry date, usage
+- **Quick actions**: Upgrade plan, manage Shopify connection
+- **Usage statistics**: Email count, API calls, seat usage
+- **Recent activity**: Login history, actions log
+
+#### Profile Settings (`account/profile.html`)
+- **Personal information**: Name, email, phone, company
+- **Shopify domain**: Domain validation and OAuth connection
+- **Preferences**: Timezone, language, notifications
+- **Security**: Password change, 2FA settings (planned)
+
+#### Billing Management (`account/billing.html`)
+- **Current subscription**: Plan details, next billing date
+- **Payment methods**: Card management via Paddle
+- **Billing history**: Invoice downloads, payment records
+- **Plan upgrades**: Seamless plan changes
+
+### **4. API Integration**
+
+#### Unified Router Architecture
+All API calls use the unified router pattern:
+- **API Router**: `/apiRouter?route=module/action`
+- **Handler Router**: `/handleRouter?route=handler/action`
+
+#### API Endpoints (via `api-config.js`)
+```javascript
+// Authentication
+/apiRouter?route=auth/register
+/apiRouter?route=auth/login
+/apiRouter?route=auth/forgot
+/apiRouter?route=auth/reset
+/apiRouter?route=auth/verify
+/apiRouter?route=auth/check-domain
+/apiRouter?route=auth/google-oauth
+
+// Account Management
+/apiRouter?route=account/me
+/apiRouter?route=account/profile
+/apiRouter?route=account/billing
+/apiRouter?route=account/activity
+/apiRouter?route=account/shopify-domain
+/apiRouter?route=account/shopify-domain/verify
+/apiRouter?route=account/service-policy
+
+// Subscription
+/apiRouter?route=subscription/upgrade
+/apiRouter?route=subscription/cancel
+/getSubscriptionStatus
+```
+
+#### API Client Features (`api-client.js`)
+- **Automatic retry**: 3 attempts with exponential backoff
+- **Token management**: Automatic token injection in headers
+- **Error handling**: Structured error responses
+- **Timeout handling**: Configurable request timeouts
+- **Environment detection**: Auto-switch between dev/staging/production
+
+---
+
+## 🔐 **Authentication Flow**
+
+### **Registration Flow**
+1. User enters Shopify domain, email, and password
+2. Frontend validates domain availability (real-time check)
+3. Backend creates user account with hashed password
+4. Backend creates domain-keyed subscription (14-day trial)
+5. Verification email sent to user
+6. User redirected to login with success message
+
+### **Login Flow**
+1. User enters email and password (or uses Google OAuth)
+2. Backend validates credentials
+3. JWT token generated and returned
+4. Token stored in localStorage
+5. User redirected to dashboard
+6. Token automatically included in subsequent API calls
+
+### **Google OAuth Flow**
+1. User clicks "Continue with Google"
+2. Google Identity Services handles account selection
+3. ID token sent to backend for verification
+4. Backend checks if user exists:
+   - Existing user: Returns session token
+   - New user: Creates account, returns token + `requiresDomainSetup` flag
+5. Frontend redirects accordingly:
+   - Existing users → Dashboard
+   - New users → Domain setup flow
+
+### **Password Reset Flow**
+1. User requests password reset via email
+2. Reset token generated and emailed
+3. User clicks reset link with token
+4. User enters new password
+5. Password updated, user can log in
+
+---
+
+## 💳 **Subscription Management**
+
+### **Subscription Model**
+- **Domain-based**: Each Shopify domain has one subscription
+- **14-day free trial**: Automatically created on registration
+- **Paddle integration**: Payment processing via Paddle
+- **Webhook handling**: Real-time subscription updates
+
+### **Subscription Plans**
+
+| Plan | Price | Seats | Email Limit | Features |
+|------|-------|-------|-------------|----------|
+| **Free Trial** | $0 | 1 | 50/month | 14-day trial, basic features |
+| **Pro** | $79/month | 1 | 1,000/month | Priority support, Shopify integration |
+| **Team** | $199/month | Unlimited | 5,000/month | 24/7 support, advanced analytics |
+
+### **Paddle Integration**
+- **Checkout**: Embedded Paddle checkout for seamless payments
+- **Webhooks**: Automatic subscription status updates
+- **Invoice management**: Downloadable invoices and receipts
+- **Payment methods**: Credit card, PayPal support
+
+---
+
+## 🛠️ **Technical Stack**
+
+### **Frontend**
+- **HTML5**: Semantic markup
+- **CSS3**: Custom styles with CSS variables
+- **Vanilla JavaScript**: No framework dependencies
+- **Responsive Design**: Mobile-first approach
+- **BEM Methodology**: Block-Element-Modifier naming
+
+### **Backend Integration**
+- **Google Cloud Functions**: Serverless backend
+- **Firestore**: NoSQL database
+- **Secret Manager**: Secure credential storage
+- **Paddle API**: Payment processing
+- **Resend API**: Transactional emails
+
+### **Third-Party Services**
+- **Paddle**: Subscription billing
+- **Google OAuth**: Social authentication
+- **Shopify API**: Store integration
+- **Resend**: Email delivery
+
+---
+
+## 📦 **Installation & Setup**
+
+### **Prerequisites**
+- Node.js 20.x or higher
+- Vercel CLI (for deployment)
+- Google Cloud Project (for backend)
+- Paddle account (for payments)
+
+### **Local Development**
+
+#### 1. Clone Repository
 ```bash
+git clone https://github.com/your-org/cs-ai-agent-system.git
+cd cs-ai-agent-system/gii-cshelpdesk-landing
+```
+
+#### 2. Install Dependencies
+```bash
+npm install
+```
+
+#### 3. Configure API Endpoints
+Edit `js/api-config.js`:
+```javascript
+const API_CONFIG = {
+    development: {
+        baseURL: 'http://localhost:8088',  // Local backend
+        timeout: 30000
+    },
+    production: {
+        baseURL: 'https://us-central1-YOUR_PROJECT.cloudfunctions.net',
+        timeout: 30000
+    }
+};
+```
+
+#### 4. Configure Google OAuth
+Update `js/api-config.js`:
+```javascript
+googleClientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com'
+```
+
+#### 5. Start Local Server
+```bash
+# Option 1: Using npx
 npx http-server . -p 5173
-# 或
+
+# Option 2: Using Python
 python3 -m http.server 5173
-```
-# CROS 
-/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --disable-web-security --user-data-dir="/Users/huoward/temp"
 
-## Web Server
+# Option 3: Using live-server
 live-server .
-npx http-server . -p 5173
-## function server
-node local-dev.js
-
-
-2. 打开浏览器访问 `http://localhost:5173/gii-cshelpdesk-landing/`。
-
-## Paddle 配置
-
-- 编辑 `js/paddle.js`：
-  - 设置 `PADDLE_VENDOR_ID = '你的 Vendor ID'`
-  - 设置 `PRODUCT_IDS.free | pro | team` 为真实的 Product ID
-- 在 `pricing.html` 已引入官方脚本：
-
-```html
-<script src="https://cdn.paddle.com/paddle/paddle.js" defer></script>
 ```
 
-未设置 Vendor ID 或 Product ID 时，按钮会提示“未配置”。
+#### 6. Open in Browser
+```
+http://localhost:5173
+```
 
-## 部署 Vercel
+### **Backend Setup**
 
-1. 安装并登录 Vercel CLI：
+Ensure the backend Cloud Functions are deployed:
+```bash
+cd ../gii-cshelpdesk-agent/serverless-functions
+./scripts/deploy_functions.sh
+```
 
+---
+
+## 🚀 **Deployment**
+
+### **Deploy to Vercel**
+
+#### 1. Install Vercel CLI
 ```bash
 npm i -g vercel
 vercel login
 ```
 
-2. 在仓库根目录执行：
-
+#### 2. Configure Environment
+Create `.env.local` (not committed):
 ```bash
+# API Configuration
+NEXT_PUBLIC_API_BASE_URL=https://us-central1-YOUR_PROJECT.cloudfunctions.net
+
+# Google OAuth
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=YOUR_CLIENT_ID.apps.googleusercontent.com
+
+# Paddle
+NEXT_PUBLIC_PADDLE_VENDOR_ID=YOUR_VENDOR_ID
+```
+
+#### 3. Deploy
+```bash
+# Preview deployment
+vercel
+
+# Production deployment
 vercel --prod
 ```
 
-`vercel.json` 已配置 `cleanUrls` 与通用安全头。404 请保留你已创建的 `404.html`。
+#### 4. Configure Custom Domain
+```bash
+vercel domains add giihelpdesk.com
+```
+
+### **Vercel Configuration**
+
+The `vercel.json` file includes:
+- Clean URLs (no `.html` extensions)
+- Security headers (CSP, X-Frame-Options, etc.)
+- Redirect rules
+- 404 handling
+
+---
+
+## 🎨 **Design System**
+
+### **Color Palette**
+```css
+:root {
+    --primary: #0A75FF;        /* Brand blue */
+    --primary-dark: #0056CC;   /* Hover state */
+    --success: #10B981;        /* Success green */
+    --warning: #F59E0B;        /* Warning orange */
+    --error: #EF4444;          /* Error red */
+    --text: #1F2937;           /* Primary text */
+    --text-light: #6B7280;     /* Secondary text */
+    --bg: #FFFFFF;             /* Background */
+    --bg-gray: #F9FAFB;        /* Light gray bg */
+}
+```
+
+### **Typography**
+- **Font Family**: System fonts (San Francisco, Segoe UI, Roboto)
+- **Headings**: Bold, larger sizes
+- **Body**: Regular weight, 16px base size
+- **Code**: Monospace font for technical content
+
+### **Spacing**
+- **Base unit**: 8px
+- **Consistent spacing**: Multiples of 8px (8, 16, 24, 32, 48, 64)
+
+### **Responsive Breakpoints**
+```css
+/* Mobile: < 768px */
+/* Tablet: 768px - 1024px */
+/* Desktop: > 1024px */
+```
+
+---
+
+## 🧪 **Testing**
+
+### **Manual Testing Checklist**
+
+#### Authentication
+- [ ] User registration with domain validation
+- [ ] Email verification flow
+- [ ] Login with email/password
+- [ ] Google OAuth login
+- [ ] Password reset flow
+- [ ] Token expiration handling
+
+#### Account Management
+- [ ] Dashboard loads correctly
+- [ ] Profile updates save
+- [ ] Shopify domain connection
+- [ ] Subscription status display
+- [ ] Billing history access
+
+#### Responsive Design
+- [ ] Mobile layout (< 768px)
+- [ ] Tablet layout (768px - 1024px)
+- [ ] Desktop layout (> 1024px)
+- [ ] Touch interactions work
+- [ ] Forms are usable on mobile
+
+#### Cross-Browser
+- [ ] Chrome/Edge (Chromium)
+- [ ] Firefox
+- [ ] Safari (macOS/iOS)
+- [ ] Mobile browsers
+
+---
+
+## 🔒 **Security Features**
+
+### **Authentication Security**
+- **Password hashing**: bcrypt with 12 salt rounds
+- **JWT tokens**: Secure, expiring tokens
+- **HTTPS only**: All communications encrypted
+- **Input validation**: Client and server-side validation
+- **CORS protection**: Restricted origins
+
+### **Data Protection**
+- **No email storage**: Email content never persisted
+- **Minimal data collection**: Only essential user data
+- **Secure token storage**: localStorage with expiration
+- **Domain validation**: Prevent unauthorized access
+
+### **Compliance**
+- **GDPR compliant**: Privacy policy, data rights
+- **CCPA compliant**: California privacy requirements
+- **OAuth scopes**: Minimal Gmail permissions
+- **DPA**: Data Processing Agreement via Paddle
+
+---
+
+## 📊 **Analytics & Monitoring**
+
+### **User Analytics** (Planned)
+- Page views and navigation
+- Conversion funnel tracking
+- User engagement metrics
+- A/B testing capabilities
+
+### **Error Monitoring**
+- Client-side error tracking
+- API error logging
+- Performance monitoring
+- User feedback collection
+
+---
+
+## 🔄 **Future Enhancements**
+
+### **Planned Features**
+- [ ] Two-factor authentication (2FA)
+- [ ] Advanced analytics dashboard
+- [ ] Multi-language support (i18n)
+- [ ] Dark mode theme
+- [ ] Mobile app (React Native)
+- [ ] Advanced reporting
+- [ ] Team collaboration features
+- [ ] API rate limiting dashboard
+
+### **Technical Improvements**
+- [ ] Progressive Web App (PWA)
+- [ ] Service worker for offline support
+- [ ] Image optimization and lazy loading
+- [ ] Code splitting for faster loads
+- [ ] CDN integration
+- [ ] Redis caching layer
+
+---
+
+## 📞 **Support**
+
+### **Documentation**
+- [Authentication System](./AUTHENTICATION_README.md)
+- [Backend API Documentation](../gii-cshelpdesk-agent/README.md)
+- [Deployment Guide](../gii-cshelpdesk-agent/docs/deployment-guide_v3.1.md)
+
+### **Contact**
+- **Email**: support@giihelpdesk.com
+- **Website**: https://giihelpdesk.com
+- **GitHub Issues**: Report bugs and feature requests
+
+---
+
+## 📄 **License**
+
+This project is proprietary software. All rights reserved.
+
+---
+
+## 🏆 **Credits**
+
+Built with ❤️ by the giiHelpdesk team
+
+**Technologies Used**:
+- Google Cloud Platform
+- Vercel
+- Paddle
+- Resend
+- Shopify API
+- OpenAI GPT-4
+
+---
+
+*Last Updated: 2026-04-16*  
+*Version: 1.0*  
+*Status: Production Ready*

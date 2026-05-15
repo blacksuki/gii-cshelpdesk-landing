@@ -84,6 +84,17 @@ This document describes the complete user authentication and subscription system
 3. User clicks reset link and enters new password
 4. Password updated and user can log in
 
+### 5. Google OAuth Login
+1. User clicks "Continue with Google"
+2. Google Identity Services (GIS) library handles account selection
+3. ID token received from Google and sent to backend
+4. Backend verifies token and checks user existence:
+   - If user exists, session token is returned
+   - If user is new, account is created and `requiresDomainSetup` flag is returned
+5. Frontend stores token and redirects:
+   - Existing users go to dashboard
+   - New users are guided to set up their Shopify domain
+
 ## 🗄️ Database Schema
 
 ### Users Collection
@@ -241,7 +252,16 @@ PADDLE_WEBHOOK_SECRET=your-webhook-secret
 
 # Frontend URL
 FRONTEND_URL=https://giihelpdesk.com
+
+# Google OAuth Configuration (Backend)
+GOOGLE_OAUTH_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 ```
+
+### Google OAuth Setup
+To enable Google Login, you must configure the Client ID in both frontend and backend:
+
+1. **Backend**: Set `GOOGLE_OAUTH_CLIENT_ID` in your serverless functions environment variables.
+2. **Frontend**: Update `googleClientId` in [js/api-config.js](file:///Users/huoward/Project/21.CS-Agent/csai-dev/gii-cshelpdesk-landing/js/api-config.js).
 
 ### Local Development
 ```bash
@@ -345,7 +365,7 @@ The authentication system is fully responsive with:
 
 ### Planned Features
 - **Two-Factor Authentication**: SMS/App-based 2FA
-- **Social Login**: Google, GitHub, Microsoft integration
+- **Social Login**: GitHub, Microsoft integration (Google implemented)
 - **Advanced Analytics**: User behavior tracking
 - **Multi-language Support**: Internationalization
 - **Advanced Security**: IP whitelisting, device management
