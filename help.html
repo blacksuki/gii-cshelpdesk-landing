@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help & FAQs — giiHelpdesk</title>
+  <meta name="description"
+    content="Find answers to frequently asked questions about the giiHelpdesk Gmail Add-on, security details, permission scopes, and setup steps." />
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/common.js" defer></script>
+  <style>
+    /* Premium Page-Specific Styling */
+    .help-hero {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+      color: #ffffff;
+      padding: var(--spacing-3xl) var(--spacing-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .help-hero__inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .help-hero__badge {
+      display: inline-block;
+      background: rgba(0, 128, 96, 0.2);
+      color: var(--color-primary-light);
+      border: 1px solid var(--color-primary);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .help-hero__title {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 0 0 var(--spacing-md) 0;
+      line-height: 1.2;
+      color: #ffffff;
+    }
+
+    .help-hero__subtitle {
+      font-size: 18px;
+      margin: 0;
+      color: #e2e8f0;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .help-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+
+    /* Core Intro Cards */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    @media (max-width: 768px) {
+      .intro-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .intro-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .intro-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-primary-light);
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card__header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .intro-card__icon {
+      font-size: 28px;
+      background: var(--color-bg-secondary);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+    }
+
+    .intro-card__title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--color-text);
+    }
+
+    .intro-card__body {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-md);
+      font-size: 15px;
+    }
+
+    .intro-card__action {
+      font-weight: 700;
+      color: var(--color-primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      font-size: 15px;
+      transition: gap 0.2s ease;
+    }
+
+    .intro-card__action:hover {
+      text-decoration: underline;
+      gap: var(--spacing-sm);
+    }
+
+    /* FAQ Premium Accordions */
+    .faq-section {
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .faq-title {
+      font-size: 28px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+      color: var(--color-text);
+    }
+
+    .accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .accordion-item {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .accordion-item:hover {
+      border-color: var(--color-primary-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .accordion-item--active {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow);
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: var(--spacing-lg);
+      text-align: left;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-text);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--spacing-md);
+      transition: background-color 0.2s ease;
+    }
+
+    .accordion-trigger:hover {
+      background-color: var(--color-bg-secondary);
+    }
+
+    .accordion-icon {
+      width: 24px;
+      height: 24px;
+      background: var(--color-bg-secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .accordion-item--active .accordion-icon {
+      transform: rotate(45deg);
+      background-color: var(--color-primary);
+      color: #ffffff;
+    }
+
+    .accordion-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .accordion-content {
+      padding: 0 var(--spacing-lg) var(--spacing-lg) var(--spacing-lg);
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .accordion-content p {
+      margin: 0;
+    }
+
+    .accordion-content p + p {
+      margin-top: var(--spacing-sm);
+    }
+
+    .accordion-content code {
+      background: var(--color-bg-tertiary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: 'Courier New', monospace;
+      color: var(--color-secondary);
+    }
+
+    /* Still Need Help banner */
+    .cta-card {
+      background: linear-gradient(135deg, rgba(0, 128, 96, 0.05) 0%, rgba(92, 106, 196, 0.05) 100%);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      text-align: center;
+      margin-top: var(--spacing-2xl);
+    }
+
+    .cta-card__title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 var(--spacing-sm) 0;
+      color: var(--color-text);
+    }
+
+    .cta-card__subtitle {
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      margin: 0 0 var(--spacing-xl) 0;
+    }
+
+    .cta-card__actions {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    .primary-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      background: var(--color-primary);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      border: none;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .primary-btn:hover {
+      background: var(--color-primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      background: #ffffff;
+      color: var(--color-text);
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .secondary-btn:hover {
+      background: var(--color-bg-secondary);
+      border-color: var(--color-primary-light);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <!-- Hero Section -->
+  <section class="help-hero" aria-labelledby="help-hero-title">
+    <div class="help-hero__inner">
+      <div class="help-hero__badge">Help & FAQs</div>
+      <h1 id="help-hero-title" class="help-hero__title">
+        Gmail Add-on Support & FAQs
+      </h1>
+      <p class="help-hero__subtitle">
+        Find resources, setup workflows, and answers to common security, platform, and installation questions.
+      </p>
+    </div>
+  </section>
+
+  <main class="help-container" role="main">
+    
+    <!-- Basic Add-on Help Cards -->
+    <section class="intro-grid" aria-label="Help Resource Categories">
+      <div class="intro-card">
+        <div class="intro-card__inner">
+          <div class="intro-card__header">
+            <div class="intro-card__icon" aria-hidden="true">🚀</div>
+            <h2 class="intro-card__title">Setup & Shopify Integration</h2>
+          </div>
+          <p class="intro-card__body">
+            Get the certified giiHelpDeskAgent add-on and learn how to securely link your Shopify shop in less than two minutes.
+          </p>
+        </div>
+        <a href="setup.html" class="intro-card__action" id="go-to-setup-btn">
+          View Setup Guide &rarr;
+        </a>
+      </div>
+
+      <div class="intro-card">
+        <div class="intro-card__inner">
+          <div class="intro-card__header">
+            <div class="intro-card__icon" aria-hidden="true">📬</div>
+            <h2 class="intro-card__title">Official Google Marketplace</h2>
+          </div>
+          <p class="intro-card__body">
+            Download our certified extension safely from the Google Workspace Marketplace to add AI assistance directly into your Gmail app.
+          </p>
+        </div>
+        <a href="https://workspace.google.com/marketplace/app/giihelpdeskagent/1031313360408" class="intro-card__action" id="workspace-marketplace-btn" target="_blank" rel="noopener">
+          Get Add-on &rarr;
+        </a>
+      </div>
+    </section>
+
+    <!-- FAQ Accordion Section -->
+    <section class="faq-section" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="faq-title">Frequently Asked Questions</h2>
+      
+      <div class="accordion-list">
+        
+        <div class="accordion-item" id="faq-item-scopes">
+          <button class="accordion-trigger" id="faq-trigger-scopes" aria-expanded="false" aria-controls="faq-panel-scopes">
+            <span>What permissions are required?</span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </button>
+          <div id="faq-panel-scopes" class="accordion-panel" role="region" aria-labelledby="faq-trigger-scopes">
+            <div class="accordion-content">
+              <p>We request minimal permissions: <code>gmail.readonly</code> to analyze the current active email thread to find matching customer order contexts, and <code>gmail.modify</code> to compose reply drafts for your review.</p>
+              <p>We strictly comply with Google APIs User Data Policy and never store, modify, or inspect your email contents beyond these real-time, in-memory assistant workflows.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item" id="faq-item-security">
+          <button class="accordion-trigger" id="faq-trigger-security" aria-expanded="false" aria-controls="faq-panel-security">
+            <span>Is my data safe?</span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </button>
+          <div id="faq-panel-security" class="accordion-panel" role="region" aria-labelledby="faq-trigger-security">
+            <div class="accordion-content">
+              <p>Yes, absolutely. Our system is designed with a **Zero-Content-Storage Architecture**. We do not save, log, or store your customer emails or private store information on our servers.</p>
+              <p>All support text analytics and LLM completions are processed securely in temporary volatile memory and discarded immediately once draft responses are created.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item" id="faq-item-shopify">
+          <button class="accordion-trigger" id="faq-trigger-shopify" aria-expanded="false" aria-controls="faq-panel-shopify">
+            <span>Which Shopify plans are supported?</span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </button>
+          <div id="faq-panel-shopify" class="accordion-panel" role="region" aria-labelledby="faq-trigger-shopify">
+            <div class="accordion-content">
+              <p>All official Shopify subscription plans are supported, including Shopify Basic, Shopify, Shopify Advanced, and Shopify Plus.</p>
+              <p>The integration connects securely via official Shopify OAuth APIs to pull real-time logistics, fulfillment, tracking numbers, and draft customer response parameters.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item" id="faq-item-gsuite">
+          <button class="accordion-trigger" id="faq-trigger-gsuite" aria-expanded="false" aria-controls="faq-panel-gsuite">
+            <span>Can I use this with my Google Workspace (GSuite) account?</span>
+            <span class="accordion-icon" aria-hidden="true">+</span>
+          </button>
+          <div id="faq-panel-gsuite" class="accordion-panel" role="region" aria-labelledby="faq-trigger-gsuite">
+            <div class="accordion-content">
+              <p>Yes. The giiHelpdesk Gmail Add-on works flawlessly with both personal regular Gmail accounts (ending in <code>@gmail.com</code>) and professional Google Workspace accounts with custom company domains.</p>
+              <p>If you are an administrator of a Google Workspace domain, you can also perform a domain-wide installation to deploy the AI assistant to your entire customer support team at once.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Support Call to Action -->
+    <section class="cta-card" aria-labelledby="cta-title">
+      <h2 id="cta-title" class="cta-card__title">Still Need Assistance?</h2>
+      <p class="cta-card__subtitle">
+        Can't find the answers you're looking for? Reach out directly to our dedicated support team.
+      </p>
+      <div class="cta-card__actions">
+        <a href="support.html" class="primary-btn" id="cta-support-btn">
+          💬 Submit Support Ticket
+        </a>
+        <a href="mailto:support@giihelpdesk.com" class="secondary-btn" id="cta-email-btn">
+          ✉️ Email support@giihelpdesk.com
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Interactive FAQ Accordion Trigger Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const triggers = document.querySelectorAll(".accordion-trigger");
+
+      triggers.forEach(trigger => {
+        trigger.addEventListener("click", function () {
+          const item = this.parentElement;
+          const panel = this.nextElementSibling;
+          const isExpanded = this.getAttribute("aria-expanded") === "true";
+
+          // Close all other panels for a clean accordion effect
+          document.querySelectorAll(".accordion-item").forEach(otherItem => {
+            if (otherItem !== item) {
+              otherItem.classList.remove("accordion-item--active");
+              const otherTrigger = otherItem.querySelector(".accordion-trigger");
+              const otherPanel = otherItem.querySelector(".accordion-panel");
+              if (otherTrigger) otherTrigger.setAttribute("aria-expanded", "false");
+              if (otherPanel) otherPanel.style.maxHeight = null;
+            }
+          });
+
+          // Toggle current panel
+          if (isExpanded) {
+            item.classList.remove("accordion-item--active");
+            this.setAttribute("aria-expanded", "false");
+            panel.style.maxHeight = null;
+          } else {
+            item.classList.add("accordion-item--active");
+            this.setAttribute("aria-expanded", "true");
+            panel.style.maxHeight = panel.scrollHeight + "px";
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

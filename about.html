@@ -1,117 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About — giiHelpdesk</title>
-    <meta name="description" content="Meet the team behind giiHelpdesk.">
-    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/common.js" defer></script>
-    <style>
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .about-content p {
-            line-height: 1.7;
-            color: var(--color-text-secondary);
-            margin-bottom: var(--spacing-md);
-        }
-        .faq-item {
-            margin-bottom: var(--spacing-xl);
-            padding: var(--spacing-lg);
-            background: var(--color-bg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-        }
-        .faq-item h4 {
-            margin-bottom: var(--spacing-sm);
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--color-text);
-        }
-        .faq-item p {
-            margin: 0;
-        }
-        .faq-item code {
-            background: var(--color-bg-tertiary);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-family: 'Courier New', monospace;
-        }
-        .contact-section {
-            background: var(--color-bg);
-            padding: var(--spacing-xl);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--color-border);
-            margin-top: var(--spacing-xl);
-        }
-        .contact-section a {
-            color: var(--color-primary);
-            text-decoration: none;
-        }
-        .contact-section a:hover {
-            text-decoration: underline;
-        }
-        .contact-section ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        .contact-section li {
-            margin-bottom: var(--spacing-sm);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — giiHelpdesk</title>
+  <meta name="description" content="Learn about our mission, backstory, and three core values at giiHelpdesk to elevate Shopify customer support.">
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/common.js" defer></script>
+  <style>
+    /* Premium Page-Specific Styling */
+    .about-hero {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+      color: #ffffff;
+      padding: var(--spacing-3xl) var(--spacing-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .about-hero__inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .about-hero__badge {
+      display: inline-block;
+      background: rgba(0, 128, 96, 0.2);
+      color: var(--color-primary-light);
+      border: 1px solid var(--color-primary);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .about-hero__title {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 0 0 var(--spacing-md) 0;
+      line-height: 1.2;
+      color: #ffffff;
+    }
+
+    .about-hero__subtitle {
+      font-size: 18px;
+      margin: 0;
+      color: #e2e8f0;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .about-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+
+    .about-section {
+      margin-bottom: var(--spacing-2xl);
+    }
+
+    .about-section__title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: var(--spacing-md);
+      color: var(--color-text);
+      position: relative;
+      padding-bottom: var(--spacing-xs);
+    }
+
+    .about-section__title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background-color: var(--color-primary);
+      border-radius: 2px;
+    }
+
+    .about-section p {
+      line-height: 1.8;
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-md);
+      font-size: 16px;
+    }
+
+    /* Core Values Grid */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-xl);
+      margin-bottom: var(--spacing-xl);
+    }
+
+    @media (max-width: 968px) {
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .value-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: center;
+    }
+
+    .value-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--color-primary-light);
+      box-shadow: var(--shadow);
+    }
+
+    .value-card__icon {
+      font-size: 32px;
+      margin-bottom: var(--spacing-sm);
+      display: inline-block;
+    }
+
+    .value-card__title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 var(--spacing-xs) 0;
+      color: var(--color-text);
+    }
+
+    .value-card__body {
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Contact Card Section */
+    .contact-card {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      margin-top: var(--spacing-2xl);
+    }
+
+    .contact-card__title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 var(--spacing-sm) 0;
+      color: var(--color-text);
+    }
+
+    .contact-card__body {
+      color: var(--color-text-secondary);
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0 0 var(--spacing-md) 0;
+    }
+
+    .contact-card__body a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-card__body a:hover {
+      text-decoration: underline;
+    }
+
+    .social-links {
+      display: flex;
+      gap: var(--spacing-md);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .social-links a {
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--color-primary);
+    }
+  </style>
 </head>
+
 <body>
-    <div id="site-header"></div>
+  <div id="site-header"></div>
 
-    <main class="section" role="main">
-        <div class="about-content">
-            <h1 class="section__title">About giiHelpdeskAgent</h1>
-            <p>We build AI-powered agent for Shopify merchants, focusing on speed, privacy, and accuracy. Our agent keeps your workflow inside the inbox while leveraging Shopify data and modern LLMs.</p>
-            <p>giiHelpdesk agent is a easy using tool which can help your customer support to work more efficiently and no more training, so even intern can work as a better experienced customer support.</p>
+  <!-- Hero Section -->
+  <section class="about-hero" aria-labelledby="about-hero-title">
+    <div class="about-hero__inner">
+      <div class="about-hero__badge">Our Mission</div>
+      <h1 id="about-hero-title" class="about-hero__title">
+        Meet giiHelpdesk
+      </h1>
+      <p class="about-hero__subtitle">
+        We build fast, secure, and intuitive AI-powered agents designed to keep Shopify customer support reps within their inbox workflow.
+      </p>
+    </div>
+  </section>
 
-        
+  <main class="about-container" role="main">
+    
+    <!-- Mission Section -->
+    <section class="about-section" aria-labelledby="mission-title">
+      <h2 id="mission-title" class="about-section__title">Our Mission</h2>
+      <p>
+        For most e-commerce businesses, customer support representatives spend up to 40% of their working hours switching tabs between their email inbox and Shopify dashboards, manually hunting down shipping tracking IDs, customer orders, and refund policies.
+      </p>
+      <p>
+        giiHelpdesk was founded to bridge this gap. We empower merchants by integrating context-aware, privacy-preserving AI assistance directly inside their daily tool — Gmail. By fetching order metadata securely and constructing draft responses instantly, we turn support from a tedious chore into a seamless operation.
+      </p>
+    </section>
 
-        <section class="section">
-            <h2 class="section__title">Frequently Asked Questions (FAQ)</h2>
-            <div class="faq-item">
-                <h4>What permissions are required?</h4>
-                <p>We request minimal permissions: <code>gmail.readonly</code> to analyze the current email and <code>gmail.modify</code> to insert drafts. We never store your email content.</p>
-            </div>
-            <div class="faq-item">
-                <h4>Is my data safe?</h4>
-                <p>Yes. We have a zero-content-storage design. Your email data is processed in memory and never saved.</p>
-            </div>
-            <div class="faq-item">
-                <h4>Which Shopify plans are supported?</h4>
-                <p>All Shopify plans are supported.</p>
-            </div>
-            <div class="faq-item">
-                <h4>Can I use this with my Google Workspace (GSuite) account?</h4>
-                <p>Yes, it works with both regular Gmail accounts and Google Workspace accounts with custom domains.</p>
-            </div>
-        </section>
+    <!-- Core Values Section -->
+    <section class="about-section" aria-labelledby="values-title">
+      <h2 id="values-title" class="about-section__title">Core Brand Values</h2>
+      <p>
+        Our design philosophy prioritizes three unbreakable technical boundaries that define our software suite:
+      </p>
 
-        <section class="contact-section">
-            <h2 class="section__title">Support & Contact</h2>
-            <p>For any questions, issues, or feedback, please contact us at <a href="mailto:support@giihelpdesk.com">support@giihelpdesk.com</a>.</p>
-            <p>You can also follow us on:</p>
-            <ul>
-                <li><a href="#" aria-label="Twitter link">Twitter</a></li>
-                <li><a href="#" aria-label="GitHub link">GitHub</a></li>
-            </ul>
-        </section>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-card__icon" aria-hidden="true">⚡</div>
+          <h3 class="value-card__title">10x Support Speed</h3>
+          <p class="value-card__body">
+            By eliminating page reloads and manual copy-pasting, we reduce standard response compilation times from minutes to under 5 seconds.
+          </p>
         </div>
-    </main>
 
-    <div id="site-footer"></div>
+        <div class="value-card">
+          <div class="value-card__icon" aria-hidden="true">🔒</div>
+          <h3 class="value-card__title">Zero-Content Storage</h3>
+          <p class="value-card__body">
+            We never store, log, or persist merchant emails or private order data. All requests are processed securely in volatile in-memory states.
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-card__icon" aria-hidden="true">💡</div>
+          <h3 class="value-card__title">No Training Required</h3>
+          <p class="value-card__body">
+            Our UI is designed for immediate intuition. New hires and interns can act as experienced support representatives from day one.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="about-section" aria-labelledby="story-title">
+      <h2 id="story-title" class="about-section__title">Our Story</h2>
+      <p>
+        Founded in 2026 by a collective of e-commerce veterans and AI software engineers, we saw how small to medium Shopify merchants struggled to keep up with large enterprise support operations. The existing Help Desk solutions were heavy, complicated, and forced merchants to pay massive subscription fees for features they never touched.
+      </p>
+      <p>
+        We designed giiHelpdesk as a clean, lightweight alternative: a dedicated, specialized Gmail Add-on that directly talks to Shopify APIs, leveraging state-of-the-art LLMs to draft flawless answers. Today, we are proud to serve Shopify stores globally, helping support teams work happier and faster.
+      </p>
+    </section>
+
+    <!-- Contact Card Section -->
+    <section class="contact-card" aria-labelledby="contact-title">
+      <h2 id="contact-title" class="contact-card__title">Get In Touch</h2>
+      <p class="contact-card__body">
+        Have questions, suggestions, or want to discuss a custom feature integration? Reach out to us at <a href="mailto:support@giihelpdesk.com">support@giihelpdesk.com</a>.
+      </p>
+      <ul class="social-links">
+        <li><a href="#" aria-label="Follow us on Twitter">Twitter</a></li>
+        <li><a href="#" aria-label="Follow us on GitHub">GitHub</a></li>
+      </ul>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
 </body>
+
 </html>
-
-
-l>
-
-

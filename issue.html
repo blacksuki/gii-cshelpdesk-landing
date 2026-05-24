@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Issue — giiHelpdeskAgent</title>
+    <meta name="description" content="Report a bug or support issue directly to our secure, zero-storage customer inbox.">
+    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- API and helper scripts -->
+    <script src="js/api-config.js" defer></script>
+    <script src="js/toast.js" defer></script>
+    <script src="js/api-client.js" defer></script>
+    <script src="js/common.js" defer></script>
+    
+    <style>
+        :root {
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-bg-secondary);
+        }
+
+        .issue-container {
+            max-width: 760px;
+            margin: var(--spacing-3xl) auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .issue-card {
+            background: var(--color-bg);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .issue-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+        }
+
+        .issue-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .issue-header h1 {
+            font-family: var(--font-heading);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 var(--spacing-sm) 0;
+            letter-spacing: -0.5px;
+        }
+
+        .issue-header p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Zero Storage Policy Badge */
+        .policy-badge {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background: rgba(0, 128, 96, 0.05);
+            border: 1px dashed var(--color-primary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius);
+            margin-bottom: var(--spacing-xl);
+            transition: all 0.2s ease;
+        }
+
+        .policy-badge:hover {
+            background: rgba(0, 128, 96, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .policy-badge__icon {
+            font-size: 24px;
+            color: var(--color-primary);
+            line-height: 1;
+        }
+
+        .policy-badge__content {
+            flex: 1;
+        }
+
+        .policy-badge__title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--color-primary-dark);
+            margin: 0 0 4px 0;
+        }
+
+        .policy-badge__text {
+            font-size: 13px;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* Form styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-group--full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--color-text);
+            margin-bottom: 6px;
+        }
+
+        .form-label span.required {
+            color: var(--color-error);
+            margin-left: 2px;
+        }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius);
+            font-size: 15px;
+            font-family: var(--font-primary);
+            color: var(--color-text);
+            background-color: var(--color-bg-tertiary);
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background-color: var(--color-bg);
+            box-shadow: 0 0 0 3px rgba(0, 128, 96, 0.1);
+        }
+
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--color-muted);
+            opacity: 0.8;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236d7175' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 4px;
+        }
+
+        /* Actions */
+        .form-actions {
+            margin-top: var(--spacing-xl);
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-submit {
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            width: 100%;
+        }
+
+        @media (min-width: 600px) {
+            .btn-submit {
+                width: auto;
+            }
+        }
+
+        .btn-submit:hover {
+            background-color: var(--color-primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 128, 96, 0.2);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-submit:disabled {
+            background-color: var(--color-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Spinner icon inside button */
+        .btn-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success screen (hidden initially) */
+        .success-state {
+            display: none;
+            text-align: center;
+            padding: var(--spacing-xl) 0;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(0, 128, 96, 0.1);
+            color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto var(--spacing-lg) auto;
+        }
+
+        .success-state h2 {
+            font-family: var(--font-heading);
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-text);
+            margin: 0 0 var(--spacing-sm) 0;
+        }
+
+        .success-state p {
+            color: var(--color-text-secondary);
+            font-size: 16px;
+            margin-bottom: var(--spacing-xl);
+            line-height: 1.5;
+        }
+
+        .btn-back {
+            background-color: var(--color-bg-secondary);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: var(--radius);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--color-border);
+        }
+    </style>
+</head>
+<body>
+    <div id="site-header"></div>
+
+    <main class="section" role="main">
+        <div class="issue-container">
+            <div class="issue-card">
+                <!-- Form State -->
+                <div id="issueFormState">
+                    <div class="issue-header">
+                        <h1>Report an Issue</h1>
+                        <p>Have you run into a bug or need help? Send us the details and we'll investigate it immediately.</p>
+                    </div>
+
+                    <!-- Zero-Storage Banner -->
+                    <div class="policy-badge" role="note" aria-label="Zero-Storage Privacy Policy">
+                        <div class="policy-badge__icon">🔒</div>
+                        <div class="policy-badge__content">
+                            <h2 class="policy-badge__title">Zero-Storage Privacy Guarantee</h2>
+                            <p class="policy-badge__text">
+                                We prioritize your security. Your issue reports are converted directly into support emails and dispatched to our secure helpdesk inbox. We never store ticket descriptions or customer data in our databases.
+                            </p>
+                        </div>
+                    </div>
+
+                    <form id="reportIssueForm" novalidate>
+                        <div class="form-grid">
+                            <!-- Name -->
+                            <div class="form-group">
+                                <label class="form-label" for="reporterName">
+                                    Your Name <span class="required" aria-hidden="true">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="reporterName" 
+                                    name="name" 
+                                    class="form-input" 
+                                    required 
+                                    placeholder="Jane Doe"
+                                    autocomplete="name"
+                                >
+                            </div>
+
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label class="form-label" for="reporterEmail">
+                                    Contact Email <span class="required" aria-hidden="true">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="reporterEmail" 
+                                    name="email" 
+                                    class="form-input" 
+                                    required 
+                                    placeholder="jane@example.com"
+                                    autocomplete="email"
+                                >
+                            </div>
+
+                            <!-- Shopify Domain (Optional) -->
+                            <div class="form-group form-group--full-width">
+                                <label class="form-label" for="shopifyStoreDomain">
+                                    Shopify Store Domain <span class="form-help">(Optional)</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="shopifyStoreDomain" 
+                                    name="shopifyDomain" 
+                                    class="form-input" 
+                                    placeholder="your-store.myshopify.com"
+                                >
+                                <div class="form-help">If applicable, enter your primary store domain to help us debug quicker</div>
+                            </div>
+
+                            <!-- Category -->
+                            <div class="form-group">
+                                <label class="form-label" for="issueCategory">
+                                    Category <span class="required" aria-hidden="true">*</span>
+                                </label>
+                                <select id="issueCategory" name="category" class="form-select" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="Setup & Installation">Setup & Installation</option>
+                                    <option value="Gmail Sidebar">Gmail Sidebar Add-on</option>
+                                    <option value="Shopify Connection">Shopify Connection</option>
+                                    <option value="Billing & Pricing">Billing & Pricing</option>
+                                    <option value="Other Support">Other / General Question</option>
+                                </select>
+                            </div>
+
+                            <!-- Subject -->
+                            <div class="form-group">
+                                <label class="form-label" for="issueSubject">
+                                    Subject <span class="required" aria-hidden="true">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="issueSubject" 
+                                    name="subject" 
+                                    class="form-input" 
+                                    required 
+                                    placeholder="e.g. Cannot connect Shopify account"
+                                >
+                            </div>
+
+                            <!-- Detailed Description -->
+                            <div class="form-group form-group--full-width">
+                                <label class="form-label" for="issueMessage">
+                                    Detailed Description <span class="required" aria-hidden="true">*</span>
+                                </label>
+                                <textarea 
+                                    id="issueMessage" 
+                                    name="message" 
+                                    class="form-textarea" 
+                                    required 
+                                    placeholder="Please describe your issue in detail. If applicable, mention step-by-step instructions to reproduce the behavior."
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" id="submitIssueBtn" class="btn-submit">
+                                <span class="btn-spinner" id="submitBtnSpinner" aria-hidden="true"></span>
+                                <span id="submitBtnText">Submit Issue</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Success State -->
+                <div id="issueSuccessState" class="success-state" aria-live="polite">
+                    <div class="success-icon">✓</div>
+                    <h2>Thank You!</h2>
+                    <p>Your issue has been reported successfully. Since we operate on a Zero-Storage policy, this information has been sent directly to our secure support inbox. A support representative will review and respond to you via email shortly.</p>
+                    <button type="button" id="btnResetForm" class="btn-back">
+                        <span>←</span> Send Another Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('reportIssueForm');
+            const submitBtn = document.getElementById('submitIssueBtn');
+            const submitSpinner = document.getElementById('submitBtnSpinner');
+            const submitText = document.getElementById('submitBtnText');
+            
+            const formStateDiv = document.getElementById('issueFormState');
+            const successStateDiv = document.getElementById('issueSuccessState');
+            const resetBtn = document.getElementById('btnResetForm');
+            
+            const shopifyInput = document.getElementById('shopifyStoreDomain');
+
+            // Format shopify domain on input
+            shopifyInput.addEventListener('input', (e) => {
+                let value = e.target.value.toLowerCase().trim();
+                // Remove protocol and www.
+                value = value.replace(/^https?:\/\//, '').replace(/^www\./, '');
+                e.target.value = value;
+            });
+
+            // Form submission handler
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Clear previous toasts
+                if (window.Toast) window.Toast.clearAll();
+
+                const name = document.getElementById('reporterName').value.trim();
+                const email = document.getElementById('reporterEmail').value.trim();
+                const shopifyDomain = shopifyInput.value.trim();
+                const category = document.getElementById('issueCategory').value;
+                const subject = document.getElementById('issueSubject').value.trim();
+                const message = document.getElementById('issueMessage').value.trim();
+
+                // 1. Client-side Validations
+                if (!name) {
+                    if (window.Toast) window.Toast.error('Validation Error', 'Name is required.');
+                    return;
+                }
+                if (!email) {
+                    if (window.Toast) window.Toast.error('Validation Error', 'Contact email is required.');
+                    return;
+                }
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    if (window.Toast) window.Toast.error('Validation Error', 'Please enter a valid email address.');
+                    return;
+                }
+                if (!category) {
+                    if (window.Toast) window.Toast.error('Validation Error', 'Please select an issue category.');
+                    return;
+                }
+                if (!subject) {
+                    if (window.Toast) window.Toast.error('Validation Error', 'Subject is required.');
+                    return;
+                }
+                if (!message) {
+                    if (window.Toast) window.Toast.error('Validation Error', 'Issue description is required.');
+                    return;
+                }
+
+                // 2. Set UI to loading state
+                submitBtn.disabled = true;
+                submitSpinner.style.display = 'inline-block';
+                submitText.textContent = 'Submitting...';
+
+                try {
+                    const payload = {
+                        name,
+                        email,
+                        shopifyDomain,
+                        category,
+                        subject,
+                        message
+                    };
+
+                    let response;
+                    // Check ifApiClient exists and use it
+                    if (window.apiClient && typeof window.apiClient.request === 'function') {
+                        console.log('[issue.html] Using window.apiClient to make POST request');
+                        response = await window.apiClient.request('/apiRouter?route=support/report-issue', {
+                            method: 'POST',
+                            body: JSON.stringify(payload)
+                        });
+                    } else {
+                        // Fallback direct fetch using config baseUrl
+                        console.log('[issue.html] Fallback to direct fetch');
+                        const baseUrl = (window.API_CONFIG && typeof window.API_CONFIG.getCurrentConfig === 'function')
+                            ? window.API_CONFIG.getCurrentConfig().baseURL 
+                            : 'http://localhost:8088';
+                        
+                        const res = await fetch(`${baseUrl}/apiRouter?route=support/report-issue`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                        response = await res.json();
+                    }
+
+                    if (response && response.success) {
+                        if (window.Toast) window.Toast.success('Submitted', 'Your issue report has been sent!');
+                        
+                        // Switch to success state
+                        formStateDiv.style.display = 'none';
+                        successStateDiv.style.display = 'block';
+                        
+                        // Reset form fields
+                        form.reset();
+                    } else {
+                        const errMsg = (response && response.error) || 'Failed to submit issue. Please try again.';
+                        if (window.Toast) window.Toast.error('Submission Failed', errMsg);
+                    }
+                } catch (error) {
+                    console.error('[issue.html] Form submit error:', error);
+                    const fallbackMsg = 'Failed to connect to the support server. Please make sure the backend is running or email support@giihelpdesk.com directly.';
+                    if (window.Toast) window.Toast.error('Connection Error', fallbackMsg);
+                } finally {
+                    // Reset UI loading state
+                    submitBtn.disabled = false;
+                    submitSpinner.style.display = 'none';
+                    submitText.textContent = 'Submit Issue';
+                }
+            });
+
+            // Back / Reset button handler
+            resetBtn.addEventListener('click', () => {
+                successStateDiv.style.display = 'none';
+                formStateDiv.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
