@@ -261,9 +261,14 @@
                 const result = await window.apiClient.upgradeSubscription('pro', 1);
                 Toast.hideLoading();
                 if (result.success) {
-                    Toast.success('Upgraded', 'Your subscription has been upgraded to Pro.');
-                    loadBillingData();
-                    loadBillingHistory();
+                    if (result.data && result.data.confirmationUrl) {
+                        Toast.info('Redirecting', 'Redirecting to Shopify Billing to authorize charge...');
+                        window.location.href = result.data.confirmationUrl;
+                    } else {
+                        Toast.success('Upgraded', 'Your subscription has been upgraded to Pro.');
+                        loadBillingData();
+                        loadBillingHistory();
+                    }
                 } else {
                     Toast.error('Upgrade Failed', result.error || 'Unable to upgrade to Pro.');
                 }
@@ -279,9 +284,14 @@
                 const result = await window.apiClient.upgradeSubscription('team', 5);
                 Toast.hideLoading();
                 if (result.success) {
-                    Toast.success('Upgraded', 'Your subscription has been upgraded to Team.');
-                    loadBillingData();
-                    loadBillingHistory();
+                    if (result.data && result.data.confirmationUrl) {
+                        Toast.info('Redirecting', 'Redirecting to Shopify Billing to authorize charge...');
+                        window.location.href = result.data.confirmationUrl;
+                    } else {
+                        Toast.success('Upgraded', 'Your subscription has been upgraded to Team.');
+                        loadBillingData();
+                        loadBillingHistory();
+                    }
                 } else {
                     Toast.error('Upgrade Failed', result.error || 'Unable to upgrade to Team.');
                 }
