@@ -88,6 +88,10 @@
         '            <a href="' + footerBasePath + 'refund.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Refund</a>',
         '            <a href="' + footerBasePath + 'contact.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Contact</a>',
         '            <a href="' + footerBasePath + 'pricing.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Pricing</a>',
+            '<a href="' + footerBasePath + 'setup.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Setup Guide</a>',
+            '<a href="' + footerBasePath + 'help.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Help & FAQs</a>',
+            '<a href="' + footerBasePath + 'support.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Support Center</a>',
+            '<a href="' + footerBasePath + 'issue.html" style="color: var(--color-text-secondary); text-decoration: none; font-size: 14px;">Report Issue</a>',
         '        </div>',
         "        <div>&copy; " +
           year +

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup & Help Guide — giiHelpdesk</title>
+  <meta name="description"
+    content="Learn how to install the giiHelpdesk Gmail Add-on and securely connect your Shopify store using this step-by-step setup guide." />
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/common.js" defer></script>
+  <style>
+    /* Premium Page-Specific Styling */
+    .help-hero {
+      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
+      color: #ffffff;
+      padding: var(--spacing-3xl) var(--spacing-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .help-hero__inner {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .help-hero__badge {
+      display: inline-block;
+      background: rgba(0, 128, 96, 0.2);
+      color: var(--color-primary-light);
+      border: 1px solid var(--color-primary);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: var(--spacing-md);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .help-hero__title {
+      font-size: 42px;
+      font-weight: 800;
+      margin: 0 0 var(--spacing-md) 0;
+      line-height: 1.2;
+      color: #ffffff;
+    }
+
+    .help-hero__subtitle {
+      font-size: 18px;
+      margin: 0;
+      color: #e2e8f0;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    .help-container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--spacing-2xl) var(--spacing-lg);
+    }
+
+    /* Tab Controls */
+    .tab-controller {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-2xl);
+      border-bottom: 2px solid var(--color-border);
+      padding-bottom: var(--spacing-md);
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-text-secondary);
+      padding: var(--spacing-sm) var(--spacing-lg);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease, transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .tab-btn:hover {
+      color: var(--color-primary);
+      transform: translateY(-2px);
+    }
+
+    .tab-btn--active {
+      color: var(--color-primary);
+    }
+
+    .tab-btn--active::after {
+      content: '';
+      position: absolute;
+      bottom: -18px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: var(--color-primary);
+      border-radius: 2px;
+      animation: slideIn 0.3s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    /* Steps Layout Grid */
+    .help-content {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .help-content--active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .guide-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: var(--spacing-2xl);
+      align-items: start;
+    }
+
+    @media (max-width: 968px) {
+      .guide-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+    }
+
+    .step-card {
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    .step-card:hover {
+      border-color: var(--color-primary-light);
+      box-shadow: var(--shadow);
+    }
+
+    .step-card__header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .step-card__num {
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary);
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .step-card__title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--color-text);
+    }
+
+    .step-card__body {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .step-card__body p {
+      margin: 0 0 var(--spacing-md) 0;
+    }
+
+    .step-card__body p:last-child {
+      margin: 0;
+    }
+
+    /* Action Card styling */
+    .action-card {
+      background: var(--color-bg-secondary);
+      border-left: 4px solid var(--color-primary);
+      padding: var(--spacing-md);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-top: var(--spacing-md);
+    }
+
+    .action-card__text {
+      font-size: 14px;
+      margin-bottom: var(--spacing-sm);
+      color: var(--color-text);
+      font-weight: 600;
+    }
+
+    /* Marketplace Button */
+    .marketplace-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      background: #008060;
+      color: white;
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      border: none;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .marketplace-btn:hover {
+      background: #006e52;
+      transform: translateY(-1px);
+    }
+
+    /* Scope Explanations */
+    .scope-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: var(--spacing-md);
+    }
+
+    .scope-table th, .scope-table td {
+      text-align: left;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-bottom: 1px solid var(--color-border);
+      font-size: 14px;
+    }
+
+    .scope-table th {
+      font-weight: 700;
+      background: var(--color-bg-tertiary);
+      color: var(--color-text);
+    }
+
+    .scope-name {
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+      color: var(--color-secondary);
+      background: var(--color-bg-secondary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    /* Visual Panel sticky sidebar */
+    .visual-panel {
+      position: sticky;
+      top: 100px;
+      background: var(--color-bg-tertiary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .visual-panel__title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .visual-frame {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Info Alerts */
+    .privacy-alert {
+      background: rgba(0, 128, 96, 0.05);
+      border: 1px solid rgba(0, 128, 96, 0.2);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-2xl);
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+    }
+
+    .privacy-alert__icon {
+      font-size: 24px;
+    }
+
+    .privacy-alert__content h3 {
+      margin: 0 0 var(--spacing-xs) 0;
+      font-size: 18px;
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    .privacy-alert__content p {
+      margin: 0;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <!-- Hero Banner -->
+  <section class="help-hero" aria-labelledby="help-hero-title">
+    <div class="help-hero__inner">
+      <div class="help-hero__badge">Help Center</div>
+      <h1 id="help-hero-title" class="help-hero__title">
+        Gmail Add-on Setup & Shopify Integration
+      </h1>
+      <p class="help-hero__subtitle">
+        Follow this comprehensive setup guide to connect your Shopify store and configure the AI assistant within your Gmail inbox.
+      </p>
+    </div>
+  </section>
+
+  <!-- Interactive Content Container -->
+  <main class="help-container" role="main">
+    
+    <!-- Tab Navigation -->
+    <nav class="tab-controller" aria-label="Setup steps categories">
+      <button class="tab-btn tab-btn--active" id="tab-btn-gmail" onclick="switchTab('gmail')" aria-controls="help-content-gmail" aria-selected="true" role="tab">
+        <span>📧</span> Gmail Add-on Setup
+      </button>
+      <button class="tab-btn" id="tab-btn-shopify" onclick="switchTab('shopify')" aria-controls="help-content-shopify" aria-selected="false" role="tab">
+        <span>🛍️</span> Shopify Store Integration
+      </button>
+    </nav>
+
+    <!-- Tab 1: Gmail Add-on Setup -->
+    <section id="help-content-gmail" class="help-content help-content--active" role="tabpanel" aria-labelledby="tab-btn-gmail">
+      <div class="guide-grid">
+        <div class="steps-list">
+          
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">1</div>
+              <h2 class="step-card__title">Acquire the Add-on</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                Get the certified <strong>giiHelpDeskAgent</strong> add-on directly from the official Google Workspace Marketplace. Click the link below to open our marketplace listing page.
+              </p>
+              <div class="action-card">
+                <div class="action-card__text">Ready to integrate? Install from the Store:</div>
+                <a href="https://workspace.google.com/marketplace/app/giihelpdeskagent/1031313360408" class="marketplace-btn" id="install-marketplace-btn" target="_blank" rel="noopener">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: white;">
+                    <path d="M19.36 10.04L20.5 11.53L12 17.9L3.5 11.53L4.64 10.04L12 15.56L19.36 10.04ZM12 13.06L4.64 7.54L3.5 9.03L12 15.4L20.5 9.03L19.36 7.54L12 13.06ZM12 3L20.5 9.4L12 15.77L3.5 9.4L12 3Z"/>
+                  </svg>
+                  Install from Google Workspace Marketplace
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">2</div>
+              <h2 class="step-card__title">Grant Scopes & Permissions</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                During installation, Google will prompt you to grant the necessary permissions. These scopes are strictly used to read order details and insert response drafts. Below is why each scope is required:
+              </p>
+              <table class="scope-table">
+                <thead>
+                  <tr>
+                    <th>OAuth Scope</th>
+                    <th>Why It is Essential</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="scope-name">gmail.addons.current.message.readonly</span></td>
+                    <td>Allows the AI to read the selected customer email to analyze their intent (e.g., WISMO, refund).</td>
+                  </tr>
+                  <tr>
+                    <td><span class="scope-name">script.external_request</span></td>
+                    <td>Enables the add-on to query your Shopify API and retrieve order and shipping info.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="scope-name">gmail.readonly</span></td>
+                    <td>Allows the AI to inspect email thread history so the generated reply matches previous context.</td>
+                  </tr>
+                  <tr>
+                    <td><span class="scope-name">gmail.compose</span></td>
+                    <td>Enables the add-on to construct draft replies in Gmail so you can review and edit before sending.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">3</div>
+              <h2 class="step-card__title">Open the Add-on Sidebar</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                Once installed, open <strong>Gmail</strong> in your desktop web browser. Open any customer email conversation thread, and look at the right utility panel. You will see our green <strong>giiHelpdesk</strong> logo icon.
+              </p>
+              <p>
+                Click this icon to expand the side panel. If your Shopify store is not connected yet, the add-on will guide you to complete the store authentication.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky Right Graphic Visual Panel -->
+        <div class="visual-panel">
+          <h3 class="visual-panel__title">
+            <span>💡</span> Gmail Interface Guide
+          </h3>
+          <div class="visual-frame">
+            <!-- Inline SVG Mockup of Gmail Sidebar -->
+            <svg width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; font-family: sans-serif;">
+              <!-- Browser Header -->
+              <rect width="400" height="25" fill="#e2e8f0"/>
+              <circle cx="15" cy="12" r="4" fill="#ef4444"/>
+              <circle cx="27" cy="12" r="4" fill="#f59e0b"/>
+              <circle cx="39" cy="12" r="4" fill="#10b981"/>
+              <!-- Browser Address Bar -->
+              <rect x="60" y="5" width="280" height="15" rx="3" fill="#ffffff"/>
+              <text x="70" y="15" font-size="8" fill="#94a3b8">mail.google.com/mail/u/0/</text>
+              
+              <!-- Gmail Layout -->
+              <rect x="0" y="25" width="400" height="215" fill="#f1f5f9"/>
+              <!-- Left Sidebar -->
+              <rect x="0" y="25" width="60" height="215" fill="#ffffff" border-right="1px solid #cbd5e1"/>
+              <rect x="10" y="40" width="40" height="12" rx="6" fill="#008060" opacity="0.1"/>
+              <rect x="15" y="60" width="30" height="6" rx="3" fill="#cbd5e1"/>
+              <rect x="15" y="75" width="30" height="6" rx="3" fill="#e2e8f0"/>
+              <rect x="15" y="90" width="30" height="6" rx="3" fill="#e2e8f0"/>
+              
+              <!-- Main Email Content Area -->
+              <rect x="70" y="35" width="280" height="195" rx="4" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+              <!-- Email Header -->
+              <text x="85" y="55" font-size="11" font-weight="bold" fill="#1e293b">Order Inquiry - #1024</text>
+              <rect x="85" y="65" width="100" height="8" rx="4" fill="#cbd5e1"/>
+              <line x1="85" y1="85" x2="330" y2="85" stroke="#e2e8f0"/>
+              
+              <!-- Email Text -->
+              <rect x="85" y="95" width="245" height="6" rx="3" fill="#f1f5f9"/>
+              <rect x="85" y="107" width="230" height="6" rx="3" fill="#f1f5f9"/>
+              <rect x="85" y="119" width="180" height="6" rx="3" fill="#f1f5f9"/>
+              
+              <!-- Right Add-on Utility Panel -->
+              <rect x="360" y="25" width="40" height="215" fill="#ffffff" stroke-left="1px solid #cbd5e1"/>
+              <!-- Other icons -->
+              <circle cx="380" cy="50" r="10" fill="#e2e8f0"/>
+              <circle cx="380" cy="80" r="10" fill="#e2e8f0"/>
+              
+              <!-- Target giibot icon (Highlighted) -->
+              <circle cx="380" cy="115" r="14" fill="#008060"/>
+              <!-- Inner gii icon letter "g" -->
+              <text x="375" y="120" font-size="14" font-weight="bold" fill="#ffffff">g</text>
+              
+              <!-- Subtle tooltip/pointer showing sidebar -->
+              <path d="M340 115 L360 115" stroke="#ef4444" stroke-width="2" stroke-dasharray="2 2"/>
+              <polygon points="340,115 345,111 345,119" fill="#ef4444"/>
+              <rect x="235" y="145" width="110" height="35" rx="4" fill="#ef4444"/>
+              <text x="242" y="158" font-size="9" font-weight="bold" fill="#ffffff">Click the green "g"</text>
+              <text x="242" y="171" font-size="8" fill="#ffffff">icon in Gmail sidebar!</text>
+            </svg>
+          </div>
+          <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.4;">
+            Open any email thread inside Gmail and find the <strong>g</strong> icon in the right-side vertical sidebar.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Shopify Integration Guide -->
+    <section id="help-content-shopify" class="help-content" role="tabpanel" aria-labelledby="tab-btn-shopify">
+      <div class="guide-grid">
+        <div class="steps-list">
+          
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">A</div>
+              <h2 class="step-card__title">Method 1: Connect via Gmail Sidebar (Recommended)</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                You can authorize connection instantly when opening the add-on side panel in Gmail for the first time:
+              </p>
+              <ol style="padding-left: var(--spacing-lg); margin: 0 0 var(--spacing-md) 0; line-height: 1.6;">
+                <li>Open the Gmail Add-on sidebar (as described in the setup steps).</li>
+                <li>In the text field inside the Add-on panel, enter your Shopify permanent store domain (e.g. <code>your-shop.myshopify.com</code>).</li>
+                <li>Click the <strong>Authorize Connection</strong> button.</li>
+                <li>A secure Shopify OAuth permission page will open in a browser overlay window. If prompted, log in to your Shopify account.</li>
+                <li>Click <strong>Install App</strong> to authorize the connection. The popup window will close automatically.</li>
+                <li>The Add-on will auto-refresh and display <strong>✓ Connected</strong>!</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">B</div>
+              <h2 class="step-card__title">Method 2: Connect via Portal Dashboard</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                Alternatively, merchants can configure store mappings beforehand using the centralized web control panel:
+              </p>
+              <ol style="padding-left: var(--spacing-lg); margin: 0 0 var(--spacing-md) 0; line-height: 1.6;">
+                <li>Sign in to your merchant account at <a href="/auth/login.html" target="_blank">giihelpdesk.com Portal</a>.</li>
+                <li>On the main dashboard, scroll down to find the **Shopify Integration** card.</li>
+                <li>Click **Set Up Shopify Domain** / **Update Domain** to enter your store address.</li>
+                <li>Click **Verify Connection**. A secure Shopify installation window will open.</li>
+                <li>Review the requested scope list in Shopify Admin, then click **Install App**.</li>
+                <li>Once successful, you will be redirected back with a success toast notification.</li>
+              </ol>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky Right Graphic Visual Panel (Shopify OAuth Flow) -->
+        <div class="visual-panel">
+          <h3 class="visual-panel__title">
+            <span>🛡️</span> Secure Shopify OAuth
+          </h3>
+          <div class="visual-frame">
+            <svg width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f4f6f8; font-family: sans-serif;">
+              <!-- Secure popup browser border -->
+              <rect x="10" y="10" width="380" height="220" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+              <rect x="10" y="10" width="380" height="30" rx="6" fill="#e2e8f0"/>
+              <!-- Green secure lock icon -->
+              <rect x="25" y="18" width="10" height="8" rx="1.5" fill="#10b981"/>
+              <path d="M27 18 V15 C27 13.5 28 12.5 30 12.5 C32 12.5 33 13.5 33 15 V18" stroke="#10b981" stroke-width="1.5" fill="none"/>
+              <text x="45" y="29" font-size="9" font-weight="bold" fill="#0f172a">your-shop.myshopify.com/admin</text>
+              
+              <!-- Shopify App Consent Dialog -->
+              <!-- Gmail Addon Logo Left, Shopify Logo Right -->
+              <rect x="60" y="65" width="40" height="40" rx="8" fill="#008060"/>
+              <text x="73" y="91" font-size="24" font-weight="bold" fill="#ffffff">g</text>
+              
+              <line x1="120" y1="85" x2="160" y2="85" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="3 3"/>
+              <!-- Double arrow indicating auth handshaking -->
+              <polygon points="160,85 155,81 155,89" fill="#94a3b8"/>
+              
+              <rect x="180" y="65" width="40" height="40" rx="8" fill="#95bf47"/>
+              <!-- Shopify inner S bag icon -->
+              <path d="M192 73 H208 V77 C208 77 205 82 200 82 C195 82 192 77 192 77 Z" fill="#ffffff"/>
+              <path d="M190 77 H210 V100 H190 Z" fill="#ffffff"/>
+              <text x="196" y="93" font-size="14" font-weight="bold" fill="#95bf47">S</text>
+              
+              <!-- OAuth Details -->
+              <text x="60" y="130" font-size="12" font-weight="bold" fill="#1e293b">Authorize giiHelpDeskAgent</text>
+              <rect x="60" y="142" width="280" height="5" rx="2" fill="#cbd5e1"/>
+              <rect x="60" y="152" width="220" height="5" rx="2" fill="#cbd5e1"/>
+              <rect x="60" y="162" width="250" height="5" rx="2" fill="#cbd5e1"/>
+              
+              <!-- Actions -->
+              <rect x="60" y="185" width="80" height="24" rx="4" fill="#e2e8f0"/>
+              <text x="82" y="200" font-size="10" font-weight="bold" fill="#475569">Cancel</text>
+              
+              <rect x="240" y="185" width="100" height="24" rx="4" fill="#008060"/>
+              <text x="260" y="200" font-size="10" font-weight="bold" fill="#ffffff">Install App</text>
+            </svg>
+          </div>
+          <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.4;">
+            Shopify OAuth utilizes official Shopify merchant APIs to guarantee robust connection integrity and maximum checkout safety.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy Callout -->
+    <section class="privacy-alert" aria-labelledby="privacy-callout-title">
+      <div class="privacy-alert__icon" aria-hidden="true">🔒</div>
+      <div class="privacy-alert__content">
+        <h3 id="privacy-callout-title">Zero-Content-Storage Architecture</h3>
+        <p>
+          We take data protection very seriously. The giiHelpdesk ecosystem never stores your customer's email content, credit cards, or Shopify administrative login secrets. Data packets are read in-memory and analyzed in real-time. Full details can be reviewed in our <a href="privacy.html">Privacy Policy</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <!-- Tab Toggle Script -->
+  <script>
+    function switchTab(tabId) {
+      // Deactivate all tabs
+      const tabs = ['gmail', 'shopify'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const content = document.getElementById(`help-content-${t}`);
+        
+        if (t === tabId) {
+          btn.classList.add('tab-btn--active');
+          btn.setAttribute('aria-selected', 'true');
+          content.classList.add('help-content--active');
+        } else {
+          btn.classList.remove('tab-btn--active');
+          btn.setAttribute('aria-selected', 'false');
+          content.classList.remove('help-content--active');
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>
