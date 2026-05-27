@@ -100,7 +100,7 @@
                         <div style="margin-bottom: 8px;">Shopify integration</div>
                     </div>
                     <button class="auth-btn" onclick="upgradeToPro()" style="width: 100%;">
-                        Upgrade to Pro
+                        Open Billing in Shopify Admin
                     </button>
                 </div>
                 
@@ -115,7 +115,7 @@
                         <div style="margin-bottom: 8px;">Advanced analytics</div>
                     </div>
                     <button class="auth-btn auth-btn--secondary" onclick="upgradeToTeam()" style="width: 100%;">
-                        Upgrade to Team
+                        Open Billing in Shopify Admin
                     </button>
                 </div>
             </div>
@@ -255,50 +255,33 @@
 
 
         // Action handlers
-        async function upgradeToPro() {
+        async function openHostedBilling(plan, seats) {
             try {
-                Toast.loading('Upgrading', 'Upgrading to Pro plan...');
-                const result = await window.apiClient.upgradeSubscription('pro', 1);
+                Toast.loading('Opening Billing', 'Opening billing in Shopify Admin...');
+                const result = await window.apiClient.upgradeSubscription(plan, seats);
                 Toast.hideLoading();
                 if (result.success) {
-                    if (result.data && result.data.confirmationUrl) {
-                        Toast.info('Redirecting', 'Redirecting to Shopify Billing to authorize charge...');
-                        window.location.href = result.data.confirmationUrl;
+                    if (result.data && result.data.hostedPricingUrl) {
+                        Toast.info('Redirecting', 'Redirecting to Shopify Admin billing...');
+                        window.location.href = result.data.hostedPricingUrl;
                     } else {
-                        Toast.success('Upgraded', 'Your subscription has been upgraded to Pro.');
-                        loadBillingData();
-                        loadBillingHistory();
+                        Toast.error('Billing Unavailable', 'Hosted billing link is unavailable right now.');
                     }
                 } else {
-                    Toast.error('Upgrade Failed', result.error || 'Unable to upgrade to Pro.');
+                    Toast.error('Upgrade Failed', result.error || 'Unable to open Shopify billing.');
                 }
             } catch (e) {
                 Toast.hideLoading();
-                Toast.error('Upgrade Error', 'An error occurred during upgrade.');
+                Toast.error('Upgrade Error', 'An error occurred while opening Shopify billing.');
             }
         }
 
+        async function upgradeToPro() {
+            return openHostedBilling('pro', 1);
+        }
+
         async function upgradeToTeam() {
-            try {
-                Toast.loading('Upgrading', 'Upgrading to Team plan...');
-                const result = await window.apiClient.upgradeSubscription('team', 5);
-                Toast.hideLoading();
-                if (result.success) {
-                    if (result.data && result.data.confirmationUrl) {
-                        Toast.info('Redirecting', 'Redirecting to Shopify Billing to authorize charge...');
-                        window.location.href = result.data.confirmationUrl;
-                    } else {
-                        Toast.success('Upgraded', 'Your subscription has been upgraded to Team.');
-                        loadBillingData();
-                        loadBillingHistory();
-                    }
-                } else {
-                    Toast.error('Upgrade Failed', result.error || 'Unable to upgrade to Team.');
-                }
-            } catch (e) {
-                Toast.hideLoading();
-                Toast.error('Upgrade Error', 'An error occurred during upgrade.');
-            }
+            return openHostedBilling('team', 5);
         }
 
         async function cancelSubscription() {

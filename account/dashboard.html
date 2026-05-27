@@ -62,11 +62,12 @@
             </div>
             <div style="display: flex; gap: 12px">
               <a
-                href="/pricing.html"
+                href="#"
+                onclick="upgradeSubscription(); return false;"
                 class="auth-btn auth-btn--secondary"
                 style="text-decoration: none; text-align: center"
               >
-                Upgrade Subscription
+                Open Billing in Shopify Admin
               </a>
             </div>
           </div>
@@ -190,8 +191,8 @@
           <div id="policiesOverviewGate" style="display: none; color: var(--color-muted); padding: 16px;">
             Store policies management is available for Pro and Team plans only.
             <div style="margin-top: 12px;">
-              <a href="/pricing.html" class="auth-btn auth-btn--secondary" style="text-decoration: none; display: inline-block;">
-                Upgrade to Pro
+              <a href="#" onclick="upgradeSubscription('pro', 1); return false;" class="auth-btn auth-btn--secondary" style="text-decoration: none; display: inline-block;">
+                Open Billing in Shopify Admin
               </a>
             </div>
           </div>
@@ -688,12 +689,36 @@
       }
 
       // Action handlers
-      function upgradeSubscription() {
-        Toast.info("Upgrade", "Redirecting to subscription upgrade page...");
-        // TODO: Implement subscription upgrade flow
-        setTimeout(() => {
-          window.location.href = "pricing.html";
-        }, 1500);
+      async function upgradeSubscription(plan = "pro", seats = 1) {
+        try {
+          Toast.loading(
+            "Opening Billing",
+            "Opening billing in Shopify Admin..."
+          );
+          const result = await window.apiClient.upgradeSubscription(plan, seats);
+          Toast.hideLoading();
+
+          if (result.success && result.data && result.data.hostedPricingUrl) {
+            Toast.info(
+              "Redirecting",
+              "Redirecting to Shopify Admin billing..."
+            );
+            window.location.href = result.data.hostedPricingUrl;
+            return;
+          }
+
+          Toast.error(
+            "Billing Unavailable",
+            result.error || "Unable to open Shopify billing right now."
+          );
+        } catch (error) {
+          Toast.hideLoading();
+          console.error("Error opening Shopify hosted billing:", error);
+          Toast.error(
+            "Upgrade Error",
+            "An error occurred while opening Shopify billing."
+          );
+        }
       }
 
       async function cancelSubscription() {

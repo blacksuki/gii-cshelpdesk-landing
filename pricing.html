@@ -179,17 +179,47 @@
             applySubscriptionUIState();
         });
 
+        function bindHostedBillingButton(button, plan, seats) {
+            if (!button) {
+                return;
+            }
+
+            button.textContent = 'Open Billing in Shopify Admin';
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                openHostedBilling(plan, seats);
+            });
+        }
+
+        async function openHostedBilling(plan, seats) {
+            try {
+                if (!window.apiClient) {
+                    throw new Error('apiClient is not available');
+                }
+
+                const result = await window.apiClient.upgradeSubscription(plan, seats);
+                if (result.success && result.data && result.data.hostedPricingUrl) {
+                    window.location.href = result.data.hostedPricingUrl;
+                    return;
+                }
+
+                alert(result.error || 'Unable to open Shopify Admin billing right now.');
+            } catch (error) {
+                console.error('Error opening Shopify hosted billing:', error);
+                alert('Unable to open Shopify Admin billing right now.');
+            }
+        }
+
         // Authentication check for pricing page
         function checkAuthenticationForPricing() {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
             const isLoggedIn = !!user.token;
+            const freeBtn = document.getElementById('freePlanBtn');
+            const proBtn = document.getElementById('proPlanBtn');
+            const teamBtn = document.getElementById('teamPlanBtn');
 
             if (!isLoggedIn) {
                 // Add click event listeners to redirect to login
-                const freeBtn = document.getElementById('freePlanBtn');
-                const proBtn = document.getElementById('proPlanBtn');
-                const teamBtn = document.getElementById('teamPlanBtn');
-
                 if (freeBtn && !isLoggedIn) {
                     //only show for non-logged in users
                     freeBtn.addEventListener('click', function (e) {
@@ -212,9 +242,13 @@
                     });
                 }
             } else {
+                bindHostedBillingButton(proBtn, 'pro', 1);
+                bindHostedBillingButton(teamBtn, 'team', 5);
+
                 // User is logged in, check for plan parameter
-                console.log("checkAuthenticationForPricing: user plan is ", user.subscription.plan);
-                const plan = user.subscription.plan;
+                const currentSubscription = user.subscription || {};
+                console.log("checkAuthenticationForPricing: user plan is ", currentSubscription.plan);
+                const plan = currentSubscription.plan;
 
                 if (plan) {
                     // Highlight the selected plan
