@@ -60,7 +60,7 @@
               <span class="account-info__label">Email Limit</span>
               <span class="account-info__value" id="emailLimit">max 100</span>
             </div>
-            <div style="display: flex; gap: 12px">
+            <div style="display: flex; flex-direction: column; gap: 12px">
               <a
                 href="#"
                 onclick="upgradeSubscription(); return false;"
@@ -69,6 +69,14 @@
               >
                 Open Billing in Shopify Admin
               </a>
+              <button
+                class="auth-btn auth-btn--warning"
+                onclick="cancelSubscription()"
+                id="cancelBtn"
+                style="display: none; width: 100%; border: 1px solid var(--color-warning);"
+              >
+                Cancel Subscription
+              </button>
             </div>
           </div>
         </div>
@@ -306,40 +314,7 @@
           </div>
         </div>
       </div>
-      <!-- Billing History -->
-      <div class="account-card" style="margin-bottom: 32px">
-        <div class="account-card__title">
-          <span>📋</span>
-          Billing History
-        </div>
 
-        <div
-          id="billingHistory"
-          style="
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-muted);
-          "
-        >
-          Loading billing history...
-        </div>
-
-        <div style="margin-top: 16px; text-align: right">
-          <button
-            class="auth-btn auth-btn--warning"
-            onclick="cancelSubscription()"
-            id="cancelBtn"
-            style="display: none"
-          >
-            Cancel Subscription
-          </button>
-        </div>
-        <div class="account-card__title">
-          <span></span>
-        </div>
-      </div>
 
       <!-- Quick Actions -->
       <div class="account-card" style="margin-bottom: 32px">
@@ -790,58 +765,7 @@
         }
       }
 
-      // Load billing history
-      async function loadBillingHistory() {
-        try {
-          const result = await window.apiClient.getBillingHistory();
 
-          if (result.success) {
-            displayBillingHistory(result.data);
-          } else {
-            document.getElementById("billingHistory").innerHTML =
-              "No billing history found.";
-          }
-        } catch (error) {
-          console.error("Error loading billing history:", error);
-          document.getElementById("billingHistory").innerHTML =
-            "Unable to load billing history.";
-        }
-      }
-
-      // Display billing history
-      function displayBillingHistory(history) {
-        const container = document.getElementById("billingHistory");
-
-        if (!history || history.length === 0) {
-          container.innerHTML = "No billing history found.";
-          return;
-        }
-
-        const historyList = history
-          .map(
-            (invoice) => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
-                    <div>
-                        <div style="font-weight: 500;">${
-                          invoice.description || "Subscription"
-                        }</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">Invoice #${
-                          invoice.number
-                        }</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: 600;">$${invoice.amount}</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">
-                            ${new Date(invoice.date).toLocaleDateString()}
-                        </div>
-                    </div>
-                </div>
-            `
-          )
-          .join("");
-
-        container.innerHTML = historyList;
-      }
 
       function openGmailAddon() {
         Toast.info("Gmail Add-on", "Opening Gmail Add-on...");

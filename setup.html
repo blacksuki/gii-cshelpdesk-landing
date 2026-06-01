@@ -358,16 +358,113 @@
     
     <!-- Tab Navigation -->
     <nav class="tab-controller" aria-label="Setup steps categories">
-      <button class="tab-btn tab-btn--active" id="tab-btn-gmail" onclick="switchTab('gmail')" aria-controls="help-content-gmail" aria-selected="true" role="tab">
-        <span>📧</span> Gmail Add-on Setup
+      <button class="tab-btn tab-btn--active" id="tab-btn-shopify" onclick="switchTab('shopify')" aria-controls="help-content-shopify" aria-selected="true" role="tab">
+        <span>🛍️</span> 1. Shopify App Connection
       </button>
-      <button class="tab-btn" id="tab-btn-shopify" onclick="switchTab('shopify')" aria-controls="help-content-shopify" aria-selected="false" role="tab">
-        <span>🛍️</span> Shopify Store Integration
+      <button class="tab-btn" id="tab-btn-gmail" onclick="switchTab('gmail')" aria-controls="help-content-gmail" aria-selected="false" role="tab">
+        <span>📧</span> 2. Gmail Add-on Installation
       </button>
     </nav>
 
-    <!-- Tab 1: Gmail Add-on Setup -->
-    <section id="help-content-gmail" class="help-content help-content--active" role="tabpanel" aria-labelledby="tab-btn-gmail">
+    <!-- Tab 1: Shopify Integration Guide -->
+    <section id="help-content-shopify" class="help-content help-content--active" role="tabpanel" aria-labelledby="tab-btn-shopify">
+      <div class="guide-grid">
+        <div class="steps-list">
+          
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">1</div>
+              <h2 class="step-card__title">Install the Shopify App</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                Begin by installing the unlisted <strong>giiHelpdesk</strong> app on your Shopify store. This initializes the secure OAuth connection between our service and your storefront.
+              </p>
+              <p>
+                You can set your store domain and start the authorization directly in your <a href="auth/login.html">Merchant Portal</a> under <strong>Shopify Integration</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">2</div>
+              <h2 class="step-card__title">Approve Scopes & Connect</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                You will be redirected to your Shopify admin screen to approve access. Review the requested permissions (such as reading orders and legal policies for AI context) and click <strong>Install App</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-card__header">
+              <div class="step-card__num">3</div>
+              <h2 class="step-card__title">Select Your Plan & Approve Billing</h2>
+            </div>
+            <div class="step-card__body">
+              <p>
+                Once connected, approve your subscription securely managed via <strong>Shopify App Pricing</strong>. Select the plan that fits your team ($19/mo Pro, $49/mo Team, or the private test plan if testing on a development store) and approve the recurring charge.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sticky Right Graphic Visual Panel (Shopify OAuth Flow) -->
+        <div class="visual-panel">
+          <h3 class="visual-panel__title">
+            <span>🛡️</span> Secure Shopify OAuth
+          </h3>
+          <div class="visual-frame">
+            <svg width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f4f6f8; font-family: sans-serif;">
+              <!-- Secure popup browser border -->
+              <rect x="10" y="10" width="380" height="220" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+              <rect x="10" y="10" width="380" height="30" rx="6" fill="#e2e8f0"/>
+              <!-- Green secure lock icon -->
+              <rect x="25" y="18" width="10" height="8" rx="1.5" fill="#10b981"/>
+              <path d="M27 18 V15 C27 13.5 28 12.5 30 12.5 C32 12.5 33 13.5 33 15 V18" stroke="#10b981" stroke-width="1.5" fill="none"/>
+              <text x="45" y="29" font-size="9" font-weight="bold" fill="#0f172a">your-shop.myshopify.com/admin</text>
+              
+              <!-- Shopify App Consent Dialog -->
+              <!-- Gmail Addon Logo Left, Shopify Logo Right -->
+              <rect x="60" y="65" width="40" height="40" rx="8" fill="#008060"/>
+              <text x="73" y="91" font-size="24" font-weight="bold" fill="#ffffff">g</text>
+              
+              <line x1="120" y1="85" x2="160" y2="85" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="3 3"/>
+              <!-- Double arrow indicating auth handshaking -->
+              <polygon points="160,85 155,81 155,89" fill="#94a3b8"/>
+              
+              <rect x="180" y="65" width="40" height="40" rx="8" fill="#95bf47"/>
+              <!-- Shopify inner S bag icon -->
+              <path d="M192 73 H208 V77 C208 77 205 82 200 82 C195 82 192 77 192 77 Z" fill="#ffffff"/>
+              <path d="M190 77 H210 V100 H190 Z" fill="#ffffff"/>
+              <text x="196" y="93" font-size="14" font-weight="bold" fill="#95bf47">S</text>
+              
+              <!-- OAuth Details -->
+              <text x="60" y="130" font-size="12" font-weight="bold" fill="#1e293b">Authorize giiHelpDeskAgent</text>
+              <rect x="60" y="142" width="280" height="5" rx="2" fill="#cbd5e1"/>
+              <rect x="60" y="152" width="220" height="5" rx="2" fill="#cbd5e1"/>
+              <rect x="60" y="162" width="250" height="5" rx="2" fill="#cbd5e1"/>
+              
+              <!-- Actions -->
+              <rect x="60" y="185" width="80" height="24" rx="4" fill="#e2e8f0"/>
+              <text x="82" y="200" font-size="10" font-weight="bold" fill="#475569">Cancel</text>
+              
+              <rect x="240" y="185" width="100" height="24" rx="4" fill="#008060"/>
+              <text x="260" y="200" font-size="10" font-weight="bold" fill="#ffffff">Install App</text>
+            </svg>
+          </div>
+          <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.4;">
+            Shopify OAuth utilizes official merchant APIs to guarantee robust connection integrity and maximum checkout safety.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab 2: Gmail Add-on Setup -->
+    <section id="help-content-gmail" class="help-content" role="tabpanel" aria-labelledby="tab-btn-gmail">
       <div class="guide-grid">
         <div class="steps-list">
           
@@ -440,7 +537,7 @@
                 Once installed, open <strong>Gmail</strong> in your desktop web browser. Open any customer email conversation thread, and look at the right utility panel. You will see our green <strong>giiHelpdesk</strong> logo icon.
               </p>
               <p>
-                Click this icon to expand the side panel. If your Shopify store is not connected yet, the add-on will guide you to complete the store authentication.
+                Click this icon to expand the side panel. It will automatically authorize with your connected Shopify merchant store.
               </p>
             </div>
           </div>
@@ -506,104 +603,6 @@
           </div>
           <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.4;">
             Open any email thread inside Gmail and find the <strong>g</strong> icon in the right-side vertical sidebar.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Tab 2: Shopify Integration Guide -->
-    <section id="help-content-shopify" class="help-content" role="tabpanel" aria-labelledby="tab-btn-shopify">
-      <div class="guide-grid">
-        <div class="steps-list">
-          
-          <div class="step-card">
-            <div class="step-card__header">
-              <div class="step-card__num">A</div>
-              <h2 class="step-card__title">Method 1: Connect via Gmail Sidebar (Recommended)</h2>
-            </div>
-            <div class="step-card__body">
-              <p>
-                You can authorize connection instantly when opening the add-on side panel in Gmail for the first time:
-              </p>
-              <ol style="padding-left: var(--spacing-lg); margin: 0 0 var(--spacing-md) 0; line-height: 1.6;">
-                <li>Open the Gmail Add-on sidebar (as described in the setup steps).</li>
-                <li>In the text field inside the Add-on panel, enter your Shopify permanent store domain (e.g. <code>your-shop.myshopify.com</code>).</li>
-                <li>Click the <strong>Authorize Connection</strong> button.</li>
-                <li>A secure Shopify OAuth permission page will open in a browser overlay window. If prompted, log in to your Shopify account.</li>
-                <li>Click <strong>Install App</strong> to authorize the connection. The popup window will close automatically.</li>
-                <li>The Add-on will auto-refresh and display <strong>✓ Connected</strong>!</li>
-              </ol>
-            </div>
-          </div>
-
-          <div class="step-card">
-            <div class="step-card__header">
-              <div class="step-card__num">B</div>
-              <h2 class="step-card__title">Method 2: Connect via Portal Dashboard</h2>
-            </div>
-            <div class="step-card__body">
-              <p>
-                Alternatively, merchants can configure store mappings beforehand using the centralized web control panel:
-              </p>
-              <ol style="padding-left: var(--spacing-lg); margin: 0 0 var(--spacing-md) 0; line-height: 1.6;">
-                <li>Sign in to your merchant account at <a href="/auth/login.html" target="_blank">giihelpdesk.com Portal</a>.</li>
-                <li>On the main dashboard, scroll down to find the **Shopify Integration** card.</li>
-                <li>Click **Set Up Shopify Domain** / **Update Domain** to enter your store address.</li>
-                <li>Click **Verify Connection**. A secure Shopify installation window will open.</li>
-                <li>Review the requested scope list in Shopify Admin, then click **Install App**.</li>
-                <li>Once successful, you will be redirected back with a success toast notification.</li>
-              </ol>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Sticky Right Graphic Visual Panel (Shopify OAuth Flow) -->
-        <div class="visual-panel">
-          <h3 class="visual-panel__title">
-            <span>🛡️</span> Secure Shopify OAuth
-          </h3>
-          <div class="visual-frame">
-            <svg width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f4f6f8; font-family: sans-serif;">
-              <!-- Secure popup browser border -->
-              <rect x="10" y="10" width="380" height="220" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-              <rect x="10" y="10" width="380" height="30" rx="6" fill="#e2e8f0"/>
-              <!-- Green secure lock icon -->
-              <rect x="25" y="18" width="10" height="8" rx="1.5" fill="#10b981"/>
-              <path d="M27 18 V15 C27 13.5 28 12.5 30 12.5 C32 12.5 33 13.5 33 15 V18" stroke="#10b981" stroke-width="1.5" fill="none"/>
-              <text x="45" y="29" font-size="9" font-weight="bold" fill="#0f172a">your-shop.myshopify.com/admin</text>
-              
-              <!-- Shopify App Consent Dialog -->
-              <!-- Gmail Addon Logo Left, Shopify Logo Right -->
-              <rect x="60" y="65" width="40" height="40" rx="8" fill="#008060"/>
-              <text x="73" y="91" font-size="24" font-weight="bold" fill="#ffffff">g</text>
-              
-              <line x1="120" y1="85" x2="160" y2="85" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="3 3"/>
-              <!-- Double arrow indicating auth handshaking -->
-              <polygon points="160,85 155,81 155,89" fill="#94a3b8"/>
-              
-              <rect x="180" y="65" width="40" height="40" rx="8" fill="#95bf47"/>
-              <!-- Shopify inner S bag icon -->
-              <path d="M192 73 H208 V77 C208 77 205 82 200 82 C195 82 192 77 192 77 Z" fill="#ffffff"/>
-              <path d="M190 77 H210 V100 H190 Z" fill="#ffffff"/>
-              <text x="196" y="93" font-size="14" font-weight="bold" fill="#95bf47">S</text>
-              
-              <!-- OAuth Details -->
-              <text x="60" y="130" font-size="12" font-weight="bold" fill="#1e293b">Authorize giiHelpDeskAgent</text>
-              <rect x="60" y="142" width="280" height="5" rx="2" fill="#cbd5e1"/>
-              <rect x="60" y="152" width="220" height="5" rx="2" fill="#cbd5e1"/>
-              <rect x="60" y="162" width="250" height="5" rx="2" fill="#cbd5e1"/>
-              
-              <!-- Actions -->
-              <rect x="60" y="185" width="80" height="24" rx="4" fill="#e2e8f0"/>
-              <text x="82" y="200" font-size="10" font-weight="bold" fill="#475569">Cancel</text>
-              
-              <rect x="240" y="185" width="100" height="24" rx="4" fill="#008060"/>
-              <text x="260" y="200" font-size="10" font-weight="bold" fill="#ffffff">Install App</text>
-            </svg>
-          </div>
-          <p style="font-size: 13px; color: var(--color-text-secondary); margin: 0; line-height: 1.4;">
-            Shopify OAuth utilizes official Shopify merchant APIs to guarantee robust connection integrity and maximum checkout safety.
           </p>
         </div>
       </div>

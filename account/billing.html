@@ -19,7 +19,7 @@
     <div class="account-container">
         <div class="account-header">
             <h1 class="account-title">Billing & Subscription</h1>
-            <p class="account-subtitle">Manage your subscription, payment methods, and billing history</p>
+            <p class="account-subtitle">Manage your subscription securely via your Shopify Merchant Admin</p>
         </div>
 
         <!-- Current Plan -->
@@ -57,6 +57,9 @@
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         <!-- Upgrade button removed per requirement -->
                         <button class="auth-btn" id="upgradeBtn" style="display: none;"></button>
+                        <button class="auth-btn auth-btn--danger" onclick="cancelSubscription()" id="cancelBtn" style="display: none; width: 100%;">
+                            Cancel Subscription
+                        </button>
                     </div>
                 </div>
             </div>
@@ -90,7 +93,7 @@
                         POPULAR
                     </div>
                     <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Pro</div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$79</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$19</div>
                     <div style="margin-bottom: 16px;">
                         <div style="margin-bottom: 8px;">1 Seat</div>
                         <div style="margin-bottom: 8px;">1,000 emails/month</div>
@@ -105,9 +108,9 @@
                 <!-- Team Plan -->
                 <div style="border: 2px solid #e9ecef; border-radius: var(--radius); padding: 20px; text-align: center;">
                     <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Team</div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$199</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$49</div>
                     <div style="margin-bottom: 16px;">
-                        <div style="margin-bottom: 8px;">Unlimited seats</div>
+                        <div style="margin-bottom: 8px;">5 Seats</div>
                         <div style="margin-bottom: 8px;">5,000 emails/month</div>
                         <div style="margin-bottom: 8px;">24/7 support</div>
                         <div style="margin-bottom: 8px;">Advanced analytics</div>
@@ -116,24 +119,6 @@
                         Open Billing in Shopify Admin
                     </button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Billing History -->
-        <div class="account-card" style="max-width: 800px; margin: 0 auto;">
-            <div class="account-card__title">
-                <span>📋</span>
-                Billing History
-            </div>
-            
-            <div id="billingHistory" style="min-height: 100px; display: flex; align-items: center; justify-content: center; color: var(--color-muted);">
-                Loading billing history...
-            </div>
-
-            <div style="margin-top: 16px; text-align: right;">
-                <button class="auth-btn auth-btn--danger" onclick="cancelSubscription()" id="cancelBtn" style="display: none;">
-                    Cancel Subscription
-                </button>
             </div>
         </div>
     </div>
@@ -145,8 +130,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthentication();
             loadBillingData();
-            loadPaymentMethods();
-            loadBillingHistory();
         });
 
         // Load billing data
@@ -174,7 +157,7 @@
                 document.getElementById('currentPlan').textContent = sub.plan || 'Free';
                 document.getElementById('planDescription').textContent = sub.plan === 'Free' ? '14-day free trial' : `${sub.plan} plan`;
                 document.getElementById('currentSeats').textContent = sub.seats || 1;
-                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 79}`;
+                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 19}`;
                 document.getElementById('billingCycle').textContent = sub.billingCycle || 'per month';
                 
                 // Calculate next billing
@@ -205,52 +188,6 @@
                 }
             }
         }
-
-
-        // Load billing history
-        async function loadBillingHistory() {
-            try {
-                const result = await window.apiClient.getBillingHistory();
-                
-                if (result.success) {
-                    displayBillingHistory(result.data);
-                } else {
-                    document.getElementById('billingHistory').innerHTML = 'No billing history found.';
-                }
-            } catch (error) {
-                console.error('Error loading billing history:', error);
-                document.getElementById('billingHistory').innerHTML = 'Unable to load billing history.';
-            }
-        }
-
-        // Display billing history
-        function displayBillingHistory(history) {
-            const container = document.getElementById('billingHistory');
-            
-            if (!history || history.length === 0) {
-                container.innerHTML = 'No billing history found.';
-                return;
-            }
-            
-            const historyList = history.map(invoice => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
-                    <div>
-                        <div style="font-weight: 500;">${invoice.description || 'Subscription'}</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">Invoice #${invoice.number}</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: 600;">$${invoice.amount}</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">
-                            ${new Date(invoice.date).toLocaleDateString()}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            container.innerHTML = historyList;
-        }
-
-
 
         // Action handlers
         async function openHostedBilling(plan, seats) {
@@ -301,29 +238,6 @@
             } catch (e) {
                 Toast.hideLoading();
                 Toast.error('Redirection Error', 'An error occurred while redirecting.');
-            }
-        }
-
-        function addPaymentMethod() {
-            Toast.info('Payment Method', 'Opening payment method form...');
-            // TODO: Implement payment method addition
-        }
-
-        function editPaymentMethod(methodId) {
-            Toast.info('Edit Payment', 'Opening payment method editor...');
-            // TODO: Implement payment method editing
-        }
-
-        function removePaymentMethod(methodId) {
-            if (confirm('Are you sure you want to remove this payment method?')) {
-                Toast.loading('Removing Payment Method', 'Processing your request...');
-                
-                // TODO: Implement payment method removal
-                setTimeout(() => {
-                    Toast.hideLoading();
-                    Toast.success('Payment Method Removed', 'The payment method has been removed successfully.');
-                    loadPaymentMethods(); // Refresh list
-                }, 2000);
             }
         }
     </script>

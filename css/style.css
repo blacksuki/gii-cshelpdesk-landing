@@ -515,7 +515,7 @@ body {
     font-weight: 600;
 }
 
-.paddle-btn {
+.plan-btn {
     display: inline-block;
     width: 100%;
     padding: var(--spacing-md) var(--spacing-lg);
@@ -530,17 +530,17 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-.paddle-btn:hover:not(:disabled) {
+.plan-btn:hover:not(:disabled) {
     background: var(--color-primary-dark);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
 
-.paddle-btn:active:not(:disabled) {
+.plan-btn:active:not(:disabled) {
     transform: translateY(0);
 }
 
-.paddle-btn:disabled {
+.plan-btn:disabled {
     background: var(--color-bg-secondary);
     color: var(--color-text-secondary);
     cursor: not-allowed;
