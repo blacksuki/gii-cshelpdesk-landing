@@ -1,96 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Features Comparison — giiHelpdeskAgent</title>
-    <meta name="description" content="Compare giiHelpdeskAgent with Zendesk and Gorgias.">
-    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CS-AI Agent vs Zendesk vs Gorgias — Why Shopify DTC Teams Switch</title>
+  <meta name="description"
+    content="See how CS-AI Agent compares to Zendesk and Gorgias for Shopify DTC customer service teams. SOP enforcement, Gmail-native workflow, zero training curve, and 75% lower cost.">
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/features-page.css">
+  <script src="js/common.js" defer></script>
 </head>
+
 <body>
-    <div id="site-header"></div>
+  <div id="site-header"></div>
 
-    <main class="section" role="main">
-        <h1 class="section__title">Features Comparison</h1>
-        <p class="muted">Rows are capabilities. Columns compare giiHelpdeskAgent vs Zendesk vs Gorgias.</p>
+  <main role="main">
 
-        <div class="table-wrap" style="margin-top:16px;">
-            <table class="compare" aria-label="Feature comparison table">
-                <thead>
-                    <tr>
-                        <th>Capability</th>
-                        <th>giiHelpdeskAgent</th>
-                        <th>Zendesk</th>
-                        <th>Gorgias</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Gmail Add-on sidebar</td>
-                        <td class="td--us">✓</td>
-                        <td>—</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>AI intent analysis (WISMO/Refund/Other)</td>
-                        <td class="td--us">✓</td>
-                        <td>Partial</td>
-                        <td>Partial</td>
-                    </tr>
-                    <tr>
-                        <td>Auto draft generation</td>
-                        <td class="td--us">✓</td>
-                        <td>Apps</td>
-                        <td>Apps</td>
-                    </tr>
-                    <tr>
-                        <td>Shopify data integration (orders, shipping, refunds)</td>
-                        <td class="td--us">✓</td>
-                        <td>✓</td>
-                        <td>✓</td>
-                    </tr>
-                    <tr>
-                        <td>Zero content storage design</td>
-                        <td class="td--us">✓</td>
-                        <td>—</td>
-                        <td>—</td>
-                    </tr>
-                    <tr>
-                        <td>14-day free trial</td>
-                        <td class="td--us">✓</td>
-                        <td>✓</td>
-                        <td>✓</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+    <section class="feat-hero" aria-labelledby="feat-hero-title">
+      <div class="feat-hero__inner">
+        <div class="feat-hero__eyebrow">CS-AI Agent vs. Zendesk vs. Gorgias</div>
+        <h1 id="feat-hero-title" class="feat-hero__title">
+          Why Shopify DTC teams are switching from Zendesk
+        </h1>
+        <p class="feat-hero__subtitle">
+          Not because Zendesk is bad. Because Zendesk was built for enterprise ticket queues,
+          not for a 5-person team working out of Gmail trying to enforce a refund policy consistently.
+        </p>
+        <div class="feat-hero__context">
+          <strong>Who this page is for:</strong>
+          You're already using Zendesk or Gorgias (or considering them), and you want to understand
+          what's actually different about CS-AI Agent before committing to another tool.
         </div>
-    </main>
+      </div>
+    </section>
 
-    <div id="site-footer"></div>
+    <!-- ====================================================
+         THE CORE DIFFERENCE — Positioning statement
+         ==================================================== -->
+    <section class="positioning section" aria-labelledby="positioning-title">
+      <div class="section__inner">
+        <h2 id="positioning-title" class="positioning__title">The fundamental difference</h2>
+        <div class="positioning__grid">
+          <div class="positioning-card positioning-card--them">
+            <div class="positioning-card__label">Zendesk / Gorgias</div>
+            <div class="positioning-card__model">Ticket Management Platform</div>
+            <p class="positioning-card__desc">
+              Built to organize and track customer support tickets across channels.
+              They make it easier to <strong>manage volume</strong>.
+              What happens inside each ticket — the decision, the draft, the action — is up to your agent.
+            </p>
+            <ul class="positioning-card__list">
+              <li>New interface to learn</li>
+              <li>Rules exist but require manual configuration per use case</li>
+              <li>Write to Shopify requires app or API setup</li>
+              <li>Audit is a ticket trail, not an action trail</li>
+            </ul>
+          </div>
+          <div class="positioning-card positioning-card--us">
+            <div class="positioning-card__label">CS-AI Agent</div>
+            <div class="positioning-card__model">SOP Execution Layer</div>
+            <p class="positioning-card__desc">
+              Built to enforce your specific refund and cancellation rules on every email,
+              without requiring your agent to remember those rules.
+              Works <strong>inside Gmail</strong> — no new platform.
+            </p>
+            <ul class="positioning-card__list">
+              <li>Zero new interface — sidebar activates inside Gmail</li>
+              <li>Rules are code-enforced, not memory-enforced</li>
+              <li>Native Shopify write (cancel order, add note) in one click</li>
+              <li>Per-action log: agent ID + rule triggered + order ID + timestamp</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <script src="js/common.js"></script>
-    <script>
-        // No page-specific JS
-    </script>
-    <style>
-        .features-intro {
-            margin-bottom: var(--spacing-xl);
-        }
-        .features-intro p {
-            color: var(--color-text-secondary);
-            font-size: 16px;
-        }
-        /* Highlight for our column - Shopify green tint */
-        table.compare td.td--us, table.compare th:nth-child(2) { 
-            background: rgba(0, 128, 96, 0.05); 
-        }
-        table.compare td.td--us {
-            color: var(--color-success);
-            font-weight: 600;
-        }
-    </style>
+    <!-- ====================================================
+         COMPARISON TABLE — Detailed
+         ==================================================== -->
+    <section class="compare-section section" aria-labelledby="compare-title">
+      <div class="section__inner">
+        <h2 id="compare-title" class="section__title" style="text-align:center;">
+          Feature-by-feature comparison
+        </h2>
+        <p class="section__subtitle" style="text-align:center;">
+          Rows are capabilities that matter for Shopify DTC teams handling 10–200 complaints per week.
+        </p>
+
+        <div class="table-wrap" style="margin-top: 32px;">
+          <table class="compare-table" aria-label="Feature comparison: CS-AI Agent vs Zendesk vs Gorgias">
+            <thead>
+              <tr>
+                <th class="compare-table__capability">Capability</th>
+                <th class="compare-table__us">CS-AI Agent</th>
+                <th class="compare-table__them">Zendesk</th>
+                <th class="compare-table__them">Gorgias</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr class="compare-group-header">
+                <td colspan="4">Workflow &amp; Interface</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Works inside Gmail</strong>
+                  <span>No tab switching, no new platform login</span>
+                </td>
+                <td class="compare-us">✓ Native Gmail sidebar</td>
+                <td class="compare-them">✗ Separate platform</td>
+                <td class="compare-them">✗ Separate platform</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Time to first response</strong>
+                  <span>From email open to reply sent</span>
+                </td>
+                <td class="compare-us">~90 seconds</td>
+                <td class="compare-them">3–8 minutes avg.</td>
+                <td class="compare-them">3–8 minutes avg.</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Training required</strong>
+                  <span>Time before a new hire is fully effective</span>
+                </td>
+                <td class="compare-us">0 days — reads sidebar</td>
+                <td class="compare-them">1–2 weeks</td>
+                <td class="compare-them">3–5 days</td>
+              </tr>
+
+              <tr class="compare-group-header">
+                <td colspan="4">Policy Enforcement</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>SOP / Refund rule enforcement</strong>
+                  <span>Rules that can't be bypassed or misremembered</span>
+                </td>
+                <td class="compare-us">✓ Code-enforced — rule must match before action</td>
+                <td class="compare-them">⚡ Manual macros — agent still decides</td>
+                <td class="compare-them">⚡ Rule templates — agent still decides</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Zero off-policy approvals</strong>
+                  <span>System blocks actions that don't match a rule</span>
+                </td>
+                <td class="compare-us">✓ Hard block on non-matching orders</td>
+                <td class="compare-them">✗ Agent can override any rule</td>
+                <td class="compare-them">✗ Agent can override any rule</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Escalation risk detection</strong>
+                  <span>High-risk emails flagged before they become chargebacks</span>
+                </td>
+                <td class="compare-us">✓ Sentiment + escalation scoring on every email</td>
+                <td class="compare-them">⚡ Requires third-party AI app ($+)</td>
+                <td class="compare-them">⚡ Basic intent only</td>
+              </tr>
+
+              <tr class="compare-group-header">
+                <td colspan="4">Shopify Integration</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Read Shopify order data</strong>
+                  <span>Order status, shipping, fulfillment, value</span>
+                </td>
+                <td class="compare-us">✓ Auto-fetched on email open</td>
+                <td class="compare-them">✓ Available (requires setup)</td>
+                <td class="compare-them">✓ Native</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Write to Shopify</strong>
+                  <span>Cancel orders, add notes — directly from CS interface</span>
+                </td>
+                <td class="compare-us">✓ One-click confirm in sidebar</td>
+                <td class="compare-them">⚡ Requires API connector setup</td>
+                <td class="compare-them">✓ Native (limited scope)</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Idempotent action safety</strong>
+                  <span>Prevents duplicate cancellations on same order</span>
+                </td>
+                <td class="compare-us">✓ Built in — hard block on repeat</td>
+                <td class="compare-them">✗ Not built in</td>
+                <td class="compare-them">✗ Not built in</td>
+              </tr>
+
+              <tr class="compare-group-header">
+                <td colspan="4">Compliance &amp; Audit</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Per-action audit log</strong>
+                  <span>Who did what, to which order, with which rule, when</span>
+                </td>
+                <td class="compare-us">✓ Automatic — every confirm is logged</td>
+                <td class="compare-them">⚡ Ticket-level (not action-level)</td>
+                <td class="compare-them">⚡ Ticket-level (not action-level)</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Zero customer email storage</strong>
+                  <span>Email content never persisted on vendor servers</span>
+                </td>
+                <td class="compare-us">✓ Architectural — in-memory only</td>
+                <td class="compare-them">✗ Stores full email thread</td>
+                <td class="compare-them">✗ Stores full email thread</td>
+              </tr>
+
+              <tr class="compare-group-header">
+                <td colspan="4">Cost (1-person CS team)</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Monthly cost</strong>
+                  <span>Single agent, standard CS volume</span>
+                </td>
+                <td class="compare-us compare-us--price">$0 (free until Aug 31) → $19/mo</td>
+                <td class="compare-them">$55–$89 / agent / month</td>
+                <td class="compare-them">$10/mo + $0.04–0.10/ticket</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Setup cost</strong>
+                  <span>One-time effort to get running</span>
+                </td>
+                <td class="compare-us">~5 minutes (Gmail Add-on + OAuth)</td>
+                <td class="compare-them">Days–weeks (onboarding, team training)</td>
+                <td class="compare-them">Hours–days (channel sync, macros)</td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         HONEST LIMITATIONS — Build trust by being honest
+         ==================================================== -->
+    <section class="limitations section" aria-labelledby="limitations-title">
+      <div class="section__inner">
+        <h2 id="limitations-title" class="limitations__title">
+          When you should NOT choose CS-AI Agent
+        </h2>
+        <p class="limitations__subtitle">
+          Honest disclaimer: we're an early-stage, focused tool. Here's where Zendesk or Gorgias
+          genuinely outperforms us today.
+        </p>
+        <div class="limitations__grid">
+          <div class="limitation-card">
+            <div class="limitation-card__icon">📞</div>
+            <h3 class="limitation-card__title">You handle CS across many channels</h3>
+            <p class="limitation-card__body">
+              CS-AI Agent lives inside Gmail only. If your complaints come through Instagram DMs,
+              WhatsApp, phone calls, or a customer portal, we can't help with those.
+              Zendesk or Gorgias handle omnichannel better.
+            </p>
+          </div>
+          <div class="limitation-card">
+            <div class="limitation-card__icon">🏢</div>
+            <h3 class="limitation-card__title">Your team is 50+ people</h3>
+            <p class="limitation-card__body">
+              We're built for 5–50 person teams. If you need SLA routing, complex escalation
+              hierarchies, workforce management, or CSAT survey workflows, Zendesk
+              was designed for that scale.
+            </p>
+          </div>
+          <div class="limitation-card">
+            <div class="limitation-card__icon">🔁</div>
+            <h3 class="limitation-card__title">You need a full ticketing system history</h3>
+            <p class="limitation-card__body">
+              We don't store ticket history or build a customer profile over time.
+              Our audit log records individual actions, not full conversation threads.
+              If you need a CRM-like view of each customer's history, you'll need a different tool.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         REAL COMPARISON SCENARIO
+         ==================================================== -->
+    <section class="compare-scenario section" aria-labelledby="compare-scenario-title">
+      <div class="section__inner">
+        <h2 id="compare-scenario-title" class="section__title" style="text-align:center;">
+          Same complaint. Different outcome.
+        </h2>
+        <p class="section__subtitle" style="text-align:center;">
+          A customer threatens a chargeback on a $280 unfulfilled order.
+          What happens next depends entirely on what system your team uses.
+        </p>
+
+        <div class="compare-scenario__grid">
+          <div class="compare-flow compare-flow--them">
+            <div class="compare-flow__label">With Zendesk</div>
+            <ol class="compare-flow__steps">
+              <li>Email creates a ticket in Zendesk</li>
+              <li>Agent logs into Zendesk, reads ticket</li>
+              <li>Opens Shopify admin in another tab to look up order</li>
+              <li>Recalls refund policy from memory (or looks it up)</li>
+              <li>Goes back to Zendesk, writes response manually</li>
+              <li>Applies a macro if one exists for this case</li>
+              <li>Goes back to Shopify to cancel order manually</li>
+              <li>Returns to Zendesk to close ticket</li>
+            </ol>
+            <div class="compare-flow__result compare-flow__result--bad">
+              ⏱ 8–15 minutes &nbsp;·&nbsp; Policy: agent's memory &nbsp;·&nbsp; Audit: ticket log only
+            </div>
+          </div>
+          <div class="compare-flow compare-flow--us">
+            <div class="compare-flow__label">With CS-AI Agent</div>
+            <ol class="compare-flow__steps">
+              <li>Agent opens email in Gmail — sidebar activates</li>
+              <li>Shopify order auto-fetched: UNFULFILLED · $280</li>
+              <li>Intent + sentiment + risk analyzed in 3 seconds</li>
+              <li>SOP rule matched: <code>cancel_unfulfilled_order</code></li>
+              <li>Draft reply generated, action pending in sidebar</li>
+              <li>Agent reviews draft, clicks "Confirm &amp; Execute"</li>
+              <li>Order cancelled in Shopify. Action logged.</li>
+            </ol>
+            <div class="compare-flow__result compare-flow__result--good">
+              ⏱ ~90 seconds &nbsp;·&nbsp; Policy: code-enforced &nbsp;·&nbsp; Audit: full per-action trail
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CTA
+         ==================================================== -->
+    <section class="feat-cta" aria-labelledby="feat-cta-title">
+      <div class="feat-cta__inner">
+        <h2 id="feat-cta-title" class="feat-cta__title">
+          Still using Gmail for CS? You're already halfway there.
+        </h2>
+        <p class="feat-cta__subtitle">
+          CS-AI Agent installs as a Gmail Add-on. No new platform. No migration. Free through August 31, 2026.
+        </p>
+        <div class="feat-cta__actions">
+          <a href="auth/register.html" class="feat-cta__btn feat-cta__btn--primary"
+            id="featRegisterBtn" aria-label="Start free trial">
+            Install in Gmail — 5 Minutes
+          </a>
+          <a href="pricing.html" class="feat-cta__btn feat-cta__btn--secondary">
+            View Pricing →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const stored = localStorage.getItem('user');
+      let isLoggedIn = false;
+      if (stored) { try { const u = JSON.parse(stored); isLoggedIn = !!(u.token && u.email); } catch (e) { } }
+      const btn = document.getElementById('featRegisterBtn');
+      if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard →'; btn.href = 'account/dashboard.html'; }
+    });
+  </script>
 </body>
+
 </html>
-
-

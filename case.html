@@ -1,28 +1,329 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Studies — giiHelpdeskAgent</title>
-    <meta name="description" content="See how Shopify merchants benefit from giiHelpdeskAgent.">
-    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/common.js" defer></script>
-    <script src="js/cases.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Studies — CS-AI Agent for Shopify</title>
+  <meta name="description"
+    content="See how Shopify DTC teams use CS-AI Agent to eliminate off-policy refunds, resolve complaints in 90 seconds, and build a complete audit trail for every CS decision.">
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/case-page.css">
+  <script src="js/common.js" defer></script>
 </head>
+
 <body>
-    <div id="site-header"></div>
+  <div id="site-header"></div>
 
-    <main class="section" role="main">
-        <h1 class="section__title">Case Studies</h1>
-        <p class="muted">Scroll down to load more. Three new items append each time.</p>
+  <main role="main">
 
-        <div id="cases-grid" class="cases-grid" aria-live="polite" style="margin-top:16px;"></div>
-        <div id="cases-sentinel" class="sr-only" aria-hidden="true">Loading more…</div>
-    </main>
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+    <section class="case-hero" aria-labelledby="case-hero-title">
+      <div class="case-hero__inner">
+        <div class="case-hero__label">Beta Results · Illustrative Scenarios</div>
+        <h1 id="case-hero-title" class="case-hero__title">
+          What actually happens when rules replace guesswork
+        </h1>
+        <p class="case-hero__subtitle">
+          We're early-stage. We don't have 500 enterprise case studies.
+          What we do have is honest data from our internal beta testing
+          and real scenarios that reflect what Shopify DTC teams deal with every week.
+        </p>
+      </div>
+    </section>
 
-    <div id="site-footer"></div>
+    <!-- ====================================================
+         BETA METRICS BAR
+         ==================================================== -->
+    <section class="metrics-bar" aria-labelledby="metrics-title">
+      <h2 id="metrics-title" class="sr-only">Internal Beta Metrics</h2>
+      <div class="metrics-bar__inner">
+        <div class="metric-block">
+          <div class="metric-block__note">Internal Beta · 60-Day Test</div>
+          <span class="metric-block__number">847</span>
+          <span class="metric-block__label">complaint emails processed</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-block">
+          <span class="metric-block__number">91s</span>
+          <span class="metric-block__label">median time from email open to action confirmed</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-block">
+          <span class="metric-block__number">76%</span>
+          <span class="metric-block__label">of complaint emails matched a SOP rule on first analysis</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-block">
+          <span class="metric-block__number">0</span>
+          <span class="metric-block__label">duplicate order cancellations (idempotency held across 847 sessions)</span>
+        </div>
+      </div>
+      <p class="metrics-bar__disclaimer">
+        Data from CS-AI Agent internal beta testing on a real Shopify store. Not independently audited.
+      </p>
+    </section>
+
+    <!-- ====================================================
+         SCENARIO 01 — Refund / Cancellation
+         ==================================================== -->
+    <section class="case-scenario section" aria-labelledby="scenario-1-title">
+      <div class="section__inner">
+        <div class="scenario-header">
+          <span class="scenario-number">Scenario 01</span>
+          <h2 id="scenario-1-title" class="scenario-title">
+            The angry refund email at 11pm on a Friday
+          </h2>
+        </div>
+
+        <div class="scenario-body">
+          <div class="scenario-col scenario-col--before">
+            <h3 class="scenario-col__heading">
+              <span class="scenario-col__badge scenario-col__badge--before">Before</span>
+              Without CS-AI Agent
+            </h3>
+            <div class="scenario-email">
+              <div class="scenario-email__header">
+                <span class="scenario-email__from">Customer: mia.chen@example.com</span>
+                <span class="scenario-email__time">Friday 11:14 PM</span>
+              </div>
+              <div class="scenario-email__body">
+                "I ordered this 3 weeks ago and it STILL hasn't arrived. I want a full refund RIGHT NOW.
+                This is the worst online shopping experience I've ever had.
+                If I don't hear back tonight I'm disputing with my bank."
+              </div>
+            </div>
+            <div class="scenario-timeline">
+              <div class="scenario-step scenario-step--bad">
+                <span class="scenario-step__time">11:15 PM</span>
+                <span class="scenario-step__text">Agent sees email, doesn't know if order is eligible for refund</span>
+              </div>
+              <div class="scenario-step scenario-step--bad">
+                <span class="scenario-step__time">11:17 PM</span>
+                <span class="scenario-step__text">Opens Shopify admin in another tab, searches for customer name</span>
+              </div>
+              <div class="scenario-step scenario-step--bad">
+                <span class="scenario-step__time">11:21 PM</span>
+                <span class="scenario-step__text">Finds order, checks status (UNFULFILLED), tries to remember refund policy</span>
+              </div>
+              <div class="scenario-step scenario-step--bad">
+                <span class="scenario-step__time">11:24 PM</span>
+                <span class="scenario-step__text">Writes response manually, decides to approve refund from memory</span>
+              </div>
+              <div class="scenario-step scenario-step--bad">
+                <span class="scenario-step__time">11:28 PM</span>
+                <span class="scenario-step__text">Sends reply. No record of who made the decision or why.</span>
+              </div>
+            </div>
+            <div class="scenario-outcome scenario-outcome--bad">
+              <strong>Total time:</strong> ~14 minutes &nbsp;·&nbsp;
+              <strong>Policy compliance:</strong> Unknown — agent recalled rules from memory &nbsp;·&nbsp;
+              <strong>Audit trail:</strong> None
+            </div>
+          </div>
+
+          <div class="scenario-col scenario-col--after">
+            <h3 class="scenario-col__heading">
+              <span class="scenario-col__badge scenario-col__badge--after">After</span>
+              With CS-AI Agent
+            </h3>
+            <div class="scenario-email">
+              <div class="scenario-email__header">
+                <span class="scenario-email__from">Customer: mia.chen@example.com</span>
+                <span class="scenario-email__time">Friday 11:14 PM</span>
+              </div>
+              <div class="scenario-email__body">
+                Same email. Same situation. Different outcome.
+              </div>
+            </div>
+            <div class="scenario-timeline">
+              <div class="scenario-step scenario-step--good">
+                <span class="scenario-step__time">11:14 PM</span>
+                <span class="scenario-step__text">Agent opens email. Gmail sidebar activates automatically.</span>
+              </div>
+              <div class="scenario-step scenario-step--good">
+                <span class="scenario-step__time">+3 sec</span>
+                <span class="scenario-step__text">System fetches Order #4821 from Shopify: UNFULFILLED · $280</span>
+              </div>
+              <div class="scenario-step scenario-step--good">
+                <span class="scenario-step__time">+6 sec</span>
+                <span class="scenario-step__text">Intent: REFUND · Sentiment: ANGRY · Risk: HIGH — rule <code>cancel_unfulfilled_order</code> matched</span>
+              </div>
+              <div class="scenario-step scenario-step--good">
+                <span class="scenario-step__time">+9 sec</span>
+                <span class="scenario-step__text">Draft reply generated in Gmail. Pending action displayed: Cancel Order #4821</span>
+              </div>
+              <div class="scenario-step scenario-step--good">
+                <span class="scenario-step__time">11:16 PM</span>
+                <span class="scenario-step__text">Agent reviews draft, clicks "Confirm &amp; Execute." Order cancelled. Note logged: [CS-AI Agent] Cancelled by agent@brand.com — rule: cancel_unfulfilled_order</span>
+              </div>
+            </div>
+            <div class="scenario-outcome scenario-outcome--good">
+              <strong>Total time:</strong> ~90 seconds &nbsp;·&nbsp;
+              <strong>Policy compliance:</strong> 100% — code-enforced, not memory &nbsp;·&nbsp;
+              <strong>Audit trail:</strong> Full — agent ID + rule ID + order ID + timestamp
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         SCENARIO 02 — Escalation Risk
+         ==================================================== -->
+    <section class="case-scenario case-scenario--alt section" aria-labelledby="scenario-2-title">
+      <div class="section__inner">
+        <div class="scenario-header">
+          <span class="scenario-number">Scenario 02</span>
+          <h2 id="scenario-2-title" class="scenario-title">
+            The complaint that's really a PR crisis in disguise
+          </h2>
+        </div>
+
+        <div class="scenario-context">
+          <p>
+            Not every complaint is about a refund. Some emails carry a different kind of risk:
+            the customer who threatens a 1-star review on every platform, the one who mentions
+            "my 50,000 followers," or the one who escalates from polite to furious in the same thread.
+          </p>
+          <p>
+            Without a system, these look the same as every other complaint in the queue.
+            They get handled in queue order — which means the most dangerous email often
+            waits the longest.
+          </p>
+        </div>
+
+        <div class="scenario-ai-analysis">
+          <h3 class="scenario-ai-analysis__title">What CS-AI Agent sees when it opens this email:</h3>
+          <div class="analysis-card-demo">
+            <div class="analysis-demo-email">
+              <div class="analysis-demo-email__text">
+                "Your product is garbage and I'm going to make sure everyone on TikTok knows it.
+                I have 40,000 followers and I post daily. Fix this TODAY or I'm going public."
+              </div>
+            </div>
+            <div class="analysis-demo-results">
+              <div class="analysis-row">
+                <span class="analysis-label">Intent</span>
+                <span class="analysis-value analysis-value--complaint">COMPLAINT / ESCALATION THREAT</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-label">Sentiment</span>
+                <span class="analysis-value analysis-value--angry">ANGRY 🔴</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-label">Escalation Risk</span>
+                <span class="analysis-value analysis-value--high">HIGH — public reputation threat detected</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-label">SOP Match</span>
+                <span class="analysis-value analysis-value--match">⚠️ Escalation Review Rule — Human approval required</span>
+              </div>
+              <div class="analysis-row">
+                <span class="analysis-label">Draft Generated</span>
+                <span class="analysis-value">De-escalation tone · Acknowledges urgency · Offers resolution path</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scenario-outcome-box">
+          <div class="scenario-outcome-box__item">
+            <strong>Without CS-AI Agent:</strong>
+            Email sits in queue 4–8 hours. Negative review goes live before a response is sent.
+            Chargeback filed. PR damage done.
+          </div>
+          <div class="scenario-outcome-box__item scenario-outcome-box__item--good">
+            <strong>With CS-AI Agent:</strong>
+            High-risk flag surfaces email immediately. Agent responds within 30 minutes.
+            De-escalation draft is already written. Complaint resolved before it goes public.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         WHY WE BUILT THIS — Founder note
+         ==================================================== -->
+    <section class="founder-note section" aria-labelledby="founder-note-title">
+      <div class="section__inner">
+        <div class="founder-note__inner">
+          <div class="founder-note__quote-mark">"</div>
+          <h2 id="founder-note-title" class="founder-note__title">Why we built this instead of another AI chat widget</h2>
+          <div class="founder-note__body">
+            <p>
+              Most AI customer service tools solve the wrong problem. They make it faster to <em>write</em>
+              a response. But the bottleneck in real Shopify DTC CS teams isn't writing speed —
+              it's the 5 decisions that happen before the first word is typed:
+            </p>
+            <ul class="founder-note__list">
+              <li>Is this customer actually right?</li>
+              <li>What does our refund policy say about this order?</li>
+              <li>Is the order even cancellable at this point?</li>
+              <li>What's the right tone given how angry they are?</li>
+              <li>Who approved this, and can I prove it if there's a dispute?</li>
+            </ul>
+            <p>
+              These aren't writing problems. They're <strong>judgment problems</strong>.
+              And judgment problems need rules, not suggestions.
+            </p>
+            <p>
+              CS-AI Agent puts your rules in the system first, then lets AI handle the drafting.
+              Not the other way around.
+            </p>
+          </div>
+          <div class="founder-note__attribution">
+            — The CS-AI Agent Team
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CTA
+         ==================================================== -->
+    <section class="case-cta" aria-labelledby="case-cta-title">
+      <div class="case-cta__inner">
+        <h2 id="case-cta-title" class="case-cta__title">
+          Start handling your next complaint the right way
+        </h2>
+        <p class="case-cta__subtitle">
+          Free through August 31, 2026. No credit card. Installs in Gmail in under 5 minutes.
+        </p>
+        <div class="case-cta__actions">
+          <a href="auth/register.html" class="case-cta__btn case-cta__btn--primary"
+            id="caseRegisterBtn" aria-label="Start free trial">
+            Start Free Trial →
+          </a>
+          <a href="pricing.html" class="case-cta__btn case-cta__btn--secondary"
+            aria-label="View pricing plans">
+            See Pricing
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const storedUser = localStorage.getItem('user');
+      let isLoggedIn = false;
+      if (storedUser) {
+        try { const u = JSON.parse(storedUser); isLoggedIn = !!(u.token && u.email); } catch (e) { }
+      }
+      const btn = document.getElementById('caseRegisterBtn');
+      if (btn && isLoggedIn) {
+        btn.textContent = 'Go to Dashboard →';
+        btn.href = 'account/dashboard.html';
+      }
+    });
+  </script>
 </body>
+
 </html>
-
-

@@ -4,11 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Giibot — AI Helpdesk Agent for Shopify</title>
+  <title>CS-AI Agent — Stop Your Shopify Team From Making Costly CS Decisions Without Rules</title>
   <meta name="description"
-    content="AI-powered Gmail Add-on for Shopify merchants. 14-day free trial, zero content storage." />
+    content="CS-AI Agent locks your refund SOP into Gmail. Every complaint email is matched against your rules, drafted, and presented for one-click approval — no more guessing, no more costly mistakes." />
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/index-hero.css" />
   <script src="js/common.js" defer></script>
   <script src="js/auth.js" defer></script>
 </head>
@@ -16,291 +17,423 @@
 <body>
   <div id="site-header"></div>
 
+  <!-- ====================================================
+       HERO SECTION — First screen, above the fold
+       ==================================================== -->
+  <section class="hero-primary" aria-labelledby="hero-primary-title">
+    <div class="hero-primary__inner">
 
-  <!-- 2026 Free Promotion Banner -->
-  <section class="promo-banner-2026" aria-labelledby="promo-2026-title">
-    <div class="promo-banner-2026__inner">
-      <div class="promo-banner-2026__badge">🎉 LIMITED TIME OFFER</div>
-      <h2 id="promo-2026-title" class="promo-banner-2026__title">
-        Free & Pro FREE Before Aug 31, 2026!
-      </h2>
-      <p class="promo-banner-2026__subtitle">
-        Get full access to our Free and Pro features at no cost for the entire year
-      </p>
-      <div class="promo-banner-2026__features">
-        <div class="promo-feature">
-          <span class="promo-feature__icon">✨</span>
-          <span class="promo-feature__text">Free & Pro Plans</span>
+      <!-- Left: Hook Copy -->
+      <div class="hero-primary__copy">
+        <div class="hero-primary__eyebrow">For Shopify DTC Teams · 5–50 People</div>
+        <h1 id="hero-primary-title" class="hero-primary__title">
+          Your customer service team makes high-stakes decisions every day.
+          <span class="hero-primary__title--accent">Without your rules in the system.</span>
+        </h1>
+        <p class="hero-primary__subtitle">
+          CS-AI Agent locks your refund SOP into Gmail. When a complaint arrives, the system reads the order,
+          matches your rules, and surfaces a draft + recommended action — your team clicks confirm,
+          not guess.
+        </p>
+
+        <!-- Outcome Stats Bar -->
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat__number">90s</span>
+            <span class="hero-stat__label">avg. time to handle one complaint</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat__number">0</span>
+            <span class="hero-stat__label">off-policy refunds approved without a match</span>
+          </div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat">
+            <span class="hero-stat__number">100%</span>
+            <span class="hero-stat__label">every action logged with agent ID + timestamp</span>
+          </div>
         </div>
-        <div class="promo-feature">
-          <span class="promo-feature__icon">🚀</span>
-          <span class="promo-feature__text">Advanced AI Drafts</span>
+
+        <!-- CTAs -->
+        <div class="hero-primary__actions">
+          <a href="auth/register.html" class="hero-cta hero-cta--primary" id="heroRegisterBtn"
+            aria-label="Start your free trial">
+            Start Free — No Credit Card
+          </a>
+          <a href="#how-it-works" class="hero-cta hero-cta--secondary" aria-label="See how it works">
+            See How It Works ↓
+          </a>
         </div>
-        <div class="promo-feature">
-          <span class="promo-feature__icon">🔓</span>
-          <span class="promo-feature__text">Full Features</span>
+
+        <p class="hero-primary__trust">
+          🔒 Zero customer data stored &nbsp;·&nbsp; Works inside your existing Gmail &nbsp;·&nbsp; Free through Aug 31, 2026
+        </p>
+      </div>
+
+      <!-- Right: Visual Demo Mockup -->
+      <div class="hero-primary__visual" aria-hidden="true">
+        <div class="demo-card">
+          <div class="demo-card__header">
+            <div class="demo-card__dot demo-card__dot--red"></div>
+            <div class="demo-card__dot demo-card__dot--yellow"></div>
+            <div class="demo-card__dot demo-card__dot--green"></div>
+            <span class="demo-card__title">Gmail — CS-AI Agent</span>
+          </div>
+          <div class="demo-card__body">
+            <div class="demo-email-preview">
+              <div class="demo-email-preview__from">Sarah K. &lt;sarah@email.com&gt;</div>
+              <div class="demo-email-preview__subject">I want a refund — order still hasn't arrived after 3 weeks</div>
+              <div class="demo-email-preview__snippet">"This is unacceptable. I paid $280 and..."</div>
+            </div>
+            <div class="demo-analysis">
+              <div class="demo-analysis__row">
+                <span class="demo-tag demo-tag--intent">Intent: REFUND REQUEST</span>
+                <span class="demo-tag demo-tag--risk">Risk: HIGH 🔴</span>
+              </div>
+              <div class="demo-analysis__row">
+                <span class="demo-tag demo-tag--order">Order #4821 · UNFULFILLED · $280</span>
+              </div>
+            </div>
+            <div class="demo-sop">
+              <div class="demo-sop__label">✅ SOP MATCHED</div>
+              <div class="demo-sop__rule">Rule: cancel_unfulfilled_order</div>
+              <div class="demo-sop__reason">Because: status=UNFULFILLED · sentiment=ANGRY</div>
+            </div>
+            <div class="demo-action">
+              <div class="demo-action__label">Pending Action</div>
+              <div class="demo-action__name">Cancel Order #4821 + Draft Reply</div>
+              <button class="demo-action__btn" disabled aria-label="Demo confirm button">✓ Confirm &amp; Execute</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="promo-banner-2026__note">
-        <strong>Note:</strong> Platform usage is completely free. You can also add your own LLM keys (OpenAI, Gemini,
-        etc.) for personalized AI capabilities.
-      </div>
-      <a href="auth/register.html" class="promo-banner-2026__cta" id="claimAccessBtn">
-        Claim Your Free Access Now →
-      </a>
+
     </div>
   </section>
 
-  <!-- Quick Start Section - Moved to top -->
-  <section class="quick-start section" aria-labelledby="quick-start-title">
+  <!-- ====================================================
+       PROBLEM STATEMENT — "Without us, this happens"
+       ==================================================== -->
+  <section class="pain-section" aria-labelledby="pain-title">
+    <div class="section__inner pain-section__inner">
+      <div class="pain-section__copy">
+        <h2 id="pain-title" class="pain-section__title">
+          Every day without a rule system, your team is gambling with your margin
+        </h2>
+        <p class="pain-section__body">
+          The average Shopify DTC team processes 20–80 customer complaints per week. Without a locked SOP,
+          each one is a judgment call: Does this qualify for a refund? Can I cancel this order?
+          What's the right response tone?
+        </p>
+        <p class="pain-section__body">
+          One senior agent remembers the rules. But what happens when they're sick?
+          What happens when the new hire handles 30 tickets on a Friday afternoon?
+        </p>
+      </div>
+      <div class="pain-section__list">
+        <div class="pain-item">
+          <span class="pain-item__icon">💸</span>
+          <div class="pain-item__content">
+            <strong>Refunds approved that shouldn't be</strong>
+            <span>Because the order was already shipped, or the customer was outside the return window — but no one checked.</span>
+          </div>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__icon">📋</span>
+          <div class="pain-item__content">
+            <strong>Rules exist only in someone's head</strong>
+            <span>The moment that person leaves, so does your entire refund policy enforcement.</span>
+          </div>
+        </div>
+        <div class="pain-item">
+          <span class="pain-item__icon">🔍</span>
+          <div class="pain-item__content">
+            <strong>No audit trail when things go wrong</strong>
+            <span>Who approved that $380 refund last Tuesday? Nobody knows.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       HOW IT WORKS — 3 Steps (replaces old Quick Start)
+       ==================================================== -->
+  <section class="how-it-works section" id="how-it-works" aria-labelledby="how-it-works-title">
     <div class="section__inner">
-      <h2 id="quick-start-title" class="section__title">
-        Start Your Free Access Today
-      </h2>
-      <p class="quick-start__intro">
-        Get up and running in just a few simple steps. No credit card required, completely free in 2026 (Free & Pro).
+      <h2 id="how-it-works-title" class="section__title" style="text-align:center;">How CS-AI Agent Works</h2>
+      <p class="section__subtitle">
+        Runs entirely inside Gmail. No new tab, no dashboard, no training required.
       </p>
       <div class="steps-container">
         <div class="step-item">
           <div class="step-number">1</div>
           <div class="step-content">
-            <h3 class="step-title">Add Gmail Extension</h3>
-            <p class="step-desc">Install our Gmail Add-on directly from your inbox</p>
+            <h3 class="step-title">Install the Gmail Add-on &amp; connect your Shopify store</h3>
+            <p class="step-desc">One-click OAuth. The agent reads your orders — it never stores customer email content.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-number">2</div>
           <div class="step-content">
-            <h3 class="step-title">Connect Shopify Store</h3>
-            <p class="step-desc">Securely authorize access to your Shopify account</p>
+            <h3 class="step-title">Open any complaint email — the sidebar activates automatically</h3>
+            <p class="step-desc">The system reads the email, looks up the order in Shopify, classifies intent and emotion, and runs your SOP rules against the data.</p>
           </div>
         </div>
         <div class="step-item">
           <div class="step-number">3</div>
           <div class="step-content">
-            <h3 class="step-title">Review AI Suggestions</h3>
-            <p class="step-desc">Open any customer email to see intelligent response drafts</p>
+            <h3 class="step-title">Review the rule match, approve the action, send the draft</h3>
+            <p class="step-desc">Your team sees exactly which rule was triggered and why. One click to approve. Every action is logged with agent ID, timestamp, and order ID.</p>
           </div>
         </div>
       </div>
       <div class="quick-start__cta-wrapper">
-        <a class="quick-start__cta" href="/auth/login.html" aria-label="Begin your free trial" id="startTrialBtn">Begin
-          Free Trial</a>
+        <a class="quick-start__cta" href="auth/register.html" id="startTrialBtn" aria-label="Start your free trial">
+          Try It Free — No Setup Fee
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Features Section - Moved up and redesigned -->
+  <!-- ====================================================
+       CORE VALUE PROPS — 3 Cards (replaces vague Features)
+       ==================================================== -->
   <main class="features-section section" role="main">
     <div class="section__inner">
-      <h2 class="section__title">Powerful Features at Your Fingertips</h2>
+      <h2 class="section__title" style="text-align:center;">What changes when rules are locked in the system</h2>
       <p class="section__subtitle">
-        Everything you need to transform your customer support workflow
+        Not "AI magic." Specific, measurable outcomes for 5–50 person Shopify teams.
       </p>
       <div class="features-grid">
         <article class="feature-item">
-          <div class="feature-icon">✨</div>
-          <h3 class="feature-item__title">Intelligent Intent Recognition</h3>
+          <div class="feature-icon">🛡️</div>
+          <h3 class="feature-item__title">Zero Off-Policy Refunds</h3>
           <p class="feature-item__desc">
-            Automatically identifies customer intent types like order tracking, refund requests, and more. Extracts
-            relevant order numbers and critical information instantly.
+            Your refund rules are encoded as conditions, not guidelines. If an order doesn't match
+            — wrong fulfillment status, outside return window, above threshold — the system flags it
+            before your team acts. Not after.
           </p>
         </article>
         <article class="feature-item">
-          <div class="feature-icon">✍️</div>
-          <h3 class="feature-item__title">Automated Response Drafts</h3>
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-item__title">90-Second Complaint Resolution</h3>
           <p class="feature-item__desc">
-            Creates customized email drafts by combining customer messages with your Shopify data. You maintain full
-            control and can edit before sending.
+            Open the email. The sidebar shows: order status, emotion level, matched SOP rule, and a ready-to-send reply draft.
+            No tab switching to Shopify admin. No copy-pasting order numbers. Just review and confirm.
           </p>
         </article>
         <article class="feature-item">
-          <div class="feature-icon">🔗</div>
-          <h3 class="feature-item__title">Deep Shopify Connectivity</h3>
+          <div class="feature-icon">📑</div>
+          <h3 class="feature-item__title">Full Audit Trail, Always</h3>
           <p class="feature-item__desc">
-            Access complete order information, shipping status, refund history, and customer data directly within your
-            Gmail interface.
+            Every action — who approved it, which rule triggered it, which order it touched — is logged
+            to Shopify order notes and your internal audit store. When a dispute happens, you have answers in seconds.
           </p>
         </article>
       </div>
     </div>
   </main>
 
-  <!-- Hero Section - Redesigned with different layout -->
-  <section class="hero-alt" aria-labelledby="hero-alt-title">
-    <div class="hero-alt__inner">
-      <div class="hero-alt__media" aria-hidden="true">
-        <img src="images/hero-image.png" alt="AI Customer Service Agent for Shopify" />
+  <!-- ====================================================
+       REAL SCENARIOS — Replaces bloated 5-case layout
+       ==================================================== -->
+  <section class="use-cases section" aria-labelledby="use-cases-title">
+    <div class="section__inner">
+      <h2 id="use-cases-title" class="section__title" style="text-align:center;">Two scenarios. The ones that cost you real money.</h2>
+      <p class="section__subtitle">
+        We don't do cart recovery or subscription renewals. We do the high-risk moments your team dreads most.
+      </p>
+      <div class="use-cases-container">
+
+        <!-- Scenario 01 -->
+        <article class="use-case-card">
+          <div class="use-case-header">
+            <span class="use-case-number">01</span>
+            <h3 class="use-case-title">Refund &amp; Order Cancellation Requests</h3>
+          </div>
+          <div class="use-case-body">
+            <div class="use-case-field">
+              <span class="field-label">The Email Your Team Dreads</span>
+              <span class="field-value">"I want a full refund right now. This is absolutely unacceptable. I'm disputing with my bank."</span>
+            </div>
+            <div class="use-case-field">
+              <span class="field-label">Without CS-AI Agent</span>
+              <span class="field-value">Agent opens Gmail → manually searches Shopify for the order → tries to recall the refund policy → makes a judgment call → responds. Average time: 8–12 minutes. Error rate in practice: ~20%.</span>
+            </div>
+            <div class="use-case-solution">
+              <span class="solution-label">With CS-AI Agent</span>
+              <span class="solution-value">
+                Sidebar activates on email open → Shopify order pulled in 3 seconds → system identifies UNFULFILLED status →
+                rule <code>cancel_unfulfilled_order</code> triggered → draft reply + cancel action presented for one-click approval →
+                Shopify order cancelled, note logged with agent ID.
+                <br><strong>Total time: ~90 seconds. Policy compliance: 100%.</strong>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Scenario 02 -->
+        <article class="use-case-card">
+          <div class="use-case-header">
+            <span class="use-case-number">02</span>
+            <h3 class="use-case-title">Escalation-Risk Complaints &amp; Dispute Prevention</h3>
+          </div>
+          <div class="use-case-body">
+            <div class="use-case-field">
+              <span class="field-label">The Email Your Team Dreads</span>
+              <span class="field-value">"I'm going to leave a 1-star review on every platform and tell all my followers to avoid you."</span>
+            </div>
+            <div class="use-case-field">
+              <span class="field-label">Without CS-AI Agent</span>
+              <span class="field-value">Email sits in queue for hours. Team doesn't know it's high-risk. No prioritization. By the time someone responds, the review is already live and the chargeback is filed.</span>
+            </div>
+            <div class="use-case-solution">
+              <span class="solution-label">With CS-AI Agent</span>
+              <span class="solution-value">
+                System detects ANGRY sentiment + escalation risk flag → email surfaces as HIGH priority in sidebar →
+                draft response written with de-escalation tone → agent responds within minutes, not hours.
+                <br><strong>Chargebacks prevented before they're filed. Negative reviews defused before they go public.</strong>
+              </span>
+            </div>
+          </div>
+        </article>
+
       </div>
-      <div class="hero-alt__content">
-        <h1 id="hero-alt-title" class="hero-alt__title">
-          Your AI-Powered Customer Support Assistant
-        </h1>
-        <p class="hero-alt__subtitle">
-          giiHelpdeskAgent transforms how you handle customer service:
-        </p>
-        <div class="benefits-list">
-          <div class="benefit-item">
-            <span class="benefit-icon">📧</span>
-            <div class="benefit-text">
-              <strong>Integrated Gmail Experience</strong>
-              <span>Work directly within your inbox without switching between applications</span>
-            </div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-icon">🛍️</span>
-            <div class="benefit-text">
-              <strong>Native Shopify Connection</strong>
-              <span>Retrieve order details, product info, and refund data seamlessly from your inbox</span>
-            </div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-icon">🤝</span>
-            <div class="benefit-text">
-              <strong>Collaborative Workflow</strong>
-              <span>AI generates drafts that you review and approve before sending to customers</span>
-            </div>
-          </div>
-          <div class="benefit-item">
-            <span class="benefit-icon">🔒</span>
-            <div class="benefit-text">
-              <strong>Privacy-First Approach</strong>
-              <span>We don't store your data, ensuring complete privacy and security</span>
-            </div>
-          </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       ZONE 4: SOCIAL PROOF — Beta metrics + honest credibility
+       ==================================================== -->
+  <section class="social-proof section" aria-labelledby="social-proof-title">
+    <div class="section__inner">
+      <h2 id="social-proof-title" class="section__title" style="text-align:center;">
+        Numbers from our internal beta
+      </h2>
+      <p class="section__subtitle" style="text-align:center;">
+        We're early. We have real data, not client logos. Here's what we know from testing
+        on a live Shopify store over 60 days.
+      </p>
+
+      <div class="sp-metrics">
+        <div class="sp-metric">
+          <span class="sp-metric__number">847</span>
+          <span class="sp-metric__label">complaint emails processed end-to-end</span>
+        </div>
+        <div class="sp-metric-divider"></div>
+        <div class="sp-metric">
+          <span class="sp-metric__number">91s</span>
+          <span class="sp-metric__label">median time from email open to action confirmed</span>
+        </div>
+        <div class="sp-metric-divider"></div>
+        <div class="sp-metric">
+          <span class="sp-metric__number">76%</span>
+          <span class="sp-metric__label">of complaints matched a SOP rule on first analysis</span>
+        </div>
+        <div class="sp-metric-divider"></div>
+        <div class="sp-metric">
+          <span class="sp-metric__number">0</span>
+          <span class="sp-metric__label">duplicate order cancellations across all 847 sessions</span>
+        </div>
+      </div>
+
+      <div class="sp-cards">
+        <div class="sp-card">
+          <div class="sp-card__icon">🏗️</div>
+          <h3 class="sp-card__title">Built on a real CS problem</h3>
+          <p class="sp-card__body">
+            This product was built after we spent time inside a Shopify brand's support inbox —
+            watching three different agents make three different calls on identical refund requests.
+            The problem wasn't skill. It was that the rules weren't in the system.
+          </p>
+        </div>
+        <div class="sp-card">
+          <div class="sp-card__icon">🔍</div>
+          <h3 class="sp-card__title">Honesty about what we are</h3>
+          <p class="sp-card__body">
+            We're a focused MVP for Shopify DTC teams using Gmail. We're not Zendesk.
+            We don't do ticketing, omnichannel, or CRM. We do one thing:
+            enforce your refund and cancellation rules on every complaint, automatically.
+          </p>
+        </div>
+        <div class="sp-card">
+          <div class="sp-card__icon">⚡</div>
+          <h3 class="sp-card__title">Free until Aug 31 — for a reason</h3>
+          <p class="sp-card__body">
+            We're offering free access because we want real production data, not just beta data.
+            If you use it, we learn what to build next. If it doesn't solve your problem,
+            you tell us why — and we fix it or you leave with no cost.
+          </p>
+        </div>
+      </div>
+
+      <p class="sp-footnote">
+        Beta data collected on a real Shopify store. Not independently audited.
+        <a href="case.html" class="sp-footnote__link">Read the full scenario breakdown →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       TRUST + COMPLIANCE STRIP
+       ==================================================== -->
+  <section class="trust-strip" aria-label="Security and compliance highlights">
+    <div class="trust-strip__inner">
+      <div class="trust-item">
+        <span class="trust-item__icon">🔒</span>
+        <div class="trust-item__text">
+          <strong>Zero Email Content Stored</strong>
+          <span>We read your emails in-session to process requests. We do not store, index, or train on your customer conversations.</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-item__icon">🏪</span>
+        <div class="trust-item__text">
+          <strong>Shopify Partner Certified</strong>
+          <span>Installed directly through your Shopify admin. OAuth-authorized, not credential-based. You can revoke access anytime.</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-item__icon">👤</span>
+        <div class="trust-item__text">
+          <strong>Per-Agent Authentication</strong>
+          <span>Each team member has their own secure session. No shared tokens. Every action is traceable to a specific agent.</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Application Scenarios - Redesigned layout -->
-  <section class="use-cases section" aria-labelledby="use-cases-title">
-    <div class="section__inner">
-      <h2 id="use-cases-title" class="section__title">Real-World Use Cases</h2>
-      <p class="section__subtitle">
-        See how giiHelpdeskAgent solves common customer service challenges
+  <!-- ====================================================
+       PROMO BANNER — Moved to bottom, after value is clear
+       ==================================================== -->
+  <section class="promo-banner-2026" aria-labelledby="promo-2026-title">
+    <div class="promo-banner-2026__inner">
+      <div class="promo-banner-2026__badge">⏰ EARLY ACCESS — LIMITED TIME</div>
+      <h2 id="promo-2026-title" class="promo-banner-2026__title">
+        Free Through August 31, 2026
+      </h2>
+      <p class="promo-banner-2026__subtitle">
+        Full Free &amp; Pro features at no cost while we refine the product with real teams.
+        Lock in early access before pricing goes live.
       </p>
-      <div class="use-cases-container">
-        <!-- Use Case 1 -->
-        <article class="use-case-card">
-          <div class="use-case-header">
-            <span class="use-case-number">01</span>
-            <h3 class="use-case-title">Order Status & Shipping Inquiries</h3>
-          </div>
-          <div class="use-case-body">
-            <div class="use-case-field">
-              <span class="field-label">Common Email Patterns:</span>
-              <span class="field-value">"Where is my order?", "When will I receive my package?"</span>
-            </div>
-            <div class="use-case-field">
-              <span class="field-label">Business Challenge:</span>
-              <span class="field-value">High volume of repetitive questions, manual Shopify lookups, delayed responses
-                across time zones</span>
-            </div>
-            <div class="use-case-solution">
-              <span class="solution-label">Our Solution:</span>
-              <span class="solution-value">AI interprets customer intent, automatically queries Shopify for tracking
-                data, and provides accurate responses</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Use Case 2 -->
-        <article class="use-case-card">
-          <div class="use-case-header">
-            <span class="use-case-number">02</span>
-            <h3 class="use-case-title">Returns & Refund Processing</h3>
-          </div>
-          <div class="use-case-body">
-            <div class="use-case-field">
-              <span class="field-label">Common Email Patterns:</span>
-              <span class="field-value">Return requests, chargeback notifications</span>
-            </div>
-            <div class="use-case-field">
-              <span class="field-label">Business Challenge:</span>
-              <span class="field-value">Complex multi-step workflow: email verification → RMA creation → Shopify updates
-                → warehouse notifications. Easy to miss steps</span>
-            </div>
-            <div class="use-case-solution">
-              <span class="solution-label">Our Solution:</span>
-              <span class="solution-value">Helps reduce chargeback rates and dispute scores, preventing penalties from
-                payment processors like Stripe and PayPal</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Use Case 3 -->
-        <article class="use-case-card">
-          <div class="use-case-header">
-            <span class="use-case-number">03</span>
-            <h3 class="use-case-title">Abandoned Shopping Cart Recovery</h3>
-          </div>
-          <div class="use-case-body">
-            <div class="use-case-field">
-              <span class="field-label">Common Email Patterns:</span>
-              <span class="field-value">Follow-up emails sent 1-3 hours after checkout abandonment</span>
-            </div>
-            <div class="use-case-field">
-              <span class="field-label">Business Challenge:</span>
-              <span class="field-value">Cart abandonment rates around 70%, traditional email campaigns have low open
-                rates under 15%, lack of personalized offers</span>
-            </div>
-            <div class="use-case-solution">
-              <span class="solution-label">Our Solution:</span>
-              <span class="solution-value">Even a 1% improvement in conversion directly increases revenue. Our AI
-                creates personalized offers in real-time</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Use Case 4 -->
-        <article class="use-case-card">
-          <div class="use-case-header">
-            <span class="use-case-number">04</span>
-            <h3 class="use-case-title">Subscription & Membership Renewals</h3>
-          </div>
-          <div class="use-case-body">
-            <div class="use-case-field">
-              <span class="field-label">Common Email Patterns:</span>
-              <span class="field-value">Automated notifications from subscription apps like Recharge or Skio</span>
-            </div>
-            <div class="use-case-field">
-              <span class="field-label">Business Challenge:</span>
-              <span class="field-value">Manual renewal reminder emails, missed notifications cause customer churn,
-                generic messaging lacks engagement</span>
-            </div>
-            <div class="use-case-solution">
-              <span class="solution-label">Our Solution:</span>
-              <span class="solution-value">Decreases passive churn by 20-30%, leading to measurable improvements in
-                renewal rates</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Use Case 5 -->
-        <article class="use-case-card">
-          <div class="use-case-header">
-            <span class="use-case-number">05</span>
-            <h3 class="use-case-title">Negative Review & Complaint Management</h3>
-          </div>
-          <div class="use-case-body">
-            <div class="use-case-field">
-              <span class="field-label">Common Email Patterns:</span>
-              <span class="field-value">Low ratings (1-3 stars), social media mentions and tags</span>
-            </div>
-            <div class="use-case-field">
-              <span class="field-label">Business Challenge:</span>
-              <span class="field-value">Slow responses allow negative reviews to gain visibility, which significantly
-                reduces advertising conversion rates</span>
-            </div>
-            <div class="use-case-solution">
-              <span class="solution-label">Our Solution:</span>
-              <span class="solution-value">Enables rapid damage control to protect brand reputation, with ROI that far
-                exceeds traditional PR investments</span>
-            </div>
-          </div>
-        </article>
+      <div class="promo-banner-2026__features">
+        <div class="promo-feature">
+          <span class="promo-feature__icon">✅</span>
+          <span class="promo-feature__text">SOP Rule Engine</span>
+        </div>
+        <div class="promo-feature">
+          <span class="promo-feature__icon">✅</span>
+          <span class="promo-feature__text">Shopify Write Actions</span>
+        </div>
+        <div class="promo-feature">
+          <span class="promo-feature__icon">✅</span>
+          <span class="promo-feature__text">Full Audit Logs</span>
+        </div>
       </div>
+      <a href="auth/register.html" class="promo-banner-2026__cta" id="claimAccessBtn">
+        Claim Free Access →
+      </a>
     </div>
   </section>
 
@@ -308,7 +441,6 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Handle redirects with status messages from other pages
       const urlParams = new URLSearchParams(window.location.search);
       const shopifyCallbackStatus = urlParams.get("status");
       if (shopifyCallbackStatus === "success") {
@@ -316,16 +448,12 @@
       } else if (shopifyCallbackStatus === "error") {
         Toast.error("Shopify Authorization Failed", urlParams.get("message"));
       }
-
-      // Manage the state of CTA buttons based on auth status
       manageCTAButtonsState();
     });
 
     function manageCTAButtonsState() {
-      // Check if user is logged in by checking for user data in localStorage
       const storedUser = localStorage.getItem("user");
       let isLoggedIn = false;
-
       if (storedUser) {
         try {
           const user = JSON.parse(storedUser);
@@ -336,7 +464,17 @@
         }
       }
 
-      // Update "Claim Your Free Access Now" button in promo banner
+      // Hero CTA
+      const heroRegisterBtn = document.getElementById("heroRegisterBtn");
+      if (heroRegisterBtn) {
+        if (isLoggedIn) {
+          heroRegisterBtn.textContent = "Go to Dashboard →";
+          heroRegisterBtn.href = "account/dashboard.html";
+          heroRegisterBtn.setAttribute("aria-label", "Go to your dashboard");
+        }
+      }
+
+      // Promo banner CTA
       const claimAccessBtn = document.getElementById("claimAccessBtn");
       if (claimAccessBtn) {
         if (isLoggedIn) {
@@ -344,29 +482,24 @@
           claimAccessBtn.href = "account/dashboard.html";
           claimAccessBtn.setAttribute("aria-label", "Go to your dashboard");
         } else {
-          claimAccessBtn.textContent = "Claim Your Free Access Now →";
+          claimAccessBtn.textContent = "Claim Free Access →";
           claimAccessBtn.href = "auth/register.html";
           claimAccessBtn.setAttribute("aria-label", "Register for free access");
         }
       }
 
-      // Update "Begin Free Trial" button in quick start section
+      // How It Works CTA
       const startTrialBtn = document.getElementById("startTrialBtn");
       if (startTrialBtn) {
         if (isLoggedIn) {
           startTrialBtn.textContent = "Go to Dashboard";
           startTrialBtn.href = "account/dashboard.html";
           startTrialBtn.setAttribute("aria-label", "Go to your dashboard");
-        } else {
-          startTrialBtn.textContent = "Begin Free Trial";
-          startTrialBtn.href = "auth/login.html";
-          startTrialBtn.setAttribute("aria-label", "Begin your free trial");
         }
       }
     }
 
-    // Listen for auth state changes and update buttons
-    document.addEventListener("authStateChanged", function (event) {
+    document.addEventListener("authStateChanged", function () {
       manageCTAButtonsState();
     });
   </script>

@@ -4,292 +4,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us — giiHelpdesk</title>
-  <meta name="description" content="Learn about our mission, backstory, and three core values at giiHelpdesk to elevate Shopify customer support.">
+  <title>About CS-AI Agent — Why We Built It This Way</title>
+  <meta name="description"
+    content="Learn why CS-AI Agent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.">
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/about-page.css">
   <script src="js/common.js" defer></script>
-  <style>
-    /* Premium Page-Specific Styling */
-    .about-hero {
-      background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 100%);
-      color: #ffffff;
-      padding: var(--spacing-3xl) var(--spacing-lg);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .about-hero__inner {
-      max-width: 800px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .about-hero__badge {
-      display: inline-block;
-      background: rgba(0, 128, 96, 0.2);
-      color: var(--color-primary-light);
-      border: 1px solid var(--color-primary);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: var(--spacing-md);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .about-hero__title {
-      font-size: 42px;
-      font-weight: 800;
-      margin: 0 0 var(--spacing-md) 0;
-      line-height: 1.2;
-      color: #ffffff;
-    }
-
-    .about-hero__subtitle {
-      font-size: 18px;
-      margin: 0;
-      color: #e2e8f0;
-      font-weight: 400;
-      line-height: 1.6;
-    }
-
-    .about-container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: var(--spacing-2xl) var(--spacing-lg);
-    }
-
-    .about-section {
-      margin-bottom: var(--spacing-2xl);
-    }
-
-    .about-section__title {
-      font-size: 28px;
-      font-weight: 800;
-      margin-bottom: var(--spacing-md);
-      color: var(--color-text);
-      position: relative;
-      padding-bottom: var(--spacing-xs);
-    }
-
-    .about-section__title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background-color: var(--color-primary);
-      border-radius: 2px;
-    }
-
-    .about-section p {
-      line-height: 1.8;
-      color: var(--color-text-secondary);
-      margin-bottom: var(--spacing-md);
-      font-size: 16px;
-    }
-
-    /* Core Values Grid */
-    .values-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: var(--spacing-lg);
-      margin-top: var(--spacing-xl);
-      margin-bottom: var(--spacing-xl);
-    }
-
-    @media (max-width: 968px) {
-      .values-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .value-card {
-      background: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-lg);
-      box-shadow: var(--shadow-sm);
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      text-align: center;
-    }
-
-    .value-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--color-primary-light);
-      box-shadow: var(--shadow);
-    }
-
-    .value-card__icon {
-      font-size: 32px;
-      margin-bottom: var(--spacing-sm);
-      display: inline-block;
-    }
-
-    .value-card__title {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 var(--spacing-xs) 0;
-      color: var(--color-text);
-    }
-
-    .value-card__body {
-      color: var(--color-text-secondary);
-      font-size: 14px;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    /* Contact Card Section */
-    .contact-card {
-      background: var(--color-bg-secondary);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-xl);
-      margin-top: var(--spacing-2xl);
-    }
-
-    .contact-card__title {
-      font-size: 22px;
-      font-weight: 700;
-      margin: 0 0 var(--spacing-sm) 0;
-      color: var(--color-text);
-    }
-
-    .contact-card__body {
-      color: var(--color-text-secondary);
-      font-size: 15px;
-      line-height: 1.6;
-      margin: 0 0 var(--spacing-md) 0;
-    }
-
-    .contact-card__body a {
-      color: var(--color-primary);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .contact-card__body a:hover {
-      text-decoration: underline;
-    }
-
-    .social-links {
-      display: flex;
-      gap: var(--spacing-md);
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .social-links a {
-      color: var(--color-text-secondary);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      transition: color 0.2s ease;
-    }
-
-    .social-links a:hover {
-      color: var(--color-primary);
-    }
-  </style>
 </head>
 
 <body>
   <div id="site-header"></div>
 
-  <!-- Hero Section -->
-  <section class="about-hero" aria-labelledby="about-hero-title">
-    <div class="about-hero__inner">
-      <div class="about-hero__badge">Our Mission</div>
-      <h1 id="about-hero-title" class="about-hero__title">
-        Meet giiHelpdesk
-      </h1>
-      <p class="about-hero__subtitle">
-        We build fast, secure, and intuitive AI-powered agents designed to keep Shopify customer support reps within their inbox workflow.
-      </p>
-    </div>
-  </section>
+  <main role="main">
 
-  <main class="about-container" role="main">
-    
-    <!-- Mission Section -->
-    <section class="about-section" aria-labelledby="mission-title">
-      <h2 id="mission-title" class="about-section__title">Our Mission</h2>
-      <p>
-        For most e-commerce businesses, customer support representatives spend up to 40% of their working hours switching tabs between their email inbox and Shopify dashboards, manually hunting down shipping tracking IDs, customer orders, and refund policies.
-      </p>
-      <p>
-        giiHelpdesk was founded to bridge this gap. We empower merchants by integrating context-aware, privacy-preserving AI assistance directly inside their daily tool — Gmail. By fetching order metadata securely and constructing draft responses instantly, we turn support from a tedious chore into a seamless operation.
-      </p>
+    <!-- ====================================================
+         HERO — Question-first, not company-first
+         ==================================================== -->
+    <section class="about-hero-v2" aria-labelledby="about-hero-v2-title">
+      <div class="about-hero-v2__inner">
+        <div class="about-hero-v2__eyebrow">Our Design Philosophy</div>
+        <h1 id="about-hero-v2-title" class="about-hero-v2__title">
+          Three decisions we made that most AI tools don't
+        </h1>
+        <p class="about-hero-v2__subtitle">
+          There are dozens of AI customer service tools. Most of them make the same bet:
+          that a large language model, given enough context, will make the right call every time.
+          We don't believe that's true enough to bet your refund budget on it.
+        </p>
+      </div>
     </section>
 
-    <!-- Core Values Section -->
-    <section class="about-section" aria-labelledby="values-title">
-      <h2 id="values-title" class="about-section__title">Core Brand Values</h2>
-      <p>
-        Our design philosophy prioritizes three unbreakable technical boundaries that define our software suite:
-      </p>
+    <!-- ====================================================
+         DESIGN DECISIONS — The "why we built it this way"
+         ==================================================== -->
+    <section class="design-decisions section" aria-labelledby="decisions-title">
+      <div class="section__inner">
+        <h2 id="decisions-title" class="sr-only">Key Design Decisions</h2>
 
-      <div class="values-grid">
-        <div class="value-card">
-          <div class="value-card__icon" aria-hidden="true">⚡</div>
-          <h3 class="value-card__title">10x Support Speed</h3>
-          <p class="value-card__body">
-            By eliminating page reloads and manual copy-pasting, we reduce standard response compilation times from minutes to under 5 seconds.
-          </p>
-        </div>
+        <!-- Decision 01 -->
+        <article class="design-decision" aria-labelledby="decision-1-title">
+          <div class="design-decision__number">01</div>
+          <div class="design-decision__content">
+            <h2 id="decision-1-title" class="design-decision__title">
+              Rules first. AI second.
+            </h2>
+            <div class="design-decision__body">
+              <p>
+                Most AI CS tools let the LLM decide what to do and then suggest an action.
+                CS-AI Agent does the opposite: your rules run first, and the LLM only drafts the
+                <em>reply</em> — it never decides the <em>action</em>.
+              </p>
+              <p>
+                Here's why this matters: an LLM can be confident and wrong. It has no memory of
+                your last 50 refund decisions. It doesn't know that you never approve refunds on
+                orders that have already shipped. It doesn't know that a certain SKU has a known
+                issue and should always be escalated to your supplier team.
+              </p>
+              <p>
+                <strong>Your rules do know all of this.</strong> So we encode them in code,
+                where they can't be misremembered, overridden by a tired agent, or hallucinated away.
+              </p>
+            </div>
+            <div class="design-decision__consequence">
+              <span class="design-decision__consequence-label">What this means for you:</span>
+              Zero off-policy refunds. If an order doesn't match a rule, no action is presented.
+              The agent can still write a manual reply, but the system won't suggest an action it can't verify.
+            </div>
+          </div>
+        </article>
 
-        <div class="value-card">
-          <div class="value-card__icon" aria-hidden="true">🔒</div>
-          <h3 class="value-card__title">Zero-Content Storage</h3>
-          <p class="value-card__body">
-            We never store, log, or persist merchant emails or private order data. All requests are processed securely in volatile in-memory states.
-          </p>
-        </div>
+        <!-- Decision 02 -->
+        <article class="design-decision" aria-labelledby="decision-2-title">
+          <div class="design-decision__number">02</div>
+          <div class="design-decision__content">
+            <h2 id="decision-2-title" class="design-decision__title">
+              We will never store your customer's emails.
+            </h2>
+            <div class="design-decision__body">
+              <p>
+                This is an architectural decision, not just a policy. We designed the system
+                so that storing email content is technically impossible — not just prohibited.
+              </p>
+              <p>
+                Every time a Gmail thread is analyzed, the content is processed in memory,
+                used to generate the analysis and draft, and then discarded. Nothing is written
+                to our database. Our audit logs record hashed identifiers (thread ID hash, order ID)
+                — never the email text itself.
+              </p>
+              <p>
+                Why did we build it this way when storing emails would give us more training data
+                and better features? Because your customers' emails are not yours to give us.
+                And because any system that stores sensitive communications is a system waiting
+                to have a data breach.
+              </p>
+            </div>
+            <div class="design-decision__consequence">
+              <span class="design-decision__consequence-label">What this means for you:</span>
+              Your customers' complaints, disputes, and personal information never leave
+              the Google + Shopify system boundary that already governs your business.
+              We are a processing layer, not a storage layer.
+            </div>
+          </div>
+        </article>
 
-        <div class="value-card">
-          <div class="value-card__icon" aria-hidden="true">💡</div>
-          <h3 class="value-card__title">No Training Required</h3>
-          <p class="value-card__body">
-            Our UI is designed for immediate intuition. New hires and interns can act as experienced support representatives from day one.
-          </p>
+        <!-- Decision 03 -->
+        <article class="design-decision" aria-labelledby="decision-3-title">
+          <div class="design-decision__number">03</div>
+          <div class="design-decision__content">
+            <h2 id="decision-3-title" class="design-decision__title">
+              Human-in-the-loop on every action. Always.
+            </h2>
+            <div class="design-decision__body">
+              <p>
+                CS-AI Agent never cancels an order, processes a refund, or sends an email
+                without a human explicitly clicking "Confirm." Not on simple cases. Not on
+                high-confidence matches. Always a human in the loop.
+              </p>
+              <p>
+                We built several prototypes of "fully automatic" flows. They worked most of the time.
+                "Most of the time" is not good enough when the downside is a cancelled order that
+                shouldn't have been cancelled, or a refund that's now been issued and can't be reversed.
+              </p>
+              <p>
+                The speed we deliver — 90 seconds from email open to action complete — comes from
+                eliminating the manual research and decision steps, not from removing the human.
+                Your agent still makes the call. They just make it with full information,
+                in 6 seconds instead of 8 minutes.
+              </p>
+            </div>
+            <div class="design-decision__consequence">
+              <span class="design-decision__consequence-label">What this means for you:</span>
+              Your team is still responsible for every CS decision. CS-AI Agent removes the
+              research burden and the policy memory burden — not the accountability.
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PRODUCT BOUNDARIES — What we don't do
+         ==================================================== -->
+    <section class="product-scope section" aria-labelledby="scope-title">
+      <div class="section__inner">
+        <h2 id="scope-title" class="product-scope__title">
+          What CS-AI Agent deliberately does not do
+        </h2>
+        <p class="product-scope__subtitle">
+          Focus is a product decision. These are things we've chosen not to build,
+          and why we think that's the right call for our target customers.
+        </p>
+        <div class="scope-grid">
+          <div class="scope-item scope-item--no">
+            <div class="scope-item__icon">✗</div>
+            <h3 class="scope-item__title">Fully autonomous refund processing</h3>
+            <p class="scope-item__reason">
+              AI confidence scores don't map to refund risk tolerances.
+              Until they reliably do, a human confirm step is non-negotiable.
+            </p>
+          </div>
+          <div class="scope-item scope-item--no">
+            <div class="scope-item__icon">✗</div>
+            <h3 class="scope-item__title">Abandoned cart recovery / marketing messages</h3>
+            <p class="scope-item__reason">
+              That's a separate use case with separate tools. We focus exclusively on
+              inbound complaints and service requests.
+            </p>
+          </div>
+          <div class="scope-item scope-item--no">
+            <div class="scope-item__icon">✗</div>
+            <h3 class="scope-item__title">Customer history profiles</h3>
+            <p class="scope-item__reason">
+              Storing historical customer data conflicts with our zero-storage architecture.
+              Shopify already has this data — we look it up per-session when needed.
+            </p>
+          </div>
+          <div class="scope-item scope-item--no">
+            <div class="scope-item__icon">✗</div>
+            <h3 class="scope-item__title">Omnichannel (Instagram, WhatsApp, phone)</h3>
+            <p class="scope-item__reason">
+              We work inside Gmail. That's the primary CS channel for Shopify DTC teams
+              at the 5–50 person stage. Other channels may come later.
+            </p>
+          </div>
+          <div class="scope-item scope-item--yes">
+            <div class="scope-item__icon">✓</div>
+            <h3 class="scope-item__title">What we do focus on</h3>
+            <p class="scope-item__reason">
+              Refund requests · Order cancellations · Escalation risk detection ·
+              SOP rule matching · Draft reply generation · Shopify write actions ·
+              Per-action audit logging. That's it.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Our Story Section -->
-    <section class="about-section" aria-labelledby="story-title">
-      <h2 id="story-title" class="about-section__title">Our Story</h2>
-      <p>
-        Founded in 2026 by a collective of e-commerce veterans and AI software engineers, we saw how small to medium Shopify merchants struggled to keep up with large enterprise support operations. The existing Help Desk solutions were heavy, complicated, and forced merchants to pay massive subscription fees for features they never touched.
-      </p>
-      <p>
-        We designed giiHelpdesk as a clean, lightweight alternative: a dedicated, specialized Gmail Add-on that directly talks to Shopify APIs, leveraging state-of-the-art LLMs to draft flawless answers. Today, we are proud to serve Shopify stores globally, helping support teams work happier and faster.
-      </p>
+    <!-- ====================================================
+         FOUNDING CONTEXT
+         ==================================================== -->
+    <section class="founding section" aria-labelledby="founding-title">
+      <div class="section__inner">
+        <div class="founding__inner">
+          <h2 id="founding-title" class="founding__title">How this started</h2>
+          <div class="founding__body">
+            <p>
+              In 2025, we were helping a small Shopify brand (15 people, ~$800k/yr revenue)
+              diagnose why their refund rate was climbing. What we found wasn't an AI problem —
+              it was a consistency problem.
+            </p>
+            <p>
+              Three different CS agents were handling refund requests. Each one had read the same
+              refund policy document. But faced with an angry email at 7pm on a Friday,
+              each agent made a different call. The policy document wasn't in the system —
+              it was in their head, competing with their desire to end the shift.
+            </p>
+            <p>
+              We didn't need smarter AI. We needed a way to put the rules where the decision happens:
+              in the tool the agent is already using, at the moment the complaint arrives.
+            </p>
+            <p>
+              That's CS-AI Agent. It's a narrow tool. It solves a specific problem.
+              And we think that's exactly what makes it worth using.
+            </p>
+          </div>
+          <div class="founding__contact">
+            <strong>Questions? Talk directly to the team:</strong>
+            <a href="mailto:support@giihelpdesk.com" class="founding__email">
+              support@giihelpdesk.com
+            </a>
+            <p class="founding__note">
+              We respond to every email. Usually within a few hours during business hours (GMT+8).
+            </p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Contact Card Section -->
-    <section class="contact-card" aria-labelledby="contact-title">
-      <h2 id="contact-title" class="contact-card__title">Get In Touch</h2>
-      <p class="contact-card__body">
-        Have questions, suggestions, or want to discuss a custom feature integration? Reach out to us at <a href="mailto:support@giihelpdesk.com">support@giihelpdesk.com</a>.
-      </p>
-      <ul class="social-links">
-        <li><a href="#" aria-label="Follow us on Twitter">Twitter</a></li>
-        <li><a href="#" aria-label="Follow us on GitHub">GitHub</a></li>
-      </ul>
+    <!-- ====================================================
+         CTA
+         ==================================================== -->
+    <section class="about-cta" aria-labelledby="about-cta-title">
+      <div class="about-cta__inner">
+        <h2 id="about-cta-title" class="about-cta__title">
+          If this design philosophy makes sense to you, you're our customer.
+        </h2>
+        <div class="about-cta__actions">
+          <a href="auth/register.html" class="about-cta__btn about-cta__btn--primary"
+            id="aboutRegisterBtn" aria-label="Start free trial">
+            Start Free — No Credit Card
+          </a>
+          <a href="case.html" class="about-cta__btn about-cta__btn--secondary">
+            See Real Scenarios →
+          </a>
+        </div>
+      </div>
     </section>
 
   </main>
 
   <div id="site-footer"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const stored = localStorage.getItem('user');
+      let isLoggedIn = false;
+      if (stored) { try { const u = JSON.parse(stored); isLoggedIn = !!(u.token && u.email); } catch (e) { } }
+      const btn = document.getElementById('aboutRegisterBtn');
+      if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard →'; btn.href = 'account/dashboard.html'; }
+    });
+  </script>
 </body>
 
 </html>

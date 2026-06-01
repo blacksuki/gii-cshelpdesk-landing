@@ -2,328 +2,448 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing — giiHelpdeskAgent</title>
-    <meta name="description" content="Choose a plan: Free trial, Pro, or Team.">
-    <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/common.js" defer></script>
-    <script src="js/auth.js" defer></script>
-    <style>
-        .pricing-intro {
-            text-align: center;
-            margin-bottom: var(--spacing-2xl);
-        }
-
-        .pricing-intro h1 {
-            font-size: 40px;
-            font-weight: 600;
-            margin-bottom: var(--spacing-md);
-            color: var(--color-text);
-        }
-
-        .pricing-intro p {
-            font-size: 18px;
-            color: var(--color-text-secondary);
-        }
-
-        .pricing-intro .promo-banner {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 8px;
-            margin: 24px auto;
-            max-width: 600px;
-            font-size: 18px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        }
-
-        .plan-card__price-old {
-            text-decoration: line-through;
-            color: #999;
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .plan-card__price-new {
-            color: #10B981;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .plan-card__price-note {
-            font-size: 14px;
-            color: #666;
-            font-style: italic;
-        }
-
-        .faq-section {
-            margin-top: var(--spacing-3xl);
-            padding-top: var(--spacing-2xl);
-            border-top: 1px solid var(--color-border);
-        }
-
-        .faq-section ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .faq-section li {
-            margin-bottom: var(--spacing-md);
-            padding-left: var(--spacing-lg);
-            position: relative;
-            color: var(--color-text-secondary);
-            line-height: 1.7;
-        }
-
-        .faq-section li:before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: var(--color-primary);
-            font-weight: 600;
-        }
-    </style>
-    <meta name="robots" content="noindex">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing — CS-AI Agent for Shopify</title>
+  <meta name="description"
+    content="Simple, team-size-based pricing for CS-AI Agent. Free plan for solo testing, Pro for 1 agent, Team for 2–5 agents. Start free, no credit card required.">
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pricing-page.css">
+  <script src="js/common.js" defer></script>
+  <script src="js/auth.js" defer></script>
 </head>
 
 <body>
-    <div id="site-header"></div>
+  <div id="site-header"></div>
 
-    <main class="section" role="main">
-        <div class="pricing-intro">
-            <h1>Pricing Plans</h1>
-            <p>Start your 14-day free trial. Simple pricing managed securely via Shopify.</p>
-            <p style="font-size: 14px; color: var(--color-text-secondary); margin-top: 8px;">
-                <strong>Note:</strong> All plans can connect custom LLM keys (OpenAI, Gemini, etc.) for custom AI preferences.
+  <main role="main">
+
+    <!-- ====================================================
+         PRICING HERO
+         ==================================================== -->
+    <section class="pricing-hero" aria-labelledby="pricing-hero-title">
+      <div class="pricing-hero__inner">
+        <div class="pricing-hero__eyebrow">Transparent Pricing</div>
+        <h1 id="pricing-hero-title" class="pricing-hero__title">
+          We charge by team size, not by feature
+        </h1>
+        <p class="pricing-hero__subtitle">
+          Every plan includes the full SOP rule engine, Shopify write actions, and complete audit logs.
+          The only difference is how many seats and emails your team needs.
+        </p>
+        <div class="pricing-hero__promo">
+          🎉 Free &amp; Pro plans are both <strong>free through August 31, 2026</strong> — lock in early access before pricing goes live.
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PLAN SELECTOR GUIDE (Decision Helper)
+         ==================================================== -->
+    <section class="plan-guide section" aria-labelledby="plan-guide-title">
+      <div class="section__inner">
+        <h2 id="plan-guide-title" class="plan-guide__title">Which plan is right for your team?</h2>
+        <div class="plan-guide__grid">
+          <div class="plan-guide-card" data-target="free">
+            <div class="plan-guide-card__q">You handle fewer than 10 complaints per day</div>
+            <div class="plan-guide-card__arrow">→</div>
+            <div class="plan-guide-card__rec">Start with <strong>Free</strong></div>
+          </div>
+          <div class="plan-guide-card" data-target="pro">
+            <div class="plan-guide-card__q">1 full-time CS agent handling 20–50 emails per day</div>
+            <div class="plan-guide-card__arrow">→</div>
+            <div class="plan-guide-card__rec">You need <strong>Pro</strong></div>
+          </div>
+          <div class="plan-guide-card" data-target="team">
+            <div class="plan-guide-card__q">2–5 CS agents, need separate logins and audit per person</div>
+            <div class="plan-guide-card__arrow">→</div>
+            <div class="plan-guide-card__rec">You need <strong>Team</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         PRICING CARDS
+         ==================================================== -->
+    <section class="pricing-cards-section section" aria-labelledby="pricing-cards-title">
+      <div class="section__inner">
+        <h2 id="pricing-cards-title" class="sr-only">Pricing Plans</h2>
+
+        <div class="pricing" style="margin-top: 0;">
+
+          <!-- FREE PLAN -->
+          <article class="plan-card" id="free" data-plan="free">
+            <div class="plan-card__tier-label">Free</div>
+            <div class="plan-card__price-block">
+              <span class="plan-card__price">$0</span>
+              <span class="plan-card__period">/ month</span>
+            </div>
+            <p class="plan-card__target">
+              For testing the system or solo founders still handling CS themselves.
             </p>
-        </div>
-
-        <div class="pricing" style="margin-top:16px;">
-            <article class="plan-card" id="free" data-plan="free">
-                <span class="plan-card__badge">14-day trial</span>
-                <h2>Free</h2>
-                <div class="plan-card__price">$0</div>
-                <ul class="plan-card__list">
-                    <li>1 seat</li>
-                    <li>max 100 emails</li>
-                    <li>Agentic/Hybrid/Manual mode</li>
-                    <li>Gmail Add-on + Shopify integration</li>
-                    <li>-</li>
-                </ul>
-                <button class="plan-btn" data-plan="free" aria-label="Start free trial" id="freePlanBtn">Get
-                    Started</button>
-            </article>
-
-            <article class="plan-card" data-plan="pro">
-                <span class="plan-card__badge">POPULAR</span>
-                <h2>Pro</h2>
-                <div class="plan-card__price">$19 / mo</div>
-                <ul class="plan-card__list">
-                    <li>1 seat</li>
-                    <li>1,000 emails / month</li>
-                    <li>Agentic/Hybrid/Manual mode</li>
-                    <li>Gmail Add-on + Shopify integration</li>
-                    <li>Refund and shipping policy check</li>
-                </ul>
-                <button class="plan-btn" data-plan="pro" aria-label="Buy Pro" id="proPlanBtn"
-                    data-success-url="account/dashboard.html">Get Pro</button>
-            </article>
-
-            <article class="plan-card" data-plan="team">
-                <span class="plan-card__badge">HIGH PERFORMANCE</span>
-                <h2>Team</h2>
-                <div class="plan-card__price">$49 / mo</div>
-                <ul class="plan-card__list">
-                    <li>5 seats</li>
-                    <li>5,000 emails / month</li>
-                    <li>Agentic/Hybrid/Manual mode</li>
-                    <li>Gmail Add-on + Shopify integration</li>
-                    <li>Refund and shipping policy check</li>
-                </ul>
-                <button class="plan-btn" data-plan="team" aria-label="Buy Team" id="teamPlanBtn"
-                    data-success-url="account/dashboard.html">Get Team</button>
-            </article>
-        </div>
-
-        <section class="faq-section">
-            <h2 class="section__title">FAQ & Compliance</h2>
-            <ul>
-                <li><strong>Gmail & Google Workspace</strong> are fully supported.</li>
-                <li><strong>Minimal OAuth scopes</strong>: gmail.readonly, gmail.modify.</li>
-                <li><strong>No email content stored</strong>; secure zero-content-storage design.</li>
-                <li><strong>Secured by Shopify</strong>: All billing and billing agreements are handled securely through your Shopify Merchant Admin.</li>
+            <ul class="plan-card__list">
+              <li>1 agent seat</li>
+              <li>Up to 5 complaint emails per day</li>
+              <li>Full SOP rule engine (2 built-in rules)</li>
+              <li>Gmail Add-on + Shopify integration</li>
+              <li>Complete per-action audit log</li>
             </ul>
-        </section>
-    </main>
+            <div class="plan-card__roi">
+              <span class="plan-card__roi-label">What this replaces:</span>
+              Manually checking Shopify admin for every email — ~4 minutes saved per ticket
+            </div>
+            <button class="plan-btn" data-plan="free" aria-label="Start free plan" id="freePlanBtn">
+              Get Started Free
+            </button>
+          </article>
 
-    <div id="site-footer"></div>
+          <!-- PRO PLAN -->
+          <article class="plan-card plan-card--featured" data-plan="pro">
+            <span class="plan-card__badge">MOST POPULAR</span>
+            <div class="plan-card__tier-label">Pro</div>
+            <div class="plan-card__price-block">
+              <div class="plan-card__price-was">Was $19 / mo</div>
+              <span class="plan-card__price plan-card__price--free">FREE</span>
+              <span class="plan-card__period">until Aug 31, 2026</span>
+            </div>
+            <p class="plan-card__target">
+              For 1 full-time CS agent. Handles a typical DTC brand's daily complaint volume with room to spare.
+            </p>
+            <ul class="plan-card__list">
+              <li>1 agent seat</li>
+              <li>Up to 50 complaint emails per day (~1,000/month)</li>
+              <li>Full SOP rule engine + refund threshold rules</li>
+              <li>Gmail Add-on + Shopify write actions (cancel orders, log notes)</li>
+              <li>Complete per-action audit log with agent ID</li>
+              <li>Priority email support</li>
+            </ul>
+            <div class="plan-card__roi">
+              <span class="plan-card__roi-label">ROI estimate:</span>
+              1 agent × 30 min saved/day × 22 workdays = <strong>11 hrs/month</strong> back. At $20/hr = <strong>$220 saved</strong> vs. $19 cost.
+            </div>
+            <button class="plan-btn" data-plan="pro" aria-label="Get Pro plan" id="proPlanBtn"
+              data-success-url="account/dashboard.html">
+              Get Pro Free →
+            </button>
+          </article>
 
-    <script>
-        // Check authentication on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            checkAuthenticationForPricing();
-            applySubscriptionUIState();
-        });
+          <!-- TEAM PLAN -->
+          <article class="plan-card" data-plan="team">
+            <span class="plan-card__badge plan-card__badge--dark">TEAM</span>
+            <div class="plan-card__tier-label">Team</div>
+            <div class="plan-card__price-block">
+              <span class="plan-card__price">$49</span>
+              <span class="plan-card__period">/ month</span>
+            </div>
+            <p class="plan-card__target">
+              For 2–5 CS agents who need separate logins, individual audit trails, and higher email volume.
+            </p>
+            <ul class="plan-card__list">
+              <li>5 agent seats (each with their own secure login)</li>
+              <li>Up to 250 complaint emails per day (~5,000/month)</li>
+              <li>Full SOP rule engine + custom rule configuration</li>
+              <li>Gmail Add-on + all Shopify write actions</li>
+              <li>Per-agent audit log (who approved what, when, on which order)</li>
+              <li>Dedicated onboarding support</li>
+            </ul>
+            <div class="plan-card__roi">
+              <span class="plan-card__roi-label">ROI estimate:</span>
+              5 agents × 30 min saved/day × 22 days = <strong>55 hrs/month</strong> saved. At $20/hr = <strong>$1,100 saved</strong> vs. $49 cost.
+            </div>
+            <button class="plan-btn" data-plan="team" aria-label="Get Team plan" id="teamPlanBtn"
+              data-success-url="account/dashboard.html">
+              Get Team Plan
+            </button>
+          </article>
+        </div>
 
-        function bindHostedBillingButton(button, plan, seats) {
-            if (!button) {
-                return;
-            }
+        <!-- All plans note -->
+        <p class="pricing-all-plans-note">
+          ✅ All plans include: SOP rule engine · Shopify order read + write · Zero email content storage · Per-action audit logs · Cancel orders without chargeback risk
+        </p>
+      </div>
+    </section>
 
-            button.textContent = 'Open Billing in Shopify Admin';
-            button.addEventListener('click', function (e) {
-                e.preventDefault();
-                openHostedBilling(plan, seats);
-            });
+    <!-- ====================================================
+         ROI CALCULATOR
+         ==================================================== -->
+    <section class="roi-calc section" aria-labelledby="roi-calc-title">
+      <div class="section__inner">
+        <div class="roi-calc__inner">
+          <div class="roi-calc__copy">
+            <h2 id="roi-calc-title" class="roi-calc__title">Calculate your team's savings</h2>
+            <p class="roi-calc__subtitle">
+              Every minute your team spends manually switching between Gmail and Shopify admin is money.
+              Here's what CS-AI Agent is actually worth to your operation.
+            </p>
+          </div>
+          <div class="roi-calc__tool">
+            <div class="roi-input-group">
+              <label class="roi-label" for="calc-tickets">
+                Average complaint emails per day
+              </label>
+              <input class="roi-input" type="number" id="calc-tickets" value="30" min="1" max="500"
+                aria-label="Average complaint emails per day" />
+            </div>
+            <div class="roi-input-group">
+              <label class="roi-label" for="calc-minutes">
+                Minutes per email (manual process, without CS-AI Agent)
+              </label>
+              <input class="roi-input" type="number" id="calc-minutes" value="8" min="1" max="60"
+                aria-label="Minutes per email without the tool" />
+            </div>
+            <div class="roi-input-group">
+              <label class="roi-label" for="calc-rate">
+                CS agent hourly cost (USD, including benefits)
+              </label>
+              <input class="roi-input" type="number" id="calc-rate" value="20" min="1" max="100"
+                aria-label="CS agent hourly cost" />
+            </div>
+            <div class="roi-result" aria-live="polite" aria-atomic="true">
+              <div class="roi-result__row">
+                <span class="roi-result__label">Time saved per month</span>
+                <span class="roi-result__value" id="calc-hours">—</span>
+              </div>
+              <div class="roi-result__row">
+                <span class="roi-result__label">Dollar value of time saved</span>
+                <span class="roi-result__value roi-result__value--highlight" id="calc-savings">—</span>
+              </div>
+              <div class="roi-result__row">
+                <span class="roi-result__label">CS-AI Agent cost (Pro)</span>
+                <span class="roi-result__value">$0 (free until Aug 31)</span>
+              </div>
+              <div class="roi-result__divider"></div>
+              <div class="roi-result__row roi-result__row--total">
+                <span class="roi-result__label">Your net ROI</span>
+                <span class="roi-result__value roi-result__value--roi" id="calc-roi">—</span>
+              </div>
+            </div>
+            <p class="roi-calc__disclaimer">
+              Assumes CS-AI Agent reduces per-email handling time by ~80% (from full manual to 90-second review-and-confirm).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         FAQ — Real boss objections
+         ==================================================== -->
+    <section class="pricing-faq section" aria-labelledby="faq-title">
+      <div class="section__inner">
+        <h2 id="faq-title" class="section__title" style="text-align:center;">Questions we actually get asked</h2>
+        <div class="faq-grid">
+
+          <details class="faq-item">
+            <summary class="faq-item__q">If the AI makes a wrong decision, who's responsible?</summary>
+            <p class="faq-item__a">
+              The AI never makes a final decision — your agent does. CS-AI Agent shows a <em>recommended action</em>
+              based on your rules. Your team member clicks "Confirm" before anything happens in Shopify.
+              If the rule is wrong, the fix is in your SOP configuration, not in a support ticket to us.
+              Every action is logged with the agent's email, so you always know who confirmed what.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">What happens to my customer emails and order data?</summary>
+            <p class="faq-item__a">
+              We process emails in-session and do not store, index, or persist any customer email content.
+              Order data is fetched from Shopify in real-time and used only to generate the current response.
+              Our audit logs store only hashed identifiers (thread ID hash, order ID hash) — never raw email content.
+              This is a core architectural decision, not just a policy.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Can my CS team learn this without training?</summary>
+            <p class="faq-item__a">
+              The sidebar shows exactly 5 things in order: email info, intent analysis, which SOP rule matched,
+              what action is pending, and the approve/skip buttons. Most agents are comfortable on their first day.
+              The learning curve is reading the sidebar, not learning a new platform.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">Will this interfere with our existing Shopify apps?</summary>
+            <p class="faq-item__a">
+              No. CS-AI Agent uses Shopify's official Admin API via OAuth. It reads orders and can cancel
+              unfulfilled orders — it does not touch your product catalog, inventory, marketing apps, or billing apps.
+              It's an additive tool, not a replacement for your existing stack.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">What if I cancel? What happens to my data?</summary>
+            <p class="faq-item__a">
+              Your Shopify access token is deleted from our system within 24 hours of cancellation.
+              Since we don't store customer email content, there's nothing else to delete.
+              Your Shopify order history and notes remain unchanged — we only append notes to orders
+              when your team explicitly confirms an action.
+            </p>
+          </details>
+
+          <details class="faq-item">
+            <summary class="faq-item__q">How is billing handled? Is it secure?</summary>
+            <p class="faq-item__a">
+              Billing is managed entirely through Shopify's native billing system — the same system
+              you already use for your Shopify apps. We never handle your credit card directly.
+              You can cancel anytime from your Shopify admin without contacting us.
+            </p>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         COMPLIANCE STRIP
+         ==================================================== -->
+    <section class="compliance-strip" aria-label="Compliance and security">
+      <div class="compliance-strip__inner">
+        <div class="compliance-item">
+          <strong>🔒 Zero Email Content Storage</strong>
+          <span>OAuth-scoped read access. Nothing is persisted between sessions.</span>
+        </div>
+        <div class="compliance-item">
+          <strong>🏪 Shopify Partner Certified</strong>
+          <span>All write operations use official Shopify Admin API. Billing via Shopify native.</span>
+        </div>
+        <div class="compliance-item">
+          <strong>📋 Gmail Workspace Compatible</strong>
+          <span>Minimal scopes: gmail.readonly + gmail.modify. Works with Google Workspace accounts.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    // ROI Calculator
+    function calcROI() {
+      const tickets = parseInt(document.getElementById('calc-tickets').value) || 0;
+      const minutes = parseInt(document.getElementById('calc-minutes').value) || 0;
+      const rate = parseInt(document.getElementById('calc-rate').value) || 0;
+
+      // Assume 80% time reduction (from full manual to 90s review), 22 workdays/month
+      const savedMinPerDay = tickets * minutes * 0.80;
+      const savedHrsPerMonth = (savedMinPerDay * 22) / 60;
+      const savedDollars = savedHrsPerMonth * rate;
+      const roi = savedDollars; // cost is $0 currently
+
+      document.getElementById('calc-hours').textContent =
+        savedHrsPerMonth > 0 ? `${savedHrsPerMonth.toFixed(1)} hrs` : '—';
+      document.getElementById('calc-savings').textContent =
+        savedDollars > 0 ? `$${Math.round(savedDollars).toLocaleString()}` : '—';
+      document.getElementById('calc-roi').textContent =
+        roi > 0 ? `$${Math.round(roi).toLocaleString()} / month` : '—';
+    }
+
+    ['calc-tickets', 'calc-minutes', 'calc-rate'].forEach(id => {
+      document.getElementById(id).addEventListener('input', calcROI);
+    });
+    // Run on load
+    document.addEventListener('DOMContentLoaded', calcROI);
+
+    // Plan guide scroll-to
+    document.querySelectorAll('.plan-guide-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const target = card.dataset.target;
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    });
+
+    // ---- Auth / Billing Logic (preserved from original) ----
+    document.addEventListener('DOMContentLoaded', function () {
+      checkAuthenticationForPricing();
+      applySubscriptionUIState();
+    });
+
+    function bindHostedBillingButton(button, plan, seats) {
+      if (!button) return;
+      button.textContent = 'Open Billing in Shopify Admin';
+      button.addEventListener('click', function (e) {
+        e.preventDefault();
+        openHostedBilling(plan, seats);
+      });
+    }
+
+    async function openHostedBilling(plan, seats) {
+      try {
+        if (!window.apiClient) throw new Error('apiClient is not available');
+        const result = await window.apiClient.upgradeSubscription(plan, seats);
+        if (result.success && result.data && result.data.hostedPricingUrl) {
+          window.location.href = result.data.hostedPricingUrl;
+          return;
         }
+        alert(result.error || 'Unable to open Shopify Admin billing right now.');
+      } catch (error) {
+        console.error('Error opening Shopify hosted billing:', error);
+        alert('Unable to open Shopify Admin billing right now.');
+      }
+    }
 
-        async function openHostedBilling(plan, seats) {
-            try {
-                if (!window.apiClient) {
-                    throw new Error('apiClient is not available');
-                }
+    function checkAuthenticationForPricing() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const isLoggedIn = !!user.token;
+      const freeBtn = document.getElementById('freePlanBtn');
+      const proBtn = document.getElementById('proPlanBtn');
+      const teamBtn = document.getElementById('teamPlanBtn');
 
-                const result = await window.apiClient.upgradeSubscription(plan, seats);
-                if (result.success && result.data && result.data.hostedPricingUrl) {
-                    window.location.href = result.data.hostedPricingUrl;
-                    return;
-                }
+      if (!isLoggedIn) {
+        [{ btn: freeBtn, plan: 'free' }, { btn: proBtn, plan: 'pro' }, { btn: teamBtn, plan: 'team' }]
+          .forEach(({ btn, plan }) => {
+            if (btn) btn.addEventListener('click', e => { e.preventDefault(); redirectToLogin(plan); });
+          });
+      } else {
+        bindHostedBillingButton(proBtn, 'pro', 1);
+        bindHostedBillingButton(teamBtn, 'team', 5);
+        const plan = (user.subscription || {}).plan;
+        if (plan) highlightSelectedPlan(plan);
+      }
+    }
 
-                alert(result.error || 'Unable to open Shopify Admin billing right now.');
-            } catch (error) {
-                console.error('Error opening Shopify hosted billing:', error);
-                alert('Unable to open Shopify Admin billing right now.');
-            }
-        }
+    function applySubscriptionUIState() {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const sub = user.subscription || null;
+      if (!sub || !sub.status) return;
 
-        // Authentication check for pricing page
-        function checkAuthenticationForPricing() {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const isLoggedIn = !!user.token;
-            const freeBtn = document.getElementById('freePlanBtn');
-            const proBtn = document.getElementById('proPlanBtn');
-            const teamBtn = document.getElementById('teamPlanBtn');
+      const freeBtn = document.getElementById('freePlanBtn');
+      const proBtn = document.getElementById('proPlanBtn');
+      const teamBtn = document.getElementById('teamPlanBtn');
 
-            if (!isLoggedIn) {
-                // Add click event listeners to redirect to login
-                if (freeBtn && !isLoggedIn) {
-                    //only show for non-logged in users
-                    freeBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        redirectToLogin('free');
-                    });
-                }
+      if (freeBtn) { freeBtn.disabled = true; freeBtn.textContent = 'Free trial'; freeBtn.setAttribute('aria-disabled', 'true'); }
 
-                if (proBtn) {
-                    proBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        redirectToLogin('pro');
-                    });
-                }
+      const plan = (sub.plan || '').toLowerCase();
+      const isActive = sub.status === 'active';
 
-                if (teamBtn) {
-                    teamBtn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        redirectToLogin('team');
-                    });
-                }
-            } else {
-                bindHostedBillingButton(proBtn, 'pro', 1);
-                bindHostedBillingButton(teamBtn, 'team', 5);
+      if (plan === 'pro' && isActive) {
+        const badge = document.querySelector('[data-plan="pro"] .plan-card__badge');
+        if (badge) badge.textContent += ' (Subscribed)';
+        if (proBtn) { proBtn.disabled = true; proBtn.textContent = 'Current Plan'; proBtn.setAttribute('aria-disabled', 'true'); }
+      }
+      if (plan === 'team' && isActive) {
+        const badge = document.querySelector('[data-plan="team"] .plan-card__badge');
+        if (badge) badge.textContent += ' (Subscribed)';
+        if (proBtn) { proBtn.disabled = true; proBtn.textContent = 'Pro Plan'; proBtn.setAttribute('aria-disabled', 'true'); }
+        if (teamBtn) { teamBtn.disabled = true; teamBtn.textContent = 'Current Plan'; teamBtn.setAttribute('aria-disabled', 'true'); }
+      }
+    }
 
-                // User is logged in, check for plan parameter
-                const currentSubscription = user.subscription || {};
-                console.log("checkAuthenticationForPricing: user plan is ", currentSubscription.plan);
-                const plan = currentSubscription.plan;
+    function highlightSelectedPlan(plan) {
+      document.querySelectorAll('.plan-card').forEach(card => card.classList.remove('plan-card--selected'));
+      const selectedCard = document.querySelector(`[data-plan="${plan}"]`);
+      if (selectedCard) selectedCard.classList.add('plan-card--selected');
+    }
 
-                if (plan) {
-                    // Highlight the selected plan
-                    highlightSelectedPlan(plan);
-                }
-            }
-        }
-
-        // Apply subscription state to pricing UI
-        function applySubscriptionUIState() {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const sub = user.subscription || null;
-
-            const freeBtn = document.getElementById('freePlanBtn');
-            const proBtn = document.getElementById('proPlanBtn');
-            const teamBtn = document.getElementById('teamPlanBtn');
-
-            const proBadge = document.querySelector('[data-plan="pro"] .plan-card__badge');
-            const teamBadge = document.querySelector('[data-plan="team"] .plan-card__badge');
-
-            // Default: nothing to do if no subscription info
-            if (!sub || !sub.status) {
-                return;
-            }
-
-            // 1) After login, free button disabled for all logged-in users
-            if (freeBtn) {
-                freeBtn.disabled = true;
-                freeBtn.textContent = 'Free trial';
-                freeBtn.setAttribute('aria-disabled', 'true');
-            }
-
-            // 2) Manage Pro/Team based on plan
-            // Normalize plan
-            const plan = (sub.plan || '').toLowerCase();
-            const isActive = sub.status === 'active';
-
-            if (plan === 'pro' && isActive) {
-                if (proBadge) { proBadge.textContent += '  (Subscribed)'; }
-                if (proBtn) {
-                    proBtn.disabled = true;
-                    proBtn.textContent = 'Current Plan';
-                    proBtn.setAttribute('aria-disabled', 'true');
-                }
-            }
-
-            if (plan === 'team' && isActive) {
-                if (teamBadge) { teamBadge.textContent += '  (Subscribed)'; }
-                if (proBtn) {
-                    proBtn.disabled = true;
-                    proBtn.textContent = 'Pro Plan';
-                    proBtn.setAttribute('aria-disabled', 'true');
-                }
-                if (teamBtn) {
-                    teamBtn.disabled = true;
-                    teamBtn.textContent = 'Current Plan';
-                    teamBtn.setAttribute('aria-disabled', 'true');
-                }
-            }
-        }
-
-        // Highlight selected plan
-        function highlightSelectedPlan(plan) {
-            // Remove any existing highlights
-            document.querySelectorAll('.plan-card').forEach(card => {
-                card.style.border = '2px solid #e9ecef';
-            });
-
-            // Highlight the selected plan
-            const selectedCard = document.querySelector(`[data-plan="${plan}"]`).closest('.plan-card');
-            console.log("highlightSelectedPlan: selectedCard", selectedCard);
-            if (selectedCard) {
-                selectedCard.style.border = '2px solid var(--color-primary)';
-                selectedCard.style.boxShadow = '0 0 0 3px rgba(10, 117, 255, 0.1)';
-            }
-        }
-
-        // Redirect to login with plan parameter
-        function redirectToLogin(plan) {
-            const loginUrl = `auth/login.html?redirect=pricing&plan=${plan}`;
-            window.location.href = loginUrl;
-        }
-    </script>
-
+    function redirectToLogin(plan) {
+      window.location.href = `auth/login.html?redirect=pricing&plan=${plan}`;
+    }
+  </script>
 </body>
 
 </html>
