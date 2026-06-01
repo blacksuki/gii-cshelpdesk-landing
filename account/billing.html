@@ -7,8 +7,6 @@
     <meta name="description" content="Manage your giiHelpdesk subscription and billing">
     <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="../css/auth.css">
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script src="js/paddle.js" defer></script>
     <script src="../js/toast.js" defer></script>
     <script src="../js/api-config.js" defer></script>
     <script src="../js/api-client.js" defer></script>
@@ -285,23 +283,24 @@
         }
 
         async function cancelSubscription() {
-            if (!confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.')) {
+            if (!confirm('Are you sure you want to manage or cancel your subscription? You will be redirected to your Shopify Admin Billing portal.')) {
                 return;
             }
             try {
-                Toast.loading('Cancelling Subscription', 'Processing your cancellation request...');
+                Toast.loading('Redirecting to Shopify', 'Opening Shopify billing portal...');
                 const result = await window.apiClient.cancelSubscription();
                 Toast.hideLoading();
-                if (result.success) {
-                    Toast.success('Subscription Cancelled', 'Your subscription will be cancelled at the end of the current billing period.');
-                    loadBillingData();
-                    loadBillingHistory();
+                if (result.success && result.data && result.data.manageBillingUrl) {
+                    Toast.success('Redirecting', 'Redirecting to your Shopify Admin Billing page...');
+                    setTimeout(() => {
+                        window.location.href = result.data.manageBillingUrl;
+                    }, 1000);
                 } else {
-                    Toast.error('Cancellation Failed', result.error || 'Unable to cancel your subscription.');
+                    Toast.error('Redirect Failed', result.error || 'Unable to redirect to Shopify Admin Billing page.');
                 }
             } catch (e) {
                 Toast.hideLoading();
-                Toast.error('Cancellation Error', 'An error occurred while cancelling.');
+                Toast.error('Redirection Error', 'An error occurred while redirecting.');
             }
         }
 
