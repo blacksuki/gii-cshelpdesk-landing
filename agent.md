@@ -8,21 +8,20 @@ This document provides context for AI agents working on the `gii-cshelpdesk-land
 ## Tech Stack
 - **Frontend**: Pure HTML, CSS (Vanilla), and JavaScript.
 - **Components**: Client-side injection for Header/Footer using `js/common.js`.
-- **Payment**: Paddle integration for subscriptions.
+- **Payment**: Shopify App Pricing (managed subscriptions via Shopify checkout redirect).
 - **Deployment**: Vercel.
 - **Auth**: Custom logic in `js/auth.js` and `js/common.js` using localStorage.
 
 ## Key Directories and Files
 - `/index.html`: Main landing page with hero, features, and use cases.
 - `/features.html`: Product features and comparisons.
-- `/pricing.html`: Subscription plans and Paddle checkout.
+- `/pricing.html`: Subscription plans and Shopify hosted billing redirection.
 - `/case.html`: Merchant case studies with infinite scroll.
 - `/about.html`: Team and product info.
 - `/privacy.html`: Legal and privacy policy.
 - `/css/style.css`: Main stylesheet using BEM naming convention.
 - `/js/common.js`: Global utilities, header/footer rendering, and auth checks.
 - `/js/auth.js`: Authentication logic and API interaction.
-- `/js/paddle.js`: Paddle payment initialization.
 - `/vercel.json`: Vercel configuration for clean URLs and redirects.
 
 ## Development Guidelines
@@ -33,11 +32,11 @@ This document provides context for AI agents working on the `gii-cshelpdesk-land
 5. **Privacy**: Maintain the "zero email content storage" promise in UI and logic.
 
 ## Current Project State
-- The landing page is functional with a promotional "Free in 2026" banner.
-- Authentication system is in place, connecting to a backend (likely Cloud Functions as per README).
-- Paddle integration is prepared with placeholders for Vendor/Product IDs.
+- The landing page is aligned for a Shopify launch unlisted/public app state.
+- Authentication system is in place, connecting to a backend (Google Cloud Functions).
+- Subscription plans are locked on $19/mo Pro and $49/mo Team tiers.
 - Infinite scroll is implemented in `case.html`.
 
 ## Useful Commands
-- **Local Server**: `npx http-server . -p 5173` or `live-server .`
+- **Local Server**: `npx serve . -l 3456`
 - **Deploy**: `vercel --prod`

@@ -46,7 +46,7 @@ This document describes the complete user authentication and subscription system
 └── billing-history     # Billing history
 
 /api/webhooks/           # Webhook endpoints
-└── paddle              # Paddle subscription webhooks
+└── shopify              # Shopify GDPR compliance webhooks
 ```
 
 ## 🔐 Authentication Flow
@@ -119,11 +119,11 @@ This document describes the complete user authentication and subscription system
     twoFactorEnabled: false
   },
   subscription: {
-    plan: "free",                     // free, pro, team
+    plan: "free",                     // free/trial, pro, team
     status: "active",                 // active, cancelled, expired
     startDate: "timestamp",
     endDate: "timestamp",
-    paddleSubscriptionId: null,
+    shopifySubscriptionId: null,
     seats: 1,
     billingCycle: "monthly",
     monthlyPrice: 0
@@ -157,7 +157,7 @@ This document describes the complete user authentication and subscription system
   status: "active",
   startDate: "timestamp",
   endDate: "timestamp",
-  paddleSubscriptionId: null,
+  shopifySubscriptionId: null,
   seats: 1,
   billingCycle: "monthly",
   monthlyPrice: 0,
@@ -170,9 +170,9 @@ This document describes the complete user authentication and subscription system
 
 | Plan | Price | Seats | Email Limit | Features |
 |------|-------|-------|-------------|----------|
-| Free | $0 | 1 | 50/month | Basic support, Gmail Add-on |
-| Pro | $79/month | 1 | 1,000/month | Priority support, Shopify integration |
-| Team | $199/month | Unlimited | 5,000/month | 24/7 support, Advanced analytics |
+| Free/Trial | $0 | 1 | 50/month | 14-day free trial, basic features |
+| Pro | $19/month | 1 | 1,000/month | Priority support, Shopify integration |
+| Team | $49/month | 5 | 5,000/month | 24/7 support, advanced analytics |
 
 ## 🔧 Technical Implementation
 
@@ -208,7 +208,7 @@ This document describes the complete user authentication and subscription system
 - Node.js 20.x or higher
 - Vercel CLI installed
 - Firebase project with Firestore enabled
-- Paddle account for payments (optional)
+- Shopify Partner Account & API credentials
 
 ### Environment Variables
 Create a `.env.local` file in the project root:
@@ -245,10 +245,10 @@ JWT_SECRET=$(openssl rand -base64 32) \
        || echo -n "$JWT_SECRET" | gcloud secrets create JWT_SECRET --data-file=- --replication-policy=automatic; } \
   && echo "JWT_SECRET 已保存到 Secret Manager"
 
-# Paddle Configuration
-PADDLE_VENDOR_ID=your-vendor-id
-PADDLE_AUTH_CODE=your-auth-code
-PADDLE_WEBHOOK_SECRET=your-webhook-secret
+# Shopify Configuration
+SHOPIFY_APP_HANDLE=giihelpdeskagent
+PARTNER_ACCESS_TOKEN=your-partner-access-token
+PARTNER_ORG_ID=your-partner-org-id
 
 # Frontend URL
 FRONTEND_URL=https://giihelpdesk.com
@@ -301,7 +301,7 @@ vercel deploy api/auth/register.js
 ### Integration Testing
 - Test complete user registration flow
 - Test subscription management
-- Test Paddle webhook processing
+- Test Shopify webhooks and Partner API subscription status queries
 - Test email delivery (verification, reset)
 
 ## 📱 Responsive Design
