@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Profile — giiHelpdeskAgent</title>
-    <meta name="description" content="Edit your giiHelpdesk profile" />
+    <title>Profile  -  giiHelpdeskAgent</title>
+    <meta name="description" content="Edit your giiHelpdeskAgent profile" />
     <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="../css/auth.css" />
     <script src="../js/toast.js" defer></script>
@@ -25,7 +25,7 @@
 
       <div class="account-card" style="max-width: 600px; margin: 0 auto">
         <div class="account-card__title">
-          <span>👤</span>
+          <span>ðŸ‘¤</span>
           Personal Information
         </div>
 
@@ -104,11 +104,11 @@
             <label for="language" class="form-label">Language</label>
             <select id="language" name="language" class="form-input">
               <option value="en">English</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
+              <option value="es">EspaÃ±ol</option>
+              <option value="fr">FranÃ§ais</option>
               <option value="de">Deutsch</option>
-              <option value="ja">日本語</option>
-              <option value="zh">中文</option>
+              <option value="ja">æ—¥æœ¬èªž</option>
+              <option value="zh">ä¸­æ–‡</option>
             </select>
           </div>
 
@@ -150,7 +150,7 @@
       <!-- Shopify Integration Settings -->
       <div class="account-card" style="max-width: 600px; margin: 32px auto">
         <div class="account-card__title">
-          <span>🛍️</span>
+          <span>ðŸ›ï¸</span>
           Shopify Integration
         </div>
         <div class="account-card__content">
@@ -207,7 +207,7 @@
       <!-- Security Settings -->
       <div class="account-card" style="max-width: 600px; margin: 32px auto">
         <div class="account-card__title">
-          <span>🔒</span>
+          <span>ðŸ”’</span>
           Security Settings
         </div>
 
@@ -296,7 +296,7 @@
         style="max-width: 600px; margin: 32px auto; border: 2px solid #ffebee"
       >
         <div class="account-card__title" style="color: #c62828">
-          <span>⚠️</span>
+          <span>âš ï¸</span>
           Danger Zone
         </div>
 
@@ -659,10 +659,10 @@
           if (result.success && result.data) {
             if (result.data.available) {
               statusEl.style.color = 'var(--color-success)';
-              statusEl.textContent = '✓ Domain is available';
+              statusEl.textContent = 'âœ“ Domain is available';
             } else {
               statusEl.style.color = 'var(--color-error)';
-              statusEl.textContent = `✕ ${result.data.reason || 'Domain is already registered'}`;
+              statusEl.textContent = `âœ• ${result.data.reason || 'Domain is already registered'}`;
             }
           } else {
             statusEl.style.color = 'var(--color-error)';
@@ -731,7 +731,7 @@
             const statusEl = document.getElementById('domainAvailabilityStatus');
             statusEl.style.display = 'block';
             statusEl.style.color = 'var(--color-success)';
-            statusEl.textContent = '✓ Domain saved successfully';
+            statusEl.textContent = 'âœ“ Domain saved successfully';
             
             // Suggest verification
             setTimeout(() => {
@@ -806,7 +806,7 @@
           statusEl.style.border = '1px solid #c3e6cb';
           statusEl.style.color = '#155724';
           statusEl.innerHTML = `
-            <div style="font-weight: 600; margin-bottom: 8px;">✓ Connection Verified</div>
+            <div style="font-weight: 600; margin-bottom: 8px;">âœ“ Connection Verified</div>
             <div style="font-size: 14px;">
               <div><strong>Domain:</strong> ${domain}</div>
               ${data.shopName ? `<div><strong>Shop Name:</strong> ${data.shopName}</div>` : ''}
@@ -818,7 +818,7 @@
           statusEl.style.border = '1px solid #ffc107';
           statusEl.style.color = '#856404';
           statusEl.innerHTML = `
-            <div style="font-weight: 600; margin-bottom: 8px;">⚠ Connection Not Verified</div>
+            <div style="font-weight: 600; margin-bottom: 8px;">âš  Connection Not Verified</div>
             <div style="font-size: 14px;">
               ${domain ? `<div><strong>Domain:</strong> ${domain}</div>` : 'No domain set'}
               <div style="margin-top: 8px;">Please authorize via Shopify OAuth to connect your store.</div>

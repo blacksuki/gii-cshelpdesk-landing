@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — giiHelpdeskAgent</title>
-    <meta name="description" content="Sign in to your giiHelpdesk account">
+    <title>Sign In - giiHelpdeskAgent</title>
+    <meta name="description" content="Sign in to your giiHelpdeskAgent account">
     <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="../css/auth.css">
     <script src="../js/toast.js"></script>
@@ -18,7 +18,7 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
-                <div class="auth-logo">giiHelpdesk</div>
+                <div class="auth-logo">giiHelpdeskAgent</div>
                 <div class="auth-subtitle">Welcome back! Sign in to your account</div>
             </div>
 
@@ -173,7 +173,7 @@
                             console.error('Cannot redirect: user not authenticated');
                             Toast.error('Redirect Error', 'Authentication failed. Please try logging in again.');
                         }
-                    }, 600); // 3秒后跳转，给token验证足够时间
+                    }, 600); // 3ç§’åŽè·³è½¬ï¼Œç»™tokenéªŒè¯è¶³å¤Ÿæ—¶é—´
                 } else {
                     let errorMessage = 'Login failed. Please try again.';
                     
@@ -209,7 +209,7 @@
                     console.warn('Google OAuth Client ID not configured or using placeholder');
                     document.getElementById('googleBtnContainer').innerHTML = `
                         <button class="social-btn" onclick="Toast.error('Config Error', 'Google Login is not configured.')" style="width: 100%;">
-                            <span>🔍</span> Continue with Google (Not Configured)
+                            <span>ðŸ”</span> Continue with Google (Not Configured)
                         </button>`;
                     return;
                 }

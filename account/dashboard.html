@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard — giiHelpdeskAgent</title>
-    <meta name="description" content="Your giiHelpdesk account dashboard" />
+    <title>Dashboard  -  giiHelpdeskAgent</title>
+    <meta name="description" content="Your giiHelpdeskAgent account dashboard" />
     <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="../css/auth.css" />
     <script src="../js/toast.js" defer></script>
@@ -28,7 +28,7 @@
         <!-- Subscription Card -->
         <div class="account-card">
           <div class="account-card__title">
-            <span>📊</span>
+            <span>ðŸ“Š</span>
             Subscription Status
           </div>
           <div class="account-card__content">
@@ -84,7 +84,7 @@
         <!-- Account Info Card -->
         <div class="account-card">
           <div class="account-card__title">
-            <span>👤</span>
+            <span>ðŸ‘¤</span>
             Account Information
           </div>
           <div class="account-card__content">
@@ -132,7 +132,7 @@
       <!-- Shopify Integration Card -->
       <div class="account-card" style="margin-bottom: 32px">
         <div class="account-card__title">
-          <span>🛍️</span>
+          <span>ðŸ›ï¸</span>
           Shopify Integration
         </div>
         <div class="account-card__content">
@@ -174,7 +174,7 @@
             </button>
           </div>
           <div id="shopifyDomainSetup" style="display: none; margin-top: 16px; padding: 16px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ffc107;">
-            <div style="font-weight: 600; margin-bottom: 8px;">⚠️ Shopify Domain Required</div>
+            <div style="font-weight: 600; margin-bottom: 8px;">âš ï¸ Shopify Domain Required</div>
             <div style="font-size: 14px; color: #856404; margin-bottom: 12px;">
               Please set up your Shopify store domain to connect your store and enable features.
             </div>
@@ -192,7 +192,7 @@
       <!-- V3.5 NEW: Store Policies Overview (Pro/Team only) -->
       <div class="account-card" style="margin-bottom: 32px" id="policiesOverviewCard">
         <div class="account-card__title">
-          <span>📋</span>
+          <span>ðŸ“‹</span>
           Store Policies Overview
         </div>
         <div class="account-card__content">
@@ -209,7 +209,7 @@
             <!-- Refund Policy Status -->
             <div class="account-info" style="padding: 12px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 12px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-weight: 600;">🔄 Refund Policy</span>
+                <span style="font-weight: 600;">ðŸ”„ Refund Policy</span>
                 <span id="refundPolicyStatus" class="policy-status-badge">Not Set</span>
               </div>
               <div id="refundPolicySummary" style="font-size: 14px; color: var(--color-muted); line-height: 1.5;">
@@ -220,7 +220,7 @@
             <!-- Shipping Policy Status -->
             <div class="account-info" style="padding: 12px; background-color: #f8f9fa; border-radius: 8px; margin-bottom: 16px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <span style="font-weight: 600;">🚚 Shipping Policy</span>
+                <span style="font-weight: 600;">ðŸšš Shipping Policy</span>
                 <span id="shippingPolicyStatus" class="policy-status-badge">Not Set</span>
               </div>
               <div id="shippingPolicySummary" style="font-size: 14px; color: var(--color-muted); line-height: 1.5;">
@@ -243,7 +243,7 @@
       <!-- Service Policy Management (Pro/Team only) -->
       <div class="account-card" style="margin-bottom: 32px">
         <div class="account-card__title">
-          <span>📑</span>
+          <span>ðŸ“‘</span>
           Service Policies (Pro/Team)
         </div>
         <div class="account-card__content">
@@ -319,7 +319,7 @@
       <!-- Quick Actions -->
       <div class="account-card" style="margin-bottom: 32px">
         <div class="account-card__title">
-          <span>⚡</span>
+          <span>âš¡</span>
           Quick Actions
         </div>
         <div
@@ -359,7 +359,7 @@
       <!-- Recent Activity -->
       <div class="account-card">
         <div class="account-card__title">
-          <span>📈</span>
+          <span>ðŸ“ˆ</span>
           Recent Activity
         </div>
         <div
@@ -405,7 +405,7 @@
           if (result.success) {
             console.log("loadUserData: result.data.user", result.data.user);
             try {
-              // 1. 获取当前user数据
+              // 1. èŽ·å–å½“å‰useræ•°æ®
               const storedUserStr = localStorage.getItem("user");
               console.log("[loadUserData] Stored user string:", storedUserStr ? storedUserStr.substring(0, 100) + '...' : 'null');
               
@@ -416,25 +416,25 @@
                 hasSubscription: !!user.subscription
               });
 
-              // 2. 更新subscription部分（确保保留token和email）
+              // 2. æ›´æ–°subscriptionéƒ¨åˆ†ï¼ˆç¡®ä¿ä¿ç•™tokenå’Œemailï¼‰
               if (result?.data?.user?.subscription) {
                 user.subscription = result.data.user.subscription;
                 console.log("[loadUserData] Updated subscription");
               }
 
-              // 3. 存回localStorage（确保不覆盖token和email）
+              // 3. å­˜å›žlocalStorageï¼ˆç¡®ä¿ä¸è¦†ç›–tokenå’Œemailï¼‰
               if (user.token && user.email) {
                 localStorage.setItem("user", JSON.stringify(user));
                 console.log("[loadUserData] Saved user to localStorage");
               } else {
-                console.error("[loadUserData] ❌ Cannot save user without token/email:", user);
+                console.error("[loadUserData] âŒ Cannot save user without token/email:", user);
               }
             } catch (error) {
               console.error(
                 "[loadUserData] update user.subscription failed, please logout and login again:",
                 error
               );
-              // 可在此处添加备用逻辑（如提示用户、重试等）
+              // å¯åœ¨æ­¤å¤„æ·»åŠ å¤‡ç”¨é€»è¾‘ï¼ˆå¦‚æç¤ºç”¨æˆ·ã€é‡è¯•ç­‰ï¼‰
             }
             updateDashboard(result.data.user);
           } else {
@@ -484,9 +484,9 @@
 
           // Calculate next billing
           if (sub.nextPayment) {
-            // 1. 先拿到“账单日”的 0 点（UTC+8）
+            // 1. å…ˆæ‹¿åˆ°â€œè´¦å•æ—¥â€çš„ 0 ç‚¹ï¼ˆUTC+8ï¼‰
             const billDay = new Date(sub.nextPayment._seconds * 1000);
-            // billDay.setHours(0, 0, 0, 0); // 21:10 → 00:00
+            // billDay.setHours(0, 0, 0, 0); // 21:10 â†’ 00:00
             if (sub.plan === "trial" || sub.status !== "active") {
               document.getElementById("nextBilling").textContent = "--";
             } else {
@@ -494,11 +494,11 @@
                 billDay.toLocaleDateString();
             }
 
-            // // 2. 今天 0 点（UTC+8）
+            // // 2. ä»Šå¤© 0 ç‚¹ï¼ˆUTC+8ï¼‰
             // const today = new Date();
             // today.setHours(0, 0, 0, 0);
 
-            // // 3. 相差天数
+            // // 3. ç›¸å·®å¤©æ•°
             // const msPerDay = 24 * 60 * 60 * 1000;
             // const daysLeft = Math.round((billDay - today) / msPerDay);
 
@@ -598,7 +598,7 @@
               emailLimitElement.style.color = ''; // Default color
             }
             
-            console.log('✅ Quota info loaded:', {
+            console.log('âœ… Quota info loaded:', {
               used,
               limit,
               period: quota.period,
@@ -606,11 +606,11 @@
               totalEmails: quota.totalEmails
             });
           } else {
-            console.warn('⚠️ Failed to load quota info, using fallback display');
+            console.warn('âš ï¸ Failed to load quota info, using fallback display');
             // Fallback is already set by updateDashboard()
           }
         } catch (error) {
-          console.error('❌ Error loading quota info:', error);
+          console.error('âŒ Error loading quota info:', error);
           // Fallback is already set by updateDashboard()
         }
       }
@@ -968,7 +968,7 @@
         
         if (domain) {
           domainEl.textContent = domain;
-          statusEl.textContent = isVerified ? '✓ Connected' : '⚠ Not Verified';
+          statusEl.textContent = isVerified ? 'âœ“ Connected' : 'âš  Not Verified';
           statusEl.style.color = isVerified ? 'var(--color-success)' : 'var(--color-warning)';
           setupEl.style.display = 'none';
         } else {
@@ -1097,7 +1097,7 @@
                 `Successfully connected to ${result.data.shopName || 'your Shopify store'}!`);
               
               // Immediately update UI with verification result
-              document.getElementById('shopifyConnectionStatus').textContent = '✓ Connected';
+              document.getElementById('shopifyConnectionStatus').textContent = 'âœ“ Connected';
               document.getElementById('shopifyConnectionStatus').style.color = 'var(--color-success)';
               
               // Show shop info if available (from verification result)
@@ -1121,7 +1121,7 @@
               Toast.warning('Connection Failed', 
                 result.data.message || 'Unable to verify Shopify connection. Please ensure you have authorized the app via Shopify OAuth.');
               
-              document.getElementById('shopifyConnectionStatus').textContent = '⚠ Not Verified';
+              document.getElementById('shopifyConnectionStatus').textContent = 'âš  Not Verified';
               document.getElementById('shopifyConnectionStatus').style.color = 'var(--color-warning)';
               
               if (result.data.requiresAuth) {
