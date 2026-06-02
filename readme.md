@@ -15,7 +15,7 @@ The giiHelpdesk Landing Website is a comprehensive marketing and user portal for
 - 🎨 **Modern Responsive Design**: Mobile-first approach with clean, professional UI
 - 🔐 **Complete Authentication System**: Registration, login, password reset, email verification
 - 👤 **User Account Management**: Dashboard, profile settings, billing management
-- 💳 **Paddle Integration**: Subscription management and payment processing
+- 💳 **Shopify App Pricing**: Unified billing and subscription management within Shopify Merchant Admin
 - 🔗 **Shopify Integration**: Domain validation and OAuth flow
 - 🌐 **Google OAuth**: One-click sign-in with Google accounts
 - 📱 **Fully Responsive**: Optimized for desktop, tablet, and mobile devices
@@ -57,7 +57,6 @@ gii-cshelpdesk-landing/
 │   ├── auth.js            # Authentication utilities
 │   ├── api-config.js      # API configuration (unified router endpoints)
 │   ├── api-client.js      # Unified API client with retry logic
-│   ├── paddle.js          # Paddle payment integration
 │   └── cases.js           # Customer case studies loader
 │
 ├── images/                # Logo and assets
@@ -87,10 +86,10 @@ gii-cshelpdesk-landing/
 
 #### Pricing Page (`pricing.html`)
 - Three subscription tiers:
-  - **Free Trial**: 14 days, 1 seat, 50 emails/month
-  - **Pro**: $79/month, 1 seat, 1,000 emails/month
-  - **Team**: $199/month, unlimited seats, 5,000 emails/month
-- Paddle Checkout integration
+  - **Free Trial**: 14 days, 1 seat
+  - **Pro**: $19/month, 1 seat
+  - **Team**: $49/month, 5 seats
+- Shopify Merchant App Billing integration
 - Feature comparison table
 
 #### Case Studies (`case.html`)
@@ -135,10 +134,10 @@ gii-cshelpdesk-landing/
 - **Security**: Password change, 2FA settings (planned)
 
 #### Billing Management (`account/billing.html`)
-- **Current subscription**: Plan details, next billing date
-- **Payment methods**: Card management via Paddle
-- **Billing history**: Invoice downloads, payment records
-- **Plan upgrades**: Seamless plan changes
+- **Current subscription**: Plan details, active status
+- **Payment methods**: Managed securely via Shopify Merchant Admin Billing
+- **Billing history**: Managed directly in Shopify Merchant Admin
+- **Plan upgrades**: Seamless Shopify-hosted billing upgrades
 
 ### **4. API Integration**
 
@@ -225,22 +224,22 @@ All API calls use the unified router pattern:
 ### **Subscription Model**
 - **Domain-based**: Each Shopify domain has one subscription
 - **14-day free trial**: Automatically created on registration
-- **Paddle integration**: Payment processing via Paddle
-- **Webhook handling**: Real-time subscription updates
+- **Shopify integration**: Payment processing via Shopify App Pricing
+- **Syncing**: Real-time status sync via Partner API and Firestore cache
 
 ### **Subscription Plans**
 
-| Plan | Price | Seats | Email Limit | Features |
-|------|-------|-------|-------------|----------|
-| **Free Trial** | $0 | 1 | 50/month | 14-day trial, basic features |
-| **Pro** | $79/month | 1 | 1,000/month | Priority support, Shopify integration |
-| **Team** | $199/month | Unlimited | 5,000/month | 24/7 support, advanced analytics |
+| Plan | Price | Seats | Features |
+|------|-------|-------|----------|
+| **Trial** | $0 | 1 | 14-day trial, single active support seat |
+| **Pro** | $19/month | 1 | Priority support, single active seat |
+| **Team** | $49/month | 5 | Team priority support, 5 support seats |
 
-### **Paddle Integration**
-- **Checkout**: Embedded Paddle checkout for seamless payments
-- **Webhooks**: Automatic subscription status updates
-- **Invoice management**: Downloadable invoices and receipts
-- **Payment methods**: Credit card, PayPal support
+### **Shopify App Billing Integration**
+- **Checkout**: Redirect to Shopify Admin for seamless, secure billing approval
+- **Syncing**: Real-time status sync via Partner API and Firestore cache
+- **Invoice management**: Managed directly within the merchant's Shopify account
+- **Payment methods**: Integrated with Shopify checkout system
 
 ---
 
@@ -257,11 +256,11 @@ All API calls use the unified router pattern:
 - **Google Cloud Functions**: Serverless backend
 - **Firestore**: NoSQL database
 - **Secret Manager**: Secure credential storage
-- **Paddle API**: Payment processing
+- **Shopify Partner API**: Subscription management
 - **Resend API**: Transactional emails
 
 ### **Third-Party Services**
-- **Paddle**: Subscription billing
+- **Shopify App Billing**: Subscription billing
 - **Google OAuth**: Social authentication
 - **Shopify API**: Store integration
 - **Resend**: Email delivery
@@ -274,7 +273,7 @@ All API calls use the unified router pattern:
 - Node.js 20.x or higher
 - Vercel CLI (for deployment)
 - Google Cloud Project (for backend)
-- Paddle account (for payments)
+- Shopify Partner Account (for billing configuration)
 
 ### **Local Development**
 
@@ -356,8 +355,8 @@ NEXT_PUBLIC_API_BASE_URL=https://us-central1-YOUR_PROJECT.cloudfunctions.net
 # Google OAuth
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=YOUR_CLIENT_ID.apps.googleusercontent.com
 
-# Paddle
-NEXT_PUBLIC_PADDLE_VENDOR_ID=YOUR_VENDOR_ID
+# Shopify
+SHOPIFY_APP_HANDLE=giihelpdeskagent
 ```
 
 #### 3. Deploy
@@ -437,7 +436,7 @@ The `vercel.json` file includes:
 - [ ] Profile updates save
 - [ ] Shopify domain connection
 - [ ] Subscription status display
-- [ ] Billing history access
+- [ ] Shopify Merchant billing management redirection
 
 #### Responsive Design
 - [ ] Mobile layout (< 768px)
@@ -473,7 +472,7 @@ The `vercel.json` file includes:
 - **GDPR compliant**: Privacy policy, data rights
 - **CCPA compliant**: California privacy requirements
 - **OAuth scopes**: Minimal Gmail permissions
-- **DPA**: Data Processing Agreement via Paddle
+- **GDPR webhooks**: GDPR-compliant customer and store data erasure endpoints
 
 ---
 
@@ -542,7 +541,7 @@ Built with ❤️ by the giiHelpdesk team
 **Technologies Used**:
 - Google Cloud Platform
 - Vercel
-- Paddle
+- Shopify App Billing
 - Resend
 - Shopify API
 - OpenAI GPT-4

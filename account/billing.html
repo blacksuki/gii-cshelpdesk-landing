@@ -7,8 +7,6 @@
     <meta name="description" content="Manage your giiHelpdesk subscription and billing">
     <link rel="icon" href="../images/giiLogo-noBackgroud32.png" type="image/png" />
     <link rel="stylesheet" href="../css/auth.css">
-    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
-    <script src="js/paddle.js" defer></script>
     <script src="../js/toast.js" defer></script>
     <script src="../js/api-config.js" defer></script>
     <script src="../js/api-client.js" defer></script>
@@ -21,7 +19,7 @@
     <div class="account-container">
         <div class="account-header">
             <h1 class="account-title">Billing & Subscription</h1>
-            <p class="account-subtitle">Manage your subscription, payment methods, and billing history</p>
+            <p class="account-subtitle">Manage your subscription securely via your Shopify Merchant Admin</p>
         </div>
 
         <!-- Current Plan -->
@@ -59,6 +57,9 @@
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         <!-- Upgrade button removed per requirement -->
                         <button class="auth-btn" id="upgradeBtn" style="display: none;"></button>
+                        <button class="auth-btn auth-btn--danger" onclick="cancelSubscription()" id="cancelBtn" style="display: none; width: 100%;">
+                            Cancel Subscription
+                        </button>
                     </div>
                 </div>
             </div>
@@ -92,7 +93,7 @@
                         POPULAR
                     </div>
                     <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Pro</div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$79</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$19</div>
                     <div style="margin-bottom: 16px;">
                         <div style="margin-bottom: 8px;">1 Seat</div>
                         <div style="margin-bottom: 8px;">1,000 emails/month</div>
@@ -100,42 +101,24 @@
                         <div style="margin-bottom: 8px;">Shopify integration</div>
                     </div>
                     <button class="auth-btn" onclick="upgradeToPro()" style="width: 100%;">
-                        Upgrade to Pro
+                        Open Billing in Shopify Admin
                     </button>
                 </div>
                 
                 <!-- Team Plan -->
                 <div style="border: 2px solid #e9ecef; border-radius: var(--radius); padding: 20px; text-align: center;">
                     <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Team</div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$199</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$49</div>
                     <div style="margin-bottom: 16px;">
-                        <div style="margin-bottom: 8px;">Unlimited seats</div>
+                        <div style="margin-bottom: 8px;">5 Seats</div>
                         <div style="margin-bottom: 8px;">5,000 emails/month</div>
                         <div style="margin-bottom: 8px;">24/7 support</div>
                         <div style="margin-bottom: 8px;">Advanced analytics</div>
                     </div>
                     <button class="auth-btn auth-btn--secondary" onclick="upgradeToTeam()" style="width: 100%;">
-                        Upgrade to Team
+                        Open Billing in Shopify Admin
                     </button>
                 </div>
-            </div>
-        </div>
-
-        <!-- Billing History -->
-        <div class="account-card" style="max-width: 800px; margin: 0 auto;">
-            <div class="account-card__title">
-                <span>📋</span>
-                Billing History
-            </div>
-            
-            <div id="billingHistory" style="min-height: 100px; display: flex; align-items: center; justify-content: center; color: var(--color-muted);">
-                Loading billing history...
-            </div>
-
-            <div style="margin-top: 16px; text-align: right;">
-                <button class="auth-btn auth-btn--danger" onclick="cancelSubscription()" id="cancelBtn" style="display: none;">
-                    Cancel Subscription
-                </button>
             </div>
         </div>
     </div>
@@ -147,8 +130,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkAuthentication();
             loadBillingData();
-            loadPaymentMethods();
-            loadBillingHistory();
         });
 
         // Load billing data
@@ -176,7 +157,7 @@
                 document.getElementById('currentPlan').textContent = sub.plan || 'Free';
                 document.getElementById('planDescription').textContent = sub.plan === 'Free' ? '14-day free trial' : `${sub.plan} plan`;
                 document.getElementById('currentSeats').textContent = sub.seats || 1;
-                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 79}`;
+                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 19}`;
                 document.getElementById('billingCycle').textContent = sub.billingCycle || 'per month';
                 
                 // Calculate next billing
@@ -208,140 +189,55 @@
             }
         }
 
-
-        // Load billing history
-        async function loadBillingHistory() {
-            try {
-                const result = await window.apiClient.getBillingHistory();
-                
-                if (result.success) {
-                    displayBillingHistory(result.data);
-                } else {
-                    document.getElementById('billingHistory').innerHTML = 'No billing history found.';
-                }
-            } catch (error) {
-                console.error('Error loading billing history:', error);
-                document.getElementById('billingHistory').innerHTML = 'Unable to load billing history.';
-            }
-        }
-
-        // Display billing history
-        function displayBillingHistory(history) {
-            const container = document.getElementById('billingHistory');
-            
-            if (!history || history.length === 0) {
-                container.innerHTML = 'No billing history found.';
-                return;
-            }
-            
-            const historyList = history.map(invoice => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f1f3f4;">
-                    <div>
-                        <div style="font-weight: 500;">${invoice.description || 'Subscription'}</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">Invoice #${invoice.number}</div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-weight: 600;">$${invoice.amount}</div>
-                        <div style="font-size: 14px; color: var(--color-muted);">
-                            ${new Date(invoice.date).toLocaleDateString()}
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-            
-            container.innerHTML = historyList;
-        }
-
-
-
         // Action handlers
-        async function upgradeToPro() {
+        async function openHostedBilling(plan, seats) {
             try {
-                Toast.loading('Upgrading', 'Upgrading to Pro plan...');
-                const result = await window.apiClient.upgradeSubscription('pro', 1);
+                Toast.loading('Opening Billing', 'Opening billing in Shopify Admin...');
+                const result = await window.apiClient.upgradeSubscription(plan, seats);
                 Toast.hideLoading();
                 if (result.success) {
-                    if (result.data && result.data.confirmationUrl) {
-                        Toast.info('Redirecting', 'Redirecting to Shopify Billing to authorize charge...');
-                        window.location.href = result.data.confirmationUrl;
+                    if (result.data && result.data.hostedPricingUrl) {
+                        Toast.info('Redirecting', 'Redirecting to Shopify Admin billing...');
+                        window.location.href = result.data.hostedPricingUrl;
                     } else {
-                        Toast.success('Upgraded', 'Your subscription has been upgraded to Pro.');
-                        loadBillingData();
-                        loadBillingHistory();
+                        Toast.error('Billing Unavailable', 'Hosted billing link is unavailable right now.');
                     }
                 } else {
-                    Toast.error('Upgrade Failed', result.error || 'Unable to upgrade to Pro.');
+                    Toast.error('Upgrade Failed', result.error || 'Unable to open Shopify billing.');
                 }
             } catch (e) {
                 Toast.hideLoading();
-                Toast.error('Upgrade Error', 'An error occurred during upgrade.');
+                Toast.error('Upgrade Error', 'An error occurred while opening Shopify billing.');
             }
+        }
+
+        async function upgradeToPro() {
+            return openHostedBilling('pro', 1);
         }
 
         async function upgradeToTeam() {
-            try {
-                Toast.loading('Upgrading', 'Upgrading to Team plan...');
-                const result = await window.apiClient.upgradeSubscription('team', 5);
-                Toast.hideLoading();
-                if (result.success) {
-                    if (result.data && result.data.confirmationUrl) {
-                        Toast.info('Redirecting', 'Redirecting to Shopify Billing to authorize charge...');
-                        window.location.href = result.data.confirmationUrl;
-                    } else {
-                        Toast.success('Upgraded', 'Your subscription has been upgraded to Team.');
-                        loadBillingData();
-                        loadBillingHistory();
-                    }
-                } else {
-                    Toast.error('Upgrade Failed', result.error || 'Unable to upgrade to Team.');
-                }
-            } catch (e) {
-                Toast.hideLoading();
-                Toast.error('Upgrade Error', 'An error occurred during upgrade.');
-            }
+            return openHostedBilling('team', 5);
         }
 
         async function cancelSubscription() {
-            if (!confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.')) {
+            if (!confirm('Are you sure you want to manage or cancel your subscription? You will be redirected to your Shopify Admin Billing portal.')) {
                 return;
             }
             try {
-                Toast.loading('Cancelling Subscription', 'Processing your cancellation request...');
+                Toast.loading('Redirecting to Shopify', 'Opening Shopify billing portal...');
                 const result = await window.apiClient.cancelSubscription();
                 Toast.hideLoading();
-                if (result.success) {
-                    Toast.success('Subscription Cancelled', 'Your subscription will be cancelled at the end of the current billing period.');
-                    loadBillingData();
-                    loadBillingHistory();
+                if (result.success && result.data && result.data.manageBillingUrl) {
+                    Toast.success('Redirecting', 'Redirecting to your Shopify Admin Billing page...');
+                    setTimeout(() => {
+                        window.location.href = result.data.manageBillingUrl;
+                    }, 1000);
                 } else {
-                    Toast.error('Cancellation Failed', result.error || 'Unable to cancel your subscription.');
+                    Toast.error('Redirect Failed', result.error || 'Unable to redirect to Shopify Admin Billing page.');
                 }
             } catch (e) {
                 Toast.hideLoading();
-                Toast.error('Cancellation Error', 'An error occurred while cancelling.');
-            }
-        }
-
-        function addPaymentMethod() {
-            Toast.info('Payment Method', 'Opening payment method form...');
-            // TODO: Implement payment method addition
-        }
-
-        function editPaymentMethod(methodId) {
-            Toast.info('Edit Payment', 'Opening payment method editor...');
-            // TODO: Implement payment method editing
-        }
-
-        function removePaymentMethod(methodId) {
-            if (confirm('Are you sure you want to remove this payment method?')) {
-                Toast.loading('Removing Payment Method', 'Processing your request...');
-                
-                // TODO: Implement payment method removal
-                setTimeout(() => {
-                    Toast.hideLoading();
-                    Toast.success('Payment Method Removed', 'The payment method has been removed successfully.');
-                    loadPaymentMethods(); // Refresh list
-                }, 2000);
+                Toast.error('Redirection Error', 'An error occurred while redirecting.');
             }
         }
     </script>

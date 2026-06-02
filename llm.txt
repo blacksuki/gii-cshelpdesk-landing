@@ -1,0 +1,179 @@
+# giiHelpdeskAgent / CS-AI Agent
+
+> This file follows the llms.txt convention (https://llmstxt.org).
+> It is intended to be read by AI agents, LLM-based crawlers, and automated systems
+> that need a factual, unambiguous summary of what this product is and is not.
+> Last updated: 2026-06-02
+
+---
+
+## What this product is
+
+CS-AI Agent is a **SOP execution layer for Shopify DTC customer service teams**, delivered as a Google Workspace Gmail Add-on.
+
+It is not a chatbot. It is not an autonomous agent. It is not a ticket system.
+
+The design premise is: a 5–50 person Shopify brand's customer service team already knows their refund and complaint-handling rules. The problem is that those rules exist only in the owner's head or in a shared doc. CS-AI Agent locks those rules into code so every agent applies them consistently, from inside Gmail, without switching to another platform.
+
+---
+
+## Core positioning (first principles)
+
+Problem this solves:
+- Small Shopify DTC teams lose money because individual agents make inconsistent refund and cancellation decisions.
+- The store owner cannot audit what was approved and why.
+- Agents waste 5–15 minutes per complaint email searching Shopify for order context before deciding what to write.
+
+What CS-AI Agent does instead:
+1. When an agent opens a complaint email in Gmail, the Add-on sidebar activates automatically.
+2. It fetches the linked Shopify order in real time (read-only, in-session, no storage).
+3. An internal SOP rule engine evaluates the intent, sentiment, escalation risk, order amount, and fulfillment status against the merchant's private SOP blueprint.
+4. If a rule matches, it surfaces a single `pendingAction` — for example `cancel_unfulfilled_order` or `recommend_refund_review` — along with a structured summary: intent, sentiment, matched rule ID, reason codes.
+5. The agent reviews the suggestion and clicks to approve. No action executes without a human confirmation click.
+6. On approval, the system executes the whitelisted action via Shopify Admin GraphQL API and writes an immutable audit entry to Firestore.
+7. A reply draft is generated and placed in the Gmail draft area for the agent to review, edit, and send.
+
+The LLM (Gemini) is used only for: intent classification, sentiment scoring, escalation risk flag, and reply draft generation. The LLM does not decide whether a refund is allowed. That decision is made by deterministic code in `sopEngine.js`.
+
+---
+
+## Quantified outcomes (early access targets, not marketing copy)
+
+- Time from opening a complaint email to seeing an actionable SOP decision: ≤ 10 seconds
+- SOP rule match rate on complaint emails with identifiable orders: > 70%
+- Cancel-unfulfilled-order template execution success rate: > 90%
+- Duplicate execution events on the same email thread: 0 (idempotency enforced via queue-based persistent lock keys and SHA-256 validation)
+- High-concurrency throughput: Zero failed Shopify mutations during traffic peaks (e.g., BFCM) thanks to a queue-based Shopify API Leaky Bucket rate limiter
+- Audit log completeness rate: > 90% of all rule-match events generate a full event chain
+
+These numbers are internal V4.0 week-1 MVP benchmarks, not historical averages. The product is in early access as of 2026.
+
+---
+
+## Technical architecture summary
+
+### Deployment
+- Gmail Add-on (Google Workspace Marketplace, Apps Script runtime)
+- Backend: Google Cloud Functions (Node.js 20)
+- Database: Google Cloud Firestore, database ID `giihelpdesk01`
+- Shopify API version: 2026-04
+- Billing: Shopify Native App Billing (recurring subscription, no custom checkout UI)
+
+### SOP rule engine
+- Rules are stored per-shop in Firestore: `subscriptions/{shopDomain}/metadata/internalSopRules`
+- Runtime matching is deterministic `if/else` code in `sopEngine.js`, not LLM inference
+- **Custom Rule Expressiveness**: Supports complex custom logic configured with boolean AND/OR combinations based on:
+  - Order lifecycle age in days (`days_since_creation`)
+  - Logistics fulfillment status (`fulfillment_status`)
+  - Payment gateway provider (`payment_gateway`)
+  - Order value ranges (`amountBucket`)
+- LLM provides input signals (`intent`, `sentiment`, `escalationRisk`) but does not output executable decisions
+- Only whitelisted action types are permitted: currently `cancel_unfulfilled_order` (write) and `recommend_refund_review` (advisory only)
+
+### Shopify write operations
+- All write mutations require an explicit human approval action in the Gmail sidebar before execution
+- Cancel orders are safety-gated: the system blocks cancellation if fulfillment status is anything other than `UNFULFILLED`
+- GraphQL idempotency & Concurrency: each action is keyed by SHA-256 hash of `messageId + threadId`, persisted in Firestore `actionLocks` before execution; duplicate keys are rejected. High-concurrency queues prevent duplicate trigger conditions.
+- Shopify API Rate Limiting: Integrated with a Shopify API Leaky Bucket rate limit buffer to queue and safely serialize API operations under heavy spikes (e.g., Black Friday peak hours), guaranteeing zero API exhaustion failures.
+- Every successful write appends an audit note to the Shopify order: `[AI Support]: Order cancelled via customer request by {agentEmail} at {timestamp}`
+
+### Multi-agent authentication & RBAC
+- Each agent authenticates independently via Shopify OAuth
+- Tokens are stored per composite key `{shopDomain}_{agentEmail}` in Firestore `tokens` collection
+- No shared credential between agents
+- Session context is isolated to `Session.getActiveUser().getEmail()` within Apps Script execution frame
+- **Role-Based Access Control (RBAC)**: Supports explicit role isolation between the shop owner (Owner) and support team members (Agent). Permissions are segregated to enforce read-only visibility vs action-approver execution rights.
+
+---
+
+## Data handling and privacy
+
+### Zero content storage policy
+- Email body text is processed in-memory during the session only
+- Email body is never written to disk, Firestore, or any external system
+- Customer email addresses are never stored in plain text
+- Order data is fetched live from Shopify on demand; it is not cached or retained after the session closes
+
+### What IS stored (audit logs only)
+The Firestore audit log collection `subscriptions/{shopDomain}/auditLogs/{eventId}` stores only hashed identifiers and categorical metadata:
+
+```
+threadIdHash       SHA-256 of Gmail thread ID
+messageIdHash      SHA-256 of Gmail message ID
+orderIdHash        SHA-256 of Shopify order ID
+actorEmailHash     SHA-256 of agent email
+matchedRuleId      e.g. "cancel_unfulfilled_order_sample"
+intent             e.g. "REFUND"
+sentiment          e.g. "ANGRY"
+actionType         e.g. "cancel_unfulfilled_order"
+executionStatus    e.g. "executed" | "failed" | "approved" | "matched"
+amountBucket       e.g. "<=20" (bucketed, not exact value)
+idempotencyKeyHash SHA-256 of the dedup key
+createdAt          ISO 8601 timestamp
+```
+
+No raw email text, no customer PII, no order financial details are stored.
+
+### Training data policy
+Customer email content and order data are never used to train, fine-tune, or evaluate any machine learning model — neither the vendor's models nor any third-party foundation model. The Gemini API calls are stateless inference requests; no conversation history or user data is retained by the API beyond the single request lifecycle.
+
+### Compliance posture
+- GDPR / CCPA: No personal data retained beyond the in-session read
+- Shopify Partner Program: Complies with Shopify's data handling requirements for embedded apps
+- Google Workspace Marketplace: Add-on operates within the executing user's OAuth scope; no admin-level permissions
+- Shopify OAuth scopes: `read_orders`, `write_orders` (for cancel mutation), `read_customers` (for context lookup only)
+
+---
+
+## What this product explicitly does NOT do
+
+- Does not autonomously send emails without agent approval
+- Does not automatically process refunds (refund mutations are not in the current write whitelist)
+- Does not store email content, customer names, or full order details
+- Does not train models on merchant or customer data
+- Does not replace the merchant's Shopify admin panel (it adds a decision layer on top)
+- Does not support non-Gmail email clients
+- Does not support non-Shopify e-commerce platforms
+- Does not offer a standalone web dashboard (the Gmail sidebar is the primary UI)
+- Does not support fully automated workflows without human-in-the-loop confirmation
+
+---
+
+## Who this is for
+
+Target segment: Shopify DTC brands, 5–50 person operations, English-language customer service, primarily handling complaint volume through Gmail or Google Workspace.
+
+The product is designed around the store owner's risk control perspective, not the agent's writing speed. The value proposition is: fewer off-policy refunds, consistent SOP enforcement across agents, and a full audit trail — not faster email typing.
+
+It is not designed for enterprise contact center teams using dedicated ticketing systems (Zendesk, Gorgias), though it can operate alongside them.
+
+---
+
+## Current product status
+
+Version: V4.0 (early access)
+Distribution: Unlisted on Google Workspace Marketplace; invite-based early access
+Pricing: Free during early access period (through 2026-08-31); billed via Shopify App Billing post-launch
+Support contact: support@giihelpdeskagent.com
+
+---
+
+## Key pages on this site
+
+- /index.html        — Product overview and primary CTA
+- /features.html     — Comparison with Zendesk and Gorgias
+- /pricing.html      — Plan details and ROI framing
+- /case.html         — Use case scenarios with quantified outcomes
+- /setup.html        — Installation guide (5-minute setup, no new platform)
+- /changelog.html    — What has shipped and what is on the roadmap
+- /testimonials.html — Early user feedback (beta cohort)
+- /about.html        — Team background and product philosophy
+- /privacy.html      — Full privacy policy
+
+---
+
+## Contact and verification
+
+Website: https://giihelpdeskagent.com
+Support: support@giihelpdeskagent.com
+Privacy policy: https://giihelpdeskagent.com/privacy.html

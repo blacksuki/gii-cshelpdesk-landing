@@ -1,0 +1,701 @@
+/*
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  CS-AI Agent — Design System v2.0                                   ║
+  ║  Light HSL theme · Glassmorphism · Outfit + Inter · Micro-motion    ║
+  ║  Loaded AFTER style.css to layer on top of base tokens.             ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+*/
+
+/* ─────────────────────────────────────────────
+   1. GOOGLE FONTS IMPORT
+   ───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;450;500;600&display=swap');
+
+/* ─────────────────────────────────────────────
+   2. HSL DESIGN TOKENS (overrides style.css)
+   ───────────────────────────────────────────── */
+:root {
+  /* ── Primary: Emerald-teal, HSL-precise ── */
+  --ds-primary-h: 162;
+  --ds-primary-s: 100%;
+  --ds-primary-l: 24%;
+  --ds-primary:         hsl(var(--ds-primary-h), var(--ds-primary-s), var(--ds-primary-l));
+  --ds-primary-dark:    hsl(var(--ds-primary-h), var(--ds-primary-s), 18%);
+  --ds-primary-light:   hsl(var(--ds-primary-h), 72%, 40%);
+  --ds-primary-subtle:  hsl(var(--ds-primary-h), 60%, 95%);
+  --ds-primary-glow:    hsl(var(--ds-primary-h), 80%, 55%);
+
+  /* ── Accent: Soft indigo ── */
+  --ds-accent:          hsl(245, 60%, 62%);
+  --ds-accent-dark:     hsl(245, 55%, 48%);
+  --ds-accent-subtle:   hsl(245, 55%, 96%);
+
+  /* ── Neutral surface palette (warm white base) ── */
+  --ds-bg-base:         hsl(210, 25%, 99%);
+  --ds-bg-subtle:       hsl(210, 20%, 96.5%);
+  --ds-bg-muted:        hsl(210, 15%, 93%);
+  --ds-bg-inverted:     hsl(220, 30%, 12%);
+
+  /* ── Text ── */
+  --ds-text-headline:   hsl(220, 30%, 14%);
+  --ds-text-body:       hsl(220, 14%, 35%);
+  --ds-text-muted:      hsl(220, 10%, 56%);
+  --ds-text-on-dark:    hsl(0, 0%, 100%);
+
+  /* ── Borders ── */
+  --ds-border:          hsl(210, 20%, 88%);
+  --ds-border-strong:   hsl(210, 20%, 76%);
+  --ds-border-focus:    hsl(var(--ds-primary-h), 80%, 45%);
+
+  /* ── Glassmorphism surfaces ── */
+  --ds-glass-bg:        rgba(255, 255, 255, 0.68);
+  --ds-glass-bg-hover:  rgba(255, 255, 255, 0.82);
+  --ds-glass-border:    rgba(255, 255, 255, 0.75);
+  --ds-glass-shadow:    0 8px 32px rgba(30, 50, 80, 0.10), 0 1px 2px rgba(30, 50, 80, 0.06);
+  --ds-glass-shadow-lg: 0 16px 48px rgba(30, 50, 80, 0.14), 0 2px 6px rgba(30, 50, 80, 0.06);
+
+  /* ── Shadows (depth-layered) ── */
+  --ds-shadow-xs:  0 1px 2px rgba(20, 40, 60, 0.06);
+  --ds-shadow-sm:  0 2px 6px rgba(20, 40, 60, 0.08), 0 1px 2px rgba(20, 40, 60, 0.04);
+  --ds-shadow-md:  0 4px 16px rgba(20, 40, 60, 0.10), 0 2px 4px rgba(20, 40, 60, 0.06);
+  --ds-shadow-lg:  0 8px 32px rgba(20, 40, 60, 0.12), 0 2px 8px rgba(20, 40, 60, 0.06);
+  --ds-shadow-xl:  0 20px 60px rgba(20, 40, 60, 0.14), 0 4px 12px rgba(20, 40, 60, 0.08);
+
+  /* ── Radius ── */
+  --ds-radius-sm:  6px;
+  --ds-radius:     10px;
+  --ds-radius-md:  14px;
+  --ds-radius-lg:  20px;
+  --ds-radius-xl:  28px;
+
+  /* ── Spacing scale ── */
+  --ds-space-1:  4px;
+  --ds-space-2:  8px;
+  --ds-space-3:  12px;
+  --ds-space-4:  16px;
+  --ds-space-5:  20px;
+  --ds-space-6:  24px;
+  --ds-space-8:  32px;
+  --ds-space-10: 40px;
+  --ds-space-12: 48px;
+  --ds-space-16: 64px;
+  --ds-space-20: 80px;
+
+  /* ── Typography ── */
+  --ds-font-display: 'Outfit', system-ui, sans-serif;
+  --ds-font-body:    'Inter', system-ui, sans-serif;
+  --ds-font-mono:    'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* ── Type scale ── */
+  --ds-text-xs:   11px;
+  --ds-text-sm:   13px;
+  --ds-text-base: 15px;
+  --ds-text-md:   17px;
+  --ds-text-lg:   20px;
+  --ds-text-xl:   24px;
+  --ds-text-2xl:  30px;
+  --ds-text-3xl:  38px;
+  --ds-text-4xl:  48px;
+  --ds-text-5xl:  60px;
+
+  /* ── Easing curves ── */
+  --ds-ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ds-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ds-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Motion durations ── */
+  --ds-duration-fast:   140ms;
+  --ds-duration-base:   220ms;
+  --ds-duration-slow:   380ms;
+  --ds-duration-slower: 600ms;
+
+  /* Backward-compat: override style.css tokens */
+  --color-primary:         var(--ds-primary);
+  --color-primary-dark:    var(--ds-primary-dark);
+  --color-primary-light:   var(--ds-primary-light);
+  --color-secondary:       var(--ds-accent);
+  --color-bg:              var(--ds-bg-base);
+  --color-bg-secondary:    var(--ds-bg-subtle);
+  --color-bg-tertiary:     var(--ds-bg-muted);
+  --color-text:            var(--ds-text-headline);
+  --color-text-secondary:  var(--ds-text-body);
+  --color-muted:           var(--ds-text-muted);
+  --color-border:          var(--ds-border);
+  --shadow-sm:             var(--ds-shadow-sm);
+  --shadow:                var(--ds-shadow-md);
+  --shadow-lg:             var(--ds-shadow-lg);
+  --radius:                var(--ds-radius);
+  --radius-lg:             var(--ds-radius-md);
+}
+
+/* ─────────────────────────────────────────────
+   3. GLOBAL TYPOGRAPHY UPGRADE
+   ───────────────────────────────────────────── */
+body {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-base);
+  line-height: 1.65;
+  color: var(--ds-text-body);
+  background: var(--ds-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ds-font-display);
+  color: var(--ds-text-headline);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+h1 { font-size: var(--ds-text-4xl); font-weight: 800; }
+h2 { font-size: var(--ds-text-3xl); font-weight: 700; }
+h3 { font-size: var(--ds-text-xl); font-weight: 700; }
+h4 { font-size: var(--ds-text-lg); font-weight: 600; }
+h5 { font-size: var(--ds-text-base); font-weight: 600; }
+
+p { margin: 0 0 1em 0; }
+p:last-child { margin-bottom: 0; }
+
+/* Eyebrow / tag text */
+.ds-eyebrow {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ds-primary-light);
+}
+
+/* ─────────────────────────────────────────────
+   4. SITE-WIDE BACKGROUND TREATMENT
+   ───────────────────────────────────────────── */
+
+/* Adds a very subtle radial mesh gradient to the page bg */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 40% at 15% -5%,  hsl(162, 70%, 90%) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 5%,   hsl(245, 60%, 93%) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, hsl(210, 30%, 92%) 0%, transparent 60%),
+    var(--ds-bg-base);
+  animation: ds-mesh-drift 30s ease-in-out infinite alternate;
+}
+
+@keyframes ds-mesh-drift {
+  0%   { background-position: 0% 0%, 100% 0%, 50% 100%; }
+  100% { background-position: 2% 3%, 98% 2%, 52% 98%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; }
+}
+
+/* ─────────────────────────────────────────────
+   5. GLASSMORPHISM CARD SYSTEM
+   ───────────────────────────────────────────── */
+
+/* Base glass card — use this class directly or layer it */
+.ds-glass {
+  background: var(--ds-glass-bg);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--ds-glass-border);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-glass-shadow);
+  transition:
+    box-shadow   var(--ds-duration-base) var(--ds-ease-out),
+    transform    var(--ds-duration-base) var(--ds-ease-out),
+    background   var(--ds-duration-base) var(--ds-ease-out);
+}
+
+.ds-glass:hover {
+  background: var(--ds-glass-bg-hover);
+  box-shadow: var(--ds-glass-shadow-lg);
+  transform: translateY(-3px);
+}
+
+/* Frosted card on colored/gradient backgrounds */
+.ds-glass-frost {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(20px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(1.05);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: var(--ds-radius-md);
+  box-shadow:
+    0 4px 24px rgba(20, 40, 60, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Dark-surface glass (for hero sections with dark bg) */
+.ds-glass-dark {
+  background: rgba(15, 25, 40, 0.55);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--ds-radius-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(1px)) {
+  .ds-glass, .ds-glass-frost {
+    background: rgba(255, 255, 255, 0.94);
+    border-color: var(--ds-border);
+  }
+  .ds-glass-dark {
+    background: rgba(15, 25, 40, 0.88);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   6. ENHANCED NAVIGATION HEADER
+   ───────────────────────────────────────────── */
+.site-header {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(210, 220, 235, 0.6) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 20px rgba(30, 50, 80, 0.06) !important;
+  transition: box-shadow var(--ds-duration-base) var(--ds-ease-smooth);
+}
+
+.site-header.scrolled {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05), 0 6px 24px rgba(30, 50, 80, 0.09) !important;
+}
+
+.logo {
+  font-family: var(--ds-font-display) !important;
+  font-weight: 800 !important;
+  font-size: 19px !important;
+  letter-spacing: -0.03em !important;
+  color: var(--ds-text-headline) !important;
+}
+
+.nav__link {
+  font-family: var(--ds-font-body) !important;
+  font-size: var(--ds-text-sm) !important;
+  font-weight: 500 !important;
+  color: var(--ds-text-body) !important;
+  position: relative;
+}
+
+.nav__link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--ds-primary);
+  border-radius: 1px;
+  transition: width var(--ds-duration-base) var(--ds-ease-out);
+}
+
+.nav__link:hover::after { width: 100%; }
+.nav__link:hover { color: var(--ds-text-headline) !important; }
+
+.nav__cta {
+  font-family: var(--ds-font-body) !important;
+  font-weight: 600 !important;
+  font-size: var(--ds-text-sm) !important;
+  background: var(--ds-primary) !important;
+  border-radius: var(--ds-radius) !important;
+  padding: 8px 18px !important;
+  letter-spacing: -0.01em;
+  box-shadow: 0 2px 8px hsl(162, 80%, 30%, 0.30) !important;
+  transition:
+    background var(--ds-duration-fast) var(--ds-ease-smooth),
+    box-shadow  var(--ds-duration-fast) var(--ds-ease-smooth),
+    transform   var(--ds-duration-fast) var(--ds-ease-smooth) !important;
+}
+
+.nav__cta:hover {
+  background: var(--ds-primary-dark) !important;
+  box-shadow: 0 4px 14px hsl(162, 80%, 28%, 0.38) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ─────────────────────────────────────────────
+   7. BUTTON SYSTEM
+   ───────────────────────────────────────────── */
+
+/* Primary */
+.ds-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ds-space-2);
+  font-family: var(--ds-font-body);
+  font-weight: 600;
+  font-size: var(--ds-text-base);
+  line-height: 1;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--ds-radius);
+  padding: 12px 22px;
+  transition:
+    background    var(--ds-duration-fast) var(--ds-ease-smooth),
+    box-shadow    var(--ds-duration-fast) var(--ds-ease-smooth),
+    transform     var(--ds-duration-fast) var(--ds-ease-smooth),
+    border-color  var(--ds-duration-fast) var(--ds-ease-smooth);
+}
+
+.ds-btn--primary {
+  background: var(--ds-primary);
+  color: #fff;
+  box-shadow: 0 2px 8px hsl(162, 80%, 28%, 0.28);
+}
+
+.ds-btn--primary:hover {
+  background: var(--ds-primary-dark);
+  box-shadow: 0 4px 18px hsl(162, 80%, 28%, 0.38);
+  transform: translateY(-2px);
+}
+
+.ds-btn--primary:active { transform: translateY(0); }
+
+.ds-btn--ghost {
+  background: transparent;
+  color: var(--ds-text-body);
+  border: 1.5px solid var(--ds-border-strong);
+}
+
+.ds-btn--ghost:hover {
+  background: var(--ds-bg-subtle);
+  border-color: var(--ds-primary-light);
+  color: var(--ds-text-headline);
+}
+
+.ds-btn--glass {
+  background: var(--ds-glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--ds-text-headline);
+  border: 1.5px solid var(--ds-glass-border);
+  box-shadow: var(--ds-shadow-sm);
+}
+
+.ds-btn--glass:hover {
+  background: var(--ds-glass-bg-hover);
+  box-shadow: var(--ds-shadow-md);
+  transform: translateY(-1px);
+}
+
+/* Large size modifier */
+.ds-btn--lg {
+  font-size: var(--ds-text-md);
+  padding: 15px 30px;
+  border-radius: var(--ds-radius-md);
+}
+
+/* ─────────────────────────────────────────────
+   8. FEATURE / FUNCTION CARDS (Glassmorphism)
+   ───────────────────────────────────────────── */
+
+/* Override existing .feature-card and .feature-item with glass */
+.feature-card,
+.feature-item,
+.scenario-card,
+.use-case-card,
+.roadmap-item,
+.voice-card--positive,
+.step-card {
+  background: var(--ds-glass-bg) !important;
+  backdrop-filter: blur(16px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(170%) !important;
+  border: 1px solid var(--ds-glass-border) !important;
+  border-radius: var(--ds-radius-md) !important;
+  box-shadow: var(--ds-shadow-sm) !important;
+  transition:
+    transform   var(--ds-duration-base) var(--ds-ease-out),
+    box-shadow  var(--ds-duration-base) var(--ds-ease-out),
+    background  var(--ds-duration-base) var(--ds-ease-out) !important;
+}
+
+.feature-card:hover,
+.feature-item:hover,
+.scenario-card:hover,
+.use-case-card:hover,
+.roadmap-item:hover,
+.step-card:hover {
+  background: var(--ds-glass-bg-hover) !important;
+  box-shadow: var(--ds-shadow-lg) !important;
+  transform: translateY(-4px) !important;
+  border-color: rgba(255,255,255,0.9) !important;
+}
+
+.feature-card__title,
+.feature-item__title,
+.scenario-card__title,
+.use-case-title,
+.step-title,
+.step-card__title {
+  font-family: var(--ds-font-display) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--ds-text-headline) !important;
+}
+
+.feature-card__desc,
+.feature-item__desc,
+.field-value,
+.step-desc,
+.step-card__body {
+  font-family: var(--ds-font-body) !important;
+  color: var(--ds-text-body) !important;
+  line-height: 1.65 !important;
+}
+
+/* ─────────────────────────────────────────────
+   9. SECTION TITLES & LAYOUT
+   ───────────────────────────────────────────── */
+.section__title,
+.roadmap__title,
+.submit-voice__title,
+.changelog-hero__title,
+.testi-hero__title,
+.help-hero__title {
+  font-family: var(--ds-font-display) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--ds-text-headline) !important;
+}
+
+.section__subtitle,
+.roadmap__subtitle,
+.testi-hero__subtitle,
+.changelog-hero__subtitle {
+  font-family: var(--ds-font-body) !important;
+  color: var(--ds-text-body) !important;
+  font-size: var(--ds-text-md) !important;
+  line-height: 1.7 !important;
+}
+
+/* ─────────────────────────────────────────────
+   10. HERO SECTION UPGRADES
+   ───────────────────────────────────────────── */
+.hero {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(210, 220, 235, 0.5) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent glow orbs behind hero */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero::before {
+  width: 600px;
+  height: 600px;
+  top: -200px;
+  right: -100px;
+  background: radial-gradient(circle, hsl(162, 80%, 90%) 0%, transparent 65%);
+  opacity: 0.6;
+}
+
+.hero::after {
+  width: 400px;
+  height: 400px;
+  bottom: -150px;
+  left: -50px;
+  background: radial-gradient(circle, hsl(245, 70%, 92%) 0%, transparent 65%);
+  opacity: 0.5;
+}
+
+.hero__inner { position: relative; z-index: 1; }
+
+.hero__title {
+  font-family: var(--ds-font-display) !important;
+  font-size: clamp(36px, 5vw, 56px) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em !important;
+  color: var(--ds-text-headline) !important;
+  line-height: 1.1 !important;
+}
+
+/* Gradient headline accent */
+.hero__title em,
+.hero__title .accent {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--ds-primary) 0%, var(--ds-primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero__subtitle {
+  font-family: var(--ds-font-body) !important;
+  font-size: var(--ds-text-md) !important;
+  color: var(--ds-text-body) !important;
+  line-height: 1.7 !important;
+}
+
+.hero__cta {
+  font-family: var(--ds-font-body) !important;
+  font-weight: 600 !important;
+  font-size: var(--ds-text-md) !important;
+  background: var(--ds-primary) !important;
+  border-radius: var(--ds-radius-md) !important;
+  padding: 14px 28px !important;
+  box-shadow: 0 4px 18px hsl(162, 80%, 28%, 0.32) !important;
+  transition:
+    background  var(--ds-duration-fast) var(--ds-ease-smooth),
+    box-shadow  var(--ds-duration-fast) var(--ds-ease-smooth),
+    transform   var(--ds-duration-fast) var(--ds-ease-spring) !important;
+}
+
+.hero__cta:hover {
+  background: var(--ds-primary-dark) !important;
+  box-shadow: 0 8px 28px hsl(162, 80%, 28%, 0.40) !important;
+  transform: translateY(-3px) scale(1.02) !important;
+}
+
+/* ─────────────────────────────────────────────
+   11. DATA STAT CHIPS
+   ───────────────────────────────────────────── */
+.ds-stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-space-3);
+  margin: var(--ds-space-5) 0;
+}
+
+.ds-stat-chip {
+  display: inline-flex;
+  flex-direction: column;
+  padding: var(--ds-space-3) var(--ds-space-4);
+  border-radius: var(--ds-radius);
+  background: var(--ds-glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--ds-glass-border);
+  box-shadow: var(--ds-shadow-xs);
+  min-width: 120px;
+  text-align: center;
+  gap: var(--ds-space-1);
+  transition: transform var(--ds-duration-base) var(--ds-ease-spring);
+}
+
+.ds-stat-chip:hover { transform: translateY(-2px) scale(1.02); }
+
+.ds-stat-chip__value {
+  font-family: var(--ds-font-display);
+  font-size: var(--ds-text-2xl);
+  font-weight: 800;
+  color: var(--ds-primary);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.ds-stat-chip__label {
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  color: var(--ds-text-muted);
+  line-height: 1.3;
+}
+
+/* ─────────────────────────────────────────────
+   12. BADGE / TAG PILL
+   ───────────────────────────────────────────── */
+.ds-badge {
+  display: inline-block;
+  font-family: var(--ds-font-body);
+  font-size: var(--ds-text-xs);
+  font-weight: 600;
+  line-height: 1;
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ds-badge--primary {
+  background: var(--ds-primary-subtle);
+  color: var(--ds-primary-dark);
+  border: 1px solid hsl(162, 60%, 82%);
+}
+
+.ds-badge--accent {
+  background: var(--ds-accent-subtle);
+  color: var(--ds-accent-dark);
+  border: 1px solid hsl(245, 50%, 86%);
+}
+
+.ds-badge--glass {
+  background: var(--ds-glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--ds-text-body);
+  border: 1px solid var(--ds-glass-border);
+}
+
+/* ─────────────────────────────────────────────
+   13. FOOTER UPGRADE
+   ───────────────────────────────────────────── */
+.footer,
+#site-footer > footer,
+.site-footer {
+  background: var(--ds-bg-inverted) !important;
+  border-top: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* ─────────────────────────────────────────────
+   14. FORM INPUTS
+   ───────────────────────────────────────────── */
+.voice-form__input,
+.voice-form__textarea,
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+  font-family: var(--ds-font-body) !important;
+  font-size: var(--ds-text-base) !important;
+  border-radius: var(--ds-radius) !important;
+  border: 1.5px solid var(--ds-border) !important;
+  background: rgba(255,255,255,0.75) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    border-color var(--ds-duration-fast) var(--ds-ease-smooth),
+    box-shadow   var(--ds-duration-fast) var(--ds-ease-smooth) !important;
+}
+
+.voice-form__input:focus,
+.voice-form__textarea:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: var(--ds-primary-light) !important;
+  box-shadow: 0 0 0 3px hsl(162, 70%, 70%, 0.25) !important;
+}
+
+/* ─────────────────────────────────────────────
+   15. RESPONSIVE TYPOGRAPHY
+   ───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  h1 { font-size: var(--ds-text-3xl); }
+  h2 { font-size: var(--ds-text-2xl); }
+  h3 { font-size: var(--ds-text-xl); }
+  .hero__title { font-size: clamp(28px, 8vw, 40px) !important; }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: var(--ds-text-2xl); }
+  h2 { font-size: var(--ds-text-xl); }
+}

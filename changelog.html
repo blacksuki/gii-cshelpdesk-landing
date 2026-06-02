@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What We're Building — CS-AI Agent Changelog & Roadmap</title>
+  <meta name="description"
+    content="See what CS-AI Agent has shipped recently and what's coming next. A transparent look at how we're building the SOP execution layer for Shopify DTC customer service teams.">
+  <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/motion.css">
+  <link rel="stylesheet" href="css/changelog-page.css">
+  <script src="js/common.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://giihelpdeskagent.com/changelog.html",
+        "url": "https://giihelpdeskagent.com/changelog.html",
+        "name": "What We're Building — CS-AI Agent Changelog & Roadmap",
+        "description": "See what CS-AI Agent has shipped recently and what's coming next. A transparent look at how we're building the SOP execution layer for Shopify DTC customer service teams.",
+        "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
+        "about": { "@id": "https://giihelpdeskagent.com/#app" },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://giihelpdeskagent.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://giihelpdeskagent.com/changelog.html" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://giihelpdeskagent.com/#website",
+        "url": "https://giihelpdeskagent.com",
+        "name": "giiHelpdeskAgent"
+      }
+    ]
+  }
+  </script>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main role="main">
+
+    <!-- ====================================================
+         HERO
+         ==================================================== -->
+    <section class="changelog-hero" aria-labelledby="changelog-hero-title">
+      <div class="changelog-hero__inner">
+        <div class="changelog-hero__eyebrow">Product Updates</div>
+        <h1 id="changelog-hero-title" class="changelog-hero__title">
+          What we're building, and why
+        </h1>
+        <p class="changelog-hero__subtitle">
+          We ship small, fast, and focused. Every update is driven by a real complaint from a real Shopify DTC team.
+          Here's the full record.
+        </p>
+        <div class="changelog-hero__meta">
+          <span class="changelog-hero__version">Current: <strong>V4.0</strong></span>
+          <span class="changelog-hero__dot">·</span>
+          <span class="changelog-hero__stage">Early Access — Free through Aug 31, 2026</span>
+          <span class="changelog-hero__dot">·</span>
+          <a href="mailto:support@giihelpdesk.com" class="changelog-hero__feedback">
+            Submit a feature request →
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         ROADMAP — What's coming
+         ==================================================== -->
+    <section class="roadmap section" aria-labelledby="roadmap-title">
+      <div class="section__inner">
+        <h2 id="roadmap-title" class="roadmap__title">What's next</h2>
+        <p class="roadmap__subtitle">
+          These are the specific improvements we're working on now. Priorities can shift based on what
+          early users tell us — if something here is critical for you, email us and we'll move it up.
+        </p>
+        <div class="roadmap__grid">
+
+          <div class="roadmap-item roadmap-item--active">
+            <div class="roadmap-item__status roadmap-item__status--building">Building now</div>
+            <h3 class="roadmap-item__title">Multi-rule matching per email</h3>
+            <p class="roadmap-item__desc">
+              Currently, the system matches one SOP rule per email. Some complaints trigger multiple rules
+              (e.g., an order that is both unfulfilled AND past the refund window). We're building
+              rule priority stacking so the system handles these edge cases correctly.
+            </p>
+            <div class="roadmap-item__why">
+              <strong>Why it matters:</strong> Eliminates the "no rule matched" fallback on complex cases,
+              which currently pushes the decision entirely to the agent.
+            </div>
+          </div>
+
+          <div class="roadmap-item roadmap-item--active">
+            <div class="roadmap-item__status roadmap-item__status--building">Building now</div>
+            <h3 class="roadmap-item__title">Custom SOP rule editor (self-serve)</h3>
+            <p class="roadmap-item__desc">
+              Right now, adding custom rules requires contacting us. We're building a self-serve UI
+              inside the dashboard where you can define, test, and activate your own refund
+              and cancellation rules without engineering help.
+            </p>
+            <div class="roadmap-item__why">
+              <strong>Why it matters:</strong> Your refund policy changes. Your rules should too —
+              without waiting on us.
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-item__status roadmap-item__status--planned">Planned</div>
+            <h3 class="roadmap-item__title">Audit log export (CSV)</h3>
+            <p class="roadmap-item__desc">
+              Monthly export of your action audit log to CSV. Useful for finance reconciliation,
+              CS manager reviews, or dispute resolution with payment processors.
+            </p>
+            <div class="roadmap-item__why">
+              <strong>Why it matters:</strong> Chargebacks sometimes come 60–90 days after the original
+              complaint. You need a trail that survives that window.
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-item__status roadmap-item__status--planned">Planned</div>
+            <h3 class="roadmap-item__title">Shopify tagged order notes</h3>
+            <p class="roadmap-item__desc">
+              When an agent confirms a CS action, automatically write a structured note to the Shopify order
+              (not just a cancellation — a timestamped note with rule name, agent ID, and action taken).
+              Searchable from Shopify admin without opening our dashboard.
+            </p>
+            <div class="roadmap-item__why">
+              <strong>Why it matters:</strong> Your ops team and 3PL can see CS actions directly in Shopify
+              without needing access to CS-AI Agent.
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-item__status roadmap-item__status--planned">Planned</div>
+            <h3 class="roadmap-item__title">Weekly digest email to team managers</h3>
+            <p class="roadmap-item__desc">
+              Automated weekly email to the account owner: number of complaints processed,
+              rule match rate, escalations flagged, actions taken per agent.
+              No login required to see if the system is working.
+            </p>
+            <div class="roadmap-item__why">
+              <strong>Why it matters:</strong> Managers shouldn't need to log into a dashboard
+              to know if CS is running smoothly.
+            </div>
+          </div>
+
+          <div class="roadmap-item">
+            <div class="roadmap-item__status roadmap-item__status--considering">Considering</div>
+            <h3 class="roadmap-item__title">Shopify Inbox integration</h3>
+            <p class="roadmap-item__desc">
+              Extend SOP rule matching to Shopify Inbox chat threads. Same rule engine,
+              different input channel. Would let teams using Shopify's built-in chat apply
+              the same policy enforcement without switching to Gmail.
+            </p>
+            <div class="roadmap-item__why">
+              <strong>Why it matters:</strong> Some DTC teams use Shopify Inbox as their primary CS channel.
+              We'd reach them without requiring a workflow change.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="roadmap__not-building">
+          <h3 class="roadmap__not-building-title">What we're explicitly not building</h3>
+          <p class="roadmap__not-building-body">
+            Fully autonomous refund processing (no human confirm), abandoned cart recovery,
+            social media DM monitoring, or a native mobile app. These aren't on our roadmap
+            because they either conflict with our human-in-the-loop principle or are
+            outside our core use case (Gmail-based complaint handling for Shopify DTC).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         CHANGELOG — Shipped
+         ==================================================== -->
+    <section class="changelog-log section" aria-labelledby="changelog-log-title">
+      <div class="section__inner">
+        <h2 id="changelog-log-title" class="section__title">What we've shipped</h2>
+        <p class="section__subtitle">
+          Every entry is a real change that went to production. We don't pad this list.
+        </p>
+
+        <div class="cl-feed">
+
+          <!-- V4.0 -->
+          <article class="cl-entry" aria-labelledby="cl-v4-title">
+            <div class="cl-entry__meta">
+              <span class="cl-entry__version cl-entry__version--major">V4.0</span>
+              <time class="cl-entry__date" datetime="2026-05">May 2026</time>
+            </div>
+            <div class="cl-entry__content">
+              <h3 id="cl-v4-title" class="cl-entry__title">Agentic SOP Execution — Complete Rewrite</h3>
+              <p class="cl-entry__summary">
+                The core judgment engine was rebuilt from scratch. Instead of suggesting actions based
+                on email text alone, the system now runs a structured decision chain:
+                intent classification → sentiment + escalation scoring → Shopify order state fetch →
+                SOP rule matching → confidence gating → draft generation.
+                Actions are only surfaced when the rule match confidence exceeds threshold.
+              </p>
+              <ul class="cl-entry__changes">
+                <li><span class="cl-change cl-change--new">NEW</span> Structured intent + sentiment analysis on every email open</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Escalation risk scoring (0–100) — HIGH triggers human-approval flag</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Idempotency guard &amp; concurrency safety: queue-based lock (SHA-256 validation) on repeat actions</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Shopify GraphQL Leaky Bucket rate limiter: auto-throttle and queue API calls during high-concurrency peaks (e.g., BFCM)</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Per-action audit log: agent ID + rule name + order ID + timestamp</li>
+                <li><span class="cl-change cl-change--improved">IMPROVED</span> Draft reply tone adapts to detected sentiment (ANGRY → de-escalation tone)</li>
+                <li><span class="cl-change cl-change--improved">IMPROVED</span> Shopify order fetch is now asynchronous — sidebar loads faster</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- V3.6 -->
+          <article class="cl-entry" aria-labelledby="cl-v36-title">
+            <div class="cl-entry__meta">
+              <span class="cl-entry__version">V3.6</span>
+              <time class="cl-entry__date" datetime="2026-03">Mar 2026</time>
+            </div>
+            <div class="cl-entry__content">
+              <h3 id="cl-v36-title" class="cl-entry__title">Multi-agent seats + per-agent audit trail</h3>
+              <p class="cl-entry__summary">
+                Added support for Team plan with up to 5 independent agent seats.
+                Each seat has its own OAuth session, separate audit log, and can be revoked
+                independently from the dashboard without affecting other agents.
+              </p>
+              <ul class="cl-entry__changes">
+                <li><span class="cl-change cl-change--new">NEW</span> Team plan: 5 agent seats, each with independent login</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Per-seat audit log — manager can see actions by agent ID</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Seat revocation without subscription cancellation</li>
+                <li><span class="cl-change cl-change--fixed">FIXED</span> Session token conflict when two agents accessed same Gmail thread</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- V3.3 -->
+          <article class="cl-entry" aria-labelledby="cl-v33-title">
+            <div class="cl-entry__meta">
+              <span class="cl-entry__version">V3.3</span>
+              <time class="cl-entry__date" datetime="2026-01">Jan 2026</time>
+            </div>
+            <div class="cl-entry__content">
+              <h3 id="cl-v33-title" class="cl-entry__title">Unified API router + Shopify write actions</h3>
+              <p class="cl-entry__summary">
+                Rebuilt the backend routing layer and added native Shopify write capability.
+                Agents can now cancel orders and add structured notes directly from the Gmail sidebar
+                without opening Shopify admin.
+              </p>
+              <ul class="cl-entry__changes">
+                <li><span class="cl-change cl-change--new">NEW</span> Cancel unfulfilled orders directly from Gmail sidebar (1-click confirm)</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Add structured notes to Shopify orders with agent + rule metadata</li>
+                <li><span class="cl-change cl-change--improved">IMPROVED</span> All API calls now routed through unified handler — faster response time</li>
+                <li><span class="cl-change cl-change--fixed">FIXED</span> Shopify OAuth token refresh on long-running sessions</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- V3.0 -->
+          <article class="cl-entry" aria-labelledby="cl-v30-title">
+            <div class="cl-entry__meta">
+              <span class="cl-entry__version">V3.0</span>
+              <time class="cl-entry__date" datetime="2025-11">Nov 2025</time>
+            </div>
+            <div class="cl-entry__content">
+              <h3 id="cl-v30-title" class="cl-entry__title">Gmail Add-on launch — initial release</h3>
+              <p class="cl-entry__summary">
+                First production release as a Gmail Add-on. Moved from prototype (standalone web app)
+                to a Google Workspace Marketplace-hosted sidebar that activates automatically
+                when a complaint email is opened.
+              </p>
+              <ul class="cl-entry__changes">
+                <li><span class="cl-change cl-change--new">NEW</span> Gmail Add-on sidebar — activates on email open, no tab switching</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Shopify order read (order status, fulfillment, line items)</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Basic SOP rule matching (refund policy, order age threshold)</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Draft reply generation using Gemini API</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Zero email content storage — in-memory processing only</li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================
+         FEEDBACK CTA
+         ==================================================== -->
+    <section class="changelog-cta" aria-labelledby="changelog-cta-title">
+      <div class="changelog-cta__inner">
+        <h2 id="changelog-cta-title" class="changelog-cta__title">
+          You handle complaints. Tell us what would actually help.
+        </h2>
+        <p class="changelog-cta__subtitle">
+          Every feature on this roadmap came from a real CS team conversation.
+          If something you need is missing, email us directly — we read every message.
+        </p>
+        <div class="changelog-cta__actions">
+          <a href="mailto:support@giihelpdesk.com?subject=Feature Request" class="changelog-cta__btn changelog-cta__btn--primary"
+            id="changelogFeedbackBtn">
+            Request a Feature →
+          </a>
+          <a href="auth/register.html" class="changelog-cta__btn changelog-cta__btn--secondary"
+            id="changelogTrialBtn">
+            Start Free Trial
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="site-footer"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const stored = localStorage.getItem('user');
+      let isLoggedIn = false;
+      if (stored) { try { const u = JSON.parse(stored); isLoggedIn = !!(u.token && u.email); } catch (e) { } }
+      const trialBtn = document.getElementById('changelogTrialBtn');
+      if (trialBtn && isLoggedIn) { trialBtn.textContent = 'Go to Dashboard →'; trialBtn.href = 'account/dashboard.html'; }
+    });
+  </script>
+  <script src="js/motion-controller.js" defer></script>
+</body>
+
+</html>
