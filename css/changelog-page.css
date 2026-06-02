@@ -1,0 +1,397 @@
+/*
+  changelog-page.css
+  Styles for changelog.html
+*/
+
+/* ====================================================
+   HERO
+   ==================================================== */
+.changelog-hero {
+  background: linear-gradient(160deg, #0d1b2a 0%, #1a2740 100%);
+  padding: 72px var(--spacing-lg) 56px;
+  color: #fff;
+}
+
+.changelog-hero__inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.changelog-hero__eyebrow {
+  display: inline-block;
+  background: rgba(0, 168, 132, 0.2);
+  color: var(--color-primary-light);
+  border: 1px solid rgba(0, 168, 132, 0.3);
+  border-radius: 999px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.changelog-hero__title {
+  font-size: 40px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  margin: 0 0 16px 0;
+}
+
+.changelog-hero__subtitle {
+  font-size: 17px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.7;
+  margin: 0 0 24px 0;
+}
+
+.changelog-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+}
+
+.changelog-hero__version strong { color: var(--color-primary-light); }
+
+.changelog-hero__dot { color: rgba(255,255,255,0.3); }
+
+.changelog-hero__feedback {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.changelog-hero__feedback:hover { color: var(--color-primary-light); }
+
+/* ====================================================
+   ROADMAP
+   ==================================================== */
+.roadmap {
+  padding: 64px var(--spacing-lg);
+  background: var(--color-bg);
+}
+
+.roadmap__title {
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  margin: 0 0 12px 0;
+}
+
+.roadmap__subtitle {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0 0 36px 0;
+  max-width: 680px;
+}
+
+.roadmap__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.roadmap-item {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.roadmap-item--active {
+  border-color: rgba(0, 128, 96, 0.3);
+  background: rgba(0, 128, 96, 0.03);
+}
+
+.roadmap-item__status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: fit-content;
+}
+
+.roadmap-item__status--building {
+  background: rgba(0, 128, 96, 0.12);
+  color: var(--color-primary-dark);
+}
+
+.roadmap-item__status--planned {
+  background: rgba(92, 106, 196, 0.1);
+  color: var(--color-secondary);
+}
+
+.roadmap-item__status--considering {
+  background: rgba(0, 0, 0, 0.06);
+  color: var(--color-muted);
+}
+
+.roadmap-item__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.35;
+}
+
+.roadmap-item__desc {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+
+.roadmap-item__why {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  background: rgba(0,0,0,0.03);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  border-left: 3px solid var(--color-border);
+}
+
+.roadmap-item__why strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.roadmap__not-building {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.roadmap__not-building-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 10px 0;
+}
+
+.roadmap__not-building-body {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ====================================================
+   CHANGELOG FEED
+   ==================================================== */
+.changelog-log {
+  padding: 64px var(--spacing-lg);
+  background: var(--color-bg-secondary);
+}
+
+.cl-feed {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cl-entry {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 32px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.cl-entry:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.cl-entry__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.cl-entry__version {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.cl-entry__version--major {
+  color: var(--color-primary-dark);
+}
+
+.cl-entry__date {
+  font-size: 13px;
+  color: var(--color-muted);
+  font-style: normal;
+}
+
+.cl-entry__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  margin: 0 0 14px 0;
+}
+
+.cl-entry__summary {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  margin: 0 0 20px 0;
+}
+
+.cl-entry__changes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cl-entry__changes li {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.cl-change {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.cl-change--new {
+  background: rgba(0, 128, 96, 0.1);
+  color: var(--color-primary-dark);
+}
+
+.cl-change--improved {
+  background: rgba(92, 106, 196, 0.1);
+  color: var(--color-secondary);
+}
+
+.cl-change--fixed {
+  background: rgba(255, 136, 0, 0.1);
+  color: #b35900;
+}
+
+/* ====================================================
+   CTA
+   ==================================================== */
+.changelog-cta {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  padding: 64px var(--spacing-lg);
+  text-align: center;
+}
+
+.changelog-cta__inner {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.changelog-cta__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  margin: 0 0 16px 0;
+}
+
+.changelog-cta__subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.65;
+  margin: 0 0 32px 0;
+}
+
+.changelog-cta__actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.changelog-cta__btn {
+  display: inline-block;
+  padding: 13px 26px;
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.changelog-cta__btn--primary {
+  background: #fff;
+  color: var(--color-primary-dark);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.changelog-cta__btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+}
+
+.changelog-cta__btn--secondary {
+  background: transparent;
+  color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+.changelog-cta__btn--secondary:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.7);
+}
+
+/* ====================================================
+   RESPONSIVE
+   ==================================================== */
+@media (max-width: 900px) {
+  .roadmap__grid { grid-template-columns: 1fr; }
+  .cl-entry { grid-template-columns: 1fr; gap: 16px; }
+  .cl-entry__meta { flex-direction: row; align-items: center; gap: 12px; }
+  .changelog-hero__title { font-size: 32px; }
+}
+
+@media (max-width: 600px) {
+  .changelog-hero { padding: 56px var(--spacing-md) 40px; }
+  .changelog-hero__title { font-size: 26px; }
+  .changelog-hero__meta { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .roadmap { padding: 40px var(--spacing-md); }
+  .changelog-log { padding: 40px var(--spacing-md); }
+  .changelog-cta { padding: 48px var(--spacing-md); }
+  .changelog-cta__actions { flex-direction: column; }
+  .changelog-cta__title { font-size: 22px; }
+}

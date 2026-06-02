@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Setup & Help Guide — giiHelpdesk</title>
+  <title>Setup Guide — CS-AI Agent: From Gmail Install to First Complaint Handled in 5 Minutes</title>
   <meta name="description"
-    content="Learn how to install the giiHelpdesk Gmail Add-on and securely connect your Shopify store using this step-by-step setup guide." />
+    content="Install CS-AI Agent in Gmail and connect your Shopify store in under 5 minutes. Step-by-step guide for Shopify DTC team owners — no technical setup, no training required." />
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css" />
   <script src="js/common.js" defer></script>
@@ -343,13 +343,53 @@
   <!-- Hero Banner -->
   <section class="help-hero" aria-labelledby="help-hero-title">
     <div class="help-hero__inner">
-      <div class="help-hero__badge">Help Center</div>
+      <div class="help-hero__badge">Setup Guide</div>
       <h1 id="help-hero-title" class="help-hero__title">
-        Gmail Add-on Setup & Shopify Integration
+        From zero to your first handled complaint in 5 minutes
       </h1>
       <p class="help-hero__subtitle">
-        Follow this comprehensive setup guide to connect your Shopify store and configure the AI assistant within your Gmail inbox.
+        CS-AI Agent installs as a Gmail sidebar. No new platform to learn. No system migration.
+        Connect your Shopify store, open a complaint email, and the sidebar activates automatically.
       </p>
+      <div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:24px;">
+        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:12px 20px; text-align:center;">
+          <div style="font-size:24px; font-weight:800; color:#6ee7b7;">5 min</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.65); margin-top:4px;">Total setup time</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:12px 20px; text-align:center;">
+          <div style="font-size:24px; font-weight:800; color:#6ee7b7;">0</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.65); margin-top:4px;">New platforms to learn</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:12px 20px; text-align:center;">
+          <div style="font-size:24px; font-weight:800; color:#6ee7b7;">~90s</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.65); margin-top:4px;">First complaint handled</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What changes in your first week -->
+  <section style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:40px var(--spacing-lg);" aria-labelledby="first-week-title">
+    <div style="max-width:var(--max-width); margin:0 auto;">
+      <h2 id="first-week-title" style="font-size:22px; font-weight:700; color:var(--color-text); margin:0 0 8px 0; letter-spacing:-0.015em;">What actually changes in your first week</h2>
+      <p style="font-size:15px; color:var(--color-text-secondary); margin:0 0 28px 0; line-height:1.65;">Before you install — here's what you should expect to see and not see.</p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:20px;">
+          <div style="font-size:20px; margin-bottom:10px;">✅</div>
+          <strong style="display:block; font-size:15px; color:var(--color-text); margin-bottom:8px;">What you will see immediately</strong>
+          <p style="font-size:13px; color:var(--color-text-secondary); line-height:1.6; margin:0;">A sidebar opens when you open any complaint email. It shows the Shopify order automatically. No searching. No tab switching.</p>
+        </div>
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:20px;">
+          <div style="font-size:20px; margin-bottom:10px;">📋</div>
+          <strong style="display:block; font-size:15px; color:var(--color-text); margin-bottom:8px;">What your team will notice</strong>
+          <p style="font-size:13px; color:var(--color-text-secondary); line-height:1.6; margin:0;">Complaint handling time drops from 5–15 minutes to under 2 minutes. Draft replies appear. Rule-matched actions show up with a single confirm button.</p>
+        </div>
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:10px; padding:20px;">
+          <div style="font-size:20px; margin-bottom:10px;">⚠️</div>
+          <strong style="display:block; font-size:15px; color:var(--color-text); margin-bottom:8px;">What won't change yet</strong>
+          <p style="font-size:13px; color:var(--color-text-secondary); line-height:1.6; margin:0;">Complex edge cases (partial refunds, multi-item disputes) may show "no rule matched" until we add more rule types. You'll still handle those manually — but faster, since the order data is already in front of you.</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -374,14 +414,15 @@
           <div class="step-card">
             <div class="step-card__header">
               <div class="step-card__num">1</div>
-              <h2 class="step-card__title">Install the Shopify App</h2>
+              <h2 class="step-card__title">Connect your Shopify store</h2>
             </div>
             <div class="step-card__body">
               <p>
-                Begin by installing the unlisted <strong>giiHelpdesk</strong> app on your Shopify store. This initializes the secure OAuth connection between our service and your storefront.
+                Go to your <a href="auth/login.html" style="color:var(--color-primary); font-weight:600;">CS-AI Agent dashboard</a>, click <strong>"Connect Shopify Store"</strong>, and enter your store's .myshopify.com URL.
+                You'll be redirected to Shopify to approve the connection. It takes about 60 seconds.
               </p>
-              <p>
-                You can set your store domain and start the authorization directly in your <a href="auth/login.html">Merchant Portal</a> under <strong>Shopify Integration</strong>.
+              <p style="background:rgba(0,128,96,0.05); border:1px solid rgba(0,128,96,0.15); border-left:3px solid var(--color-primary); border-radius:0 6px 6px 0; padding:10px 14px; font-size:14px; color:var(--color-text-secondary); line-height:1.6; margin-top:12px;">
+                <strong style="color:var(--color-primary-dark);">For the team owner:</strong> You need to be logged into Shopify as the store owner (or have App installation permissions). Your CS staff don't need Shopify access — only you do, once, during setup.
               </p>
             </div>
           </div>
@@ -389,11 +430,19 @@
           <div class="step-card">
             <div class="step-card__header">
               <div class="step-card__num">2</div>
-              <h2 class="step-card__title">Approve Scopes & Connect</h2>
+              <h2 class="step-card__title">Shopify asks what we can access — here's what to expect</h2>
             </div>
             <div class="step-card__body">
               <p>
-                You will be redirected to your Shopify admin screen to approve access. Review the requested permissions (such as reading orders and legal policies for AI context) and click <strong>Install App</strong>.
+                Shopify will show you a permissions screen. Click <strong>"Install App."</strong> Here's what we're asking for and why, in plain English:
+              </p>
+              <ul style="margin:12px 0 0 0; padding:0 0 0 18px; display:flex; flex-direction:column; gap:8px;">
+                <li style="font-size:14px; color:var(--color-text-secondary); line-height:1.55;"><strong style="color:var(--color-text);">Read orders</strong> — so the sidebar can show you the relevant order when a customer emails. We never store order data; we look it up in real time.</li>
+                <li style="font-size:14px; color:var(--color-text-secondary); line-height:1.55;"><strong style="color:var(--color-text);">Cancel orders</strong> — so your team can cancel unfulfilled orders in one click from Gmail, without opening Shopify admin.</li>
+                <li style="font-size:14px; color:var(--color-text-secondary); line-height:1.55;"><strong style="color:var(--color-text);">Write order notes</strong> — to log what action was taken and by which agent, directly in the Shopify order record.</li>
+              </ul>
+              <p style="background:#fefce8; border:1px solid #fde68a; border-radius:6px; padding:10px 14px; font-size:13px; color:#78350f; margin-top:14px; line-height:1.55;">
+                We request <em>write</em> access to orders — but no action ever happens without your team clicking Confirm. The system never cancels orders automatically.
               </p>
             </div>
           </div>
@@ -401,15 +450,17 @@
           <div class="step-card">
             <div class="step-card__header">
               <div class="step-card__num">3</div>
-              <h2 class="step-card__title">Select Your Plan & Approve Billing</h2>
+              <h2 class="step-card__title">Choose your plan (free until Aug 31)</h2>
             </div>
             <div class="step-card__body">
               <p>
-                Once connected, approve your subscription securely managed via <strong>Shopify App Pricing</strong>. Select the plan that fits your team ($19/mo Pro, $49/mo Team, or the private test plan if testing on a development store) and approve the recurring charge.
+                After connecting Shopify, select your plan. Billing goes through Shopify — you don't enter credit card details separately. The plan appears as a recurring Shopify app charge.
+              </p>
+              <p style="background:rgba(0,128,96,0.05); border:1px solid rgba(0,128,96,0.15); border-left:3px solid var(--color-primary); border-radius:0 6px 6px 0; padding:10px 14px; font-size:14px; color:var(--color-text-secondary); line-height:1.6; margin-top:12px;">
+                <strong style="color:var(--color-primary-dark);">Early access:</strong> All plans are free through August 31, 2026. You'll need to approve a $0 billing confirmation — this is Shopify's standard flow and is not a charge.
               </p>
             </div>
           </div>
-
         </div>
 
         <!-- Sticky Right Graphic Visual Panel (Shopify OAuth Flow) -->
@@ -471,21 +522,26 @@
           <div class="step-card">
             <div class="step-card__header">
               <div class="step-card__num">1</div>
-              <h2 class="step-card__title">Acquire the Add-on</h2>
+              <h2 class="step-card__title">Install the Gmail sidebar</h2>
             </div>
             <div class="step-card__body">
               <p>
-                Get the certified <strong>giiHelpDeskAgent</strong> add-on directly from the official Google Workspace Marketplace. Click the link below to open our marketplace listing page.
+                Click the link below to open the CS-AI Agent listing in Google Workspace Marketplace.
+                Hit <strong>"Install"</strong>, sign in with the Google account your team uses for Gmail, and grant permissions.
+                No download. No ZIP file. Gmail will add a sidebar icon automatically.
               </p>
               <div class="action-card">
-                <div class="action-card__text">Ready to integrate? Install from the Store:</div>
+                <div class="action-card__text">Install directly from Google — takes about 60 seconds:</div>
                 <a href="https://workspace.google.com/marketplace/app/giihelpdeskagent/1031313360408" class="marketplace-btn" id="install-marketplace-btn" target="_blank" rel="noopener">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="fill: white;">
                     <path d="M19.36 10.04L20.5 11.53L12 17.9L3.5 11.53L4.64 10.04L12 15.56L19.36 10.04ZM12 13.06L4.64 7.54L3.5 9.03L12 15.4L20.5 9.03L19.36 7.54L12 13.06ZM12 3L20.5 9.4L12 15.77L3.5 9.4L12 3Z"/>
                   </svg>
-                  Install from Google Workspace Marketplace
+                  Install on Google Workspace Marketplace
                 </a>
               </div>
+              <p style="font-size:13px; color:var(--color-muted); margin-top:12px; line-height:1.5;">
+                👥 <strong>For team accounts:</strong> Install on each Gmail account that will handle CS. Each agent logs in separately — there are no shared credentials.
+              </p>
             </div>
           </div>
 
@@ -612,10 +668,38 @@
     <section class="privacy-alert" aria-labelledby="privacy-callout-title">
       <div class="privacy-alert__icon" aria-hidden="true">🔒</div>
       <div class="privacy-alert__content">
-        <h3 id="privacy-callout-title">Zero-Content-Storage Architecture</h3>
+        <h3 id="privacy-callout-title">Your customer emails never leave Google + Shopify</h3>
         <p>
-          We take data protection very seriously. The giiHelpdesk ecosystem never stores your customer's email content, credit cards, or Shopify administrative login secrets. Data packets are read in-memory and analyzed in real-time. Full details can be reviewed in our <a href="privacy.html">Privacy Policy</a>.
+          CS-AI Agent reads emails in-session to analyze and generate a draft. Nothing is stored on our servers — not the email text, not the customer name, not the order details. Once the sidebar closes, nothing is retained. Our audit log records action identifiers only (thread ID hash, order ID, rule name). Full details: <a href="privacy.html" style="color:var(--color-primary);">Privacy Policy</a>.
         </p>
+      </div>
+    </section>
+
+    <!-- Post-setup FAQ -->
+    <section style="max-width:var(--max-width); margin:40px auto; padding:0 var(--spacing-lg) 40px;" aria-labelledby="post-setup-title">
+      <h2 id="post-setup-title" style="font-size:22px; font-weight:700; color:var(--color-text); margin:0 0 24px 0; letter-spacing:-0.015em;">Common questions after setup</h2>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:10px; padding:20px 24px;">
+          <strong style="font-size:15px; color:var(--color-text); display:block; margin-bottom:8px;">"The sidebar opened but shows 'No order found' — what happened?"</strong>
+          <p style="font-size:14px; color:var(--color-text-secondary); line-height:1.65; margin:0;">The system looks for an order number in the email subject or body (e.g., #1024 or ORDER-1024). If the customer didn't include one, the system can't auto-fetch. You can manually enter the order number in the sidebar search box.</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:10px; padding:20px 24px;">
+          <strong style="font-size:15px; color:var(--color-text); display:block; margin-bottom:8px;">"I see 'No rule matched' on most emails. Is something broken?"</strong>
+          <p style="font-size:14px; color:var(--color-text-secondary); line-height:1.65; margin:0;">No — this means the complaint doesn't match any of the pre-built SOP rules (e.g., cancel unfulfilled order, refund within window). You can still use the draft reply. Rule expansion is on our roadmap. Email us and tell us what rule you need: <a href="mailto:support@giihelpdesk.com" style="color:var(--color-primary);">support@giihelpdesk.com</a></p>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:10px; padding:20px 24px;">
+          <strong style="font-size:15px; color:var(--color-text); display:block; margin-bottom:8px;">"How do I add a second CS agent?"</strong>
+          <p style="font-size:14px; color:var(--color-text-secondary); line-height:1.65; margin:0;">Have each agent install the Gmail Add-on on their own Google account (same Google Workspace Marketplace link). Then add them as a seat in your <a href="account/dashboard.html" style="color:var(--color-primary);">dashboard</a>. Each agent has their own login — no shared sessions.</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--color-border); border-radius:10px; padding:20px 24px;">
+          <strong style="font-size:15px; color:var(--color-text); display:block; margin-bottom:8px;">"Something isn't working. How do I get help?"</strong>
+          <p style="font-size:14px; color:var(--color-text-secondary); line-height:1.65; margin:0;">Email <a href="mailto:support@giihelpdesk.com" style="color:var(--color-primary); font-weight:600;">support@giihelpdesk.com</a> — we respond within a few hours during business hours (GMT+8). Include your store URL and what you were trying to do when the issue happened. We read every message.</p>
+        </div>
+
       </div>
     </section>
 
