@@ -93,7 +93,7 @@
                         POPULAR
                     </div>
                     <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Pro</div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$19</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$39</div>
                     <div style="margin-bottom: 16px;">
                         <div style="margin-bottom: 8px;">1 Seat</div>
                         <div style="margin-bottom: 8px;">1,000 emails/month</div>
@@ -108,7 +108,7 @@
                 <!-- Team Plan -->
                 <div style="border: 2px solid #e9ecef; border-radius: var(--radius); padding: 20px; text-align: center;">
                     <div style="font-size: 20px; font-weight: 600; margin-bottom: 8px;">Team</div>
-                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$49</div>
+                    <div style="font-size: 28px; font-weight: 700; color: var(--color-primary); margin-bottom: 16px;">$69</div>
                     <div style="margin-bottom: 16px;">
                         <div style="margin-bottom: 8px;">5 Seats</div>
                         <div style="margin-bottom: 8px;">5,000 emails/month</div>
@@ -157,7 +157,7 @@
                 document.getElementById('currentPlan').textContent = sub.plan || 'Free';
                 document.getElementById('planDescription').textContent = sub.plan === 'Free' ? '14-day free trial' : `${sub.plan} plan`;
                 document.getElementById('currentSeats').textContent = sub.seats || 1;
-                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 19}`;
+                document.getElementById('currentPrice').textContent = sub.plan === 'Free' ? '$0' : `$${sub.monthlyPrice || 39}`;
                 document.getElementById('billingCycle').textContent = sub.billingCycle || 'per month';
                 
                 // Calculate next billing
