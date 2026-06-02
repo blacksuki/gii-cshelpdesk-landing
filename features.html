@@ -9,8 +9,40 @@
     content="See how CS-AI Agent compares to Zendesk and Gorgias for Shopify DTC customer service teams. SOP enforcement, Gmail-native workflow, zero training curve, and 75% lower cost.">
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/motion.css">
   <link rel="stylesheet" href="css/features-page.css">
   <script src="js/common.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://giihelpdeskagent.com/features.html",
+        "url": "https://giihelpdeskagent.com/features.html",
+        "name": "CS-AI Agent vs Zendesk vs Gorgias — Why Shopify DTC Teams Are Switching",
+        "description": "A factual comparison of CS-AI Agent, Zendesk, and Gorgias for 5-50 person Shopify DTC teams. Covers SOP enforcement, Gmail integration, audit trail, and total cost of ownership.",
+        "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
+        "about": { "@id": "https://giihelpdeskagent.com/#app" },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://giihelpdeskagent.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Features", "item": "https://giihelpdeskagent.com/features.html" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://giihelpdeskagent.com/#website",
+        "url": "https://giihelpdeskagent.com",
+        "name": "giiHelpdeskAgent"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -146,6 +178,15 @@
                 <td class="compare-us">✓ Code-enforced — rule must match before action</td>
                 <td class="compare-them">⚡ Manual macros — agent still decides</td>
                 <td class="compare-them">⚡ Rule templates — agent still decides</td>
+              </tr>
+              <tr>
+                <td class="compare-capability">
+                  <strong>Custom rule logic expressiveness</strong>
+                  <span>Ability to handle complex, multi-variable policy configurations</span>
+                </td>
+                <td class="compare-us">✓ Advanced Boolean Engine (AND/OR logic based on <code>days_since_creation</code>, <code>fulfillment_status</code>, <code>payment_gateway</code>, and <code>amountBucket</code>)</td>
+                <td class="compare-them">✗ Static macros only (no logical branch execution)</td>
+                <td class="compare-them">✗ Basic templates (no dynamic multi-variable branching)</td>
               </tr>
               <tr>
                 <td class="compare-capability">
@@ -376,6 +417,7 @@
       if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard →'; btn.href = 'account/dashboard.html'; }
     });
   </script>
+  <script src="js/motion-controller.js" defer></script>
 </body>
 
 </html>

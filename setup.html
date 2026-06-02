@@ -9,6 +9,8 @@
     content="Install CS-AI Agent in Gmail and connect your Shopify store in under 5 minutes. Step-by-step guide for Shopify DTC team owners — no technical setup, no training required." />
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/motion.css">
   <script src="js/common.js" defer></script>
   <style>
     /* Premium Page-Specific Styling */
@@ -335,6 +337,36 @@
       font-size: 15px;
     }
   </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://giihelpdeskagent.com/setup.html",
+        "url": "https://giihelpdeskagent.com/setup.html",
+        "name": "Setup Guide — CS-AI Agent: From Gmail Install to First Complaint Handled in 5 Minutes",
+        "description": "Install CS-AI Agent in Gmail and connect your Shopify store in under 5 minutes. Step-by-step guide for Shopify DTC team owners — no technical setup, no training required.",
+        "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
+        "about": { "@id": "https://giihelpdeskagent.com/#app" },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://giihelpdeskagent.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Setup Guide", "item": "https://giihelpdeskagent.com/setup.html" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://giihelpdeskagent.com/#website",
+        "url": "https://giihelpdeskagent.com",
+        "name": "giiHelpdeskAgent"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -469,7 +501,9 @@
             <span>🛡️</span> Secure Shopify OAuth
           </h3>
           <div class="visual-frame">
-            <svg width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f4f6f8; font-family: sans-serif;">
+            <svg role="img" aria-labelledby="oauth-svg-title oauth-svg-desc" width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f4f6f8; font-family: sans-serif;">
+              <title id="oauth-svg-title">Secure Shopify OAuth Flow Diagram</title>
+              <desc id="oauth-svg-desc">A mockup diagram illustrating the secure connection between the giiHelpdeskAgent Gmail Add-on and your Shopify admin store. It shows the browser bar at your-shop.myshopify.com/admin, a padlock indicating SSL security, and the secure authorization handshake between the gii app icon and the Shopify green icon.</desc>
               <!-- Secure popup browser border -->
               <rect x="10" y="10" width="380" height="220" rx="6" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
               <rect x="10" y="10" width="380" height="30" rx="6" fill="#e2e8f0"/>
@@ -607,7 +641,9 @@
           </h3>
           <div class="visual-frame">
             <!-- Inline SVG Mockup of Gmail Sidebar -->
-            <svg width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; font-family: sans-serif;">
+            <svg role="img" aria-labelledby="gmail-svg-title gmail-svg-desc" width="100%" height="240" viewBox="0 0 400 240" fill="none" xmlns="http://www.w3.org/2000/svg" style="background:#f8fafc; font-family: sans-serif;">
+              <title id="gmail-svg-title">Gmail Add-on Sidebar Interface Mockup</title>
+              <desc id="gmail-svg-desc">An interactive-style vector diagram showing the Gmail Add-on UI layout. The mockup highlights a secure Google Mail inbox window, a left folder list, a central email body containing a customer complaint, and the active giiHelpdeskAgent sidebar on the right displaying order numbers, refund eligibility, and the pending SOP action approval panel.</desc>
               <!-- Browser Header -->
               <rect width="400" height="25" fill="#e2e8f0"/>
               <circle cx="15" cy="12" r="4" fill="#ef4444"/>
@@ -728,6 +764,7 @@
       });
     }
   </script>
+  <script src="js/motion-controller.js" defer></script>
 </body>
 
 </html>

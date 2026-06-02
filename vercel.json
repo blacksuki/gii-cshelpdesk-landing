@@ -8,10 +8,19 @@
                 { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
                 { "key": "X-Content-Type-Options", "value": "nosniff" }
             ]
+        },
+        {
+            "source": "/llm.txt",
+            "headers": [
+                { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+                { "key": "Cache-Control", "value": "public, max-age=86400" },
+                { "key": "X-Robots-Tag", "value": "noindex" }
+            ]
         }
     ],
     "rewrites": [
-        { "source": "/", "destination": "/index.html" }
+        { "source": "/", "destination": "/index.html" },
+        { "source": "/llm.txt", "destination": "/llm.txt" }
     ]
 }
 

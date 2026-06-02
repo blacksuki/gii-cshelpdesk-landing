@@ -9,8 +9,40 @@
     content="Learn why CS-AI Agent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.">
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/motion.css">
   <link rel="stylesheet" href="css/about-page.css">
   <script src="js/common.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://giihelpdeskagent.com/about.html",
+        "url": "https://giihelpdeskagent.com/about.html",
+        "name": "About CS-AI Agent — Why We Built It This Way",
+        "description": "Learn why CS-AI Agent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.",
+        "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
+        "about": { "@id": "https://giihelpdeskagent.com/#app" },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://giihelpdeskagent.com/" },
+            { "@type": "ListItem", "position": 2, "name": "About Us", "item": "https://giihelpdeskagent.com/about.html" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://giihelpdeskagent.com/#website",
+        "url": "https://giihelpdeskagent.com",
+        "name": "giiHelpdeskAgent"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -275,6 +307,7 @@
       if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard →'; btn.href = 'account/dashboard.html'; }
     });
   </script>
+  <script src="js/motion-controller.js" defer></script>
 </body>
 
 </html>

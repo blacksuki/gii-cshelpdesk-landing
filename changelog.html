@@ -9,8 +9,40 @@
     content="See what CS-AI Agent has shipped recently and what's coming next. A transparent look at how we're building the SOP execution layer for Shopify DTC customer service teams.">
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/motion.css">
   <link rel="stylesheet" href="css/changelog-page.css">
   <script src="js/common.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://giihelpdeskagent.com/changelog.html",
+        "url": "https://giihelpdeskagent.com/changelog.html",
+        "name": "What We're Building — CS-AI Agent Changelog & Roadmap",
+        "description": "See what CS-AI Agent has shipped recently and what's coming next. A transparent look at how we're building the SOP execution layer for Shopify DTC customer service teams.",
+        "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
+        "about": { "@id": "https://giihelpdeskagent.com/#app" },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://giihelpdeskagent.com/" },
+            { "@type": "ListItem", "position": 2, "name": "Changelog", "item": "https://giihelpdeskagent.com/changelog.html" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://giihelpdeskagent.com/#website",
+        "url": "https://giihelpdeskagent.com",
+        "name": "giiHelpdeskAgent"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
@@ -182,7 +214,8 @@
               <ul class="cl-entry__changes">
                 <li><span class="cl-change cl-change--new">NEW</span> Structured intent + sentiment analysis on every email open</li>
                 <li><span class="cl-change cl-change--new">NEW</span> Escalation risk scoring (0–100) — HIGH triggers human-approval flag</li>
-                <li><span class="cl-change cl-change--new">NEW</span> Idempotency guard: hard block on repeat actions for same order ID</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Idempotency guard &amp; concurrency safety: queue-based lock (SHA-256 validation) on repeat actions</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Shopify GraphQL Leaky Bucket rate limiter: auto-throttle and queue API calls during high-concurrency peaks (e.g., BFCM)</li>
                 <li><span class="cl-change cl-change--new">NEW</span> Per-action audit log: agent ID + rule name + order ID + timestamp</li>
                 <li><span class="cl-change cl-change--improved">IMPROVED</span> Draft reply tone adapts to detected sentiment (ANGRY → de-escalation tone)</li>
                 <li><span class="cl-change cl-change--improved">IMPROVED</span> Shopify order fetch is now asynchronous — sidebar loads faster</li>
@@ -298,6 +331,7 @@
       if (trialBtn && isLoggedIn) { trialBtn.textContent = 'Go to Dashboard →'; trialBtn.href = 'account/dashboard.html'; }
     });
   </script>
+  <script src="js/motion-controller.js" defer></script>
 </body>
 
 </html>

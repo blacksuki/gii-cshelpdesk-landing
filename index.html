@@ -9,13 +9,144 @@
     content="CS-AI Agent locks your refund SOP into Gmail. Every complaint email is matched against your rules, drafted, and presented for one-click approval — no more guessing, no more costly mistakes." />
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/motion.css">
   <link rel="stylesheet" href="css/index-hero.css" />
   <script src="js/common.js" defer></script>
   <script src="js/auth.js" defer></script>
+  <!-- ═══════════════════════════════════════════════════════
+       Structured Data — Schema.org SoftwareApplication
+       Machine-readable product metadata for AI search engines,
+       LLM crawlers, and rich-result indexers.
+       ═══════════════════════════════════════════════════════ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://giihelpdeskagent.com/#app",
+        "name": "CS-AI Agent",
+        "alternateName": ["giiHelpdeskAgent", "CS-AI Helpdesk Agent"],
+        "url": "https://giihelpdeskagent.com",
+        "description": "A SOP execution layer for Shopify DTC customer service teams delivered as a Gmail Add-on. Locks merchant refund and complaint-handling rules into code, matches every incoming complaint email against those rules in real time, and surfaces a structured pending action for one-click human approval — without autonomous execution.",
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Customer Service Software",
+        "operatingSystem": "Web, Google Workspace, Gmail",
+        "softwareVersion": "4.0",
+        "releaseNotes": "https://giihelpdeskagent.com/changelog.html",
+        "featureList": [
+          "SOP rule engine: deterministic code-based matching of complaint intent, sentiment, and order status against merchant-defined rules",
+          "Shopify order context fetch: real-time read of order number, fulfillment status, and financial status within the Gmail sidebar",
+          "Intent classification: AI-assisted categorisation into REFUND, CANCELLATION, WISMO, COMPLAINT, and other intent types",
+          "Sentiment scoring: ANGRY / FRUSTRATED / NEUTRAL escalation-risk signal from LLM analysis",
+          "Reply draft generation: AI-generated English reply draft placed in Gmail draft area for agent review and editing",
+          "Cancel unfulfilled order: one-click Shopify Admin GraphQL mutation to cancel UNFULFILLED orders, gated by human approval",
+          "Refund review flag: surfaces refund-eligible cases as review-only recommendations; no autonomous refund mutation",
+          "Idempotency lock: SHA-256 keyed action deduplication prevents duplicate order mutations from the same email thread",
+          "Per-agent audit trail: every approved action writes a timestamped note to the Shopify order record including agent email",
+          "Firestore audit log: immutable hashed event chain (threadIdHash, orderIdHash, intent, actionType, executionStatus) with zero PII retention",
+          "Multi-agent seat management: each agent authenticates independently via Shopify OAuth; no shared credentials",
+          "Zero email content storage: email body is processed in-memory only and never written to disk or any external database",
+          "Shopify Native Billing: subscription managed through Shopify App Billing; no custom checkout UI",
+          "CS-in-Loop enforcement: getUserMode() hard-coded to HYBRID; all write actions require explicit human confirmation click"
+        ],
+        "screenshot": "https://giihelpdeskagent.com/images/giiLogo-noBackgroud32.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD",
+          "description": "Free during early access period through 2026-08-31. Post-launch pricing via Shopify App Billing.",
+          "availability": "https://schema.org/LimitedAvailability",
+          "validThrough": "2026-08-31"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://giihelpdeskagent.com/#org",
+          "name": "giiHelpdeskAgent",
+          "url": "https://giihelpdeskagent.com",
+          "email": "support@giihelpdeskagent.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://giihelpdeskagent.com/images/giiLogo-noBackgroud32.png"
+          }
+        },
+        "audience": {
+          "@type": "BusinessAudience",
+          "audienceType": "Shopify DTC merchants with 5 to 50 person customer service teams"
+        },
+        "softwareRequirements": "Google Workspace account with Gmail; Shopify store with Admin API access",
+        "installUrl": "https://workspace.google.com/marketplace",
+        "privacyPolicyUrl": "https://giihelpdeskagent.com/privacy.html",
+        "termsOfServiceUrl": "https://giihelpdeskagent.com/terms.html",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "usageInfo": "https://giihelpdeskagent.com/setup.html",
+        "potentialAction": {
+          "@type": "InstallAction",
+          "target": "https://giihelpdeskagent.com/setup.html"
+        },
+        "additionalProperty": [
+          {
+            "@type": "PropertyValue",
+            "name": "dataRetentionPolicy",
+            "value": "Zero email content storage. Email body is processed in-memory only and never persisted. Audit logs retain only SHA-256 hashed identifiers — no PII, no raw order data, no customer names."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "aiTrainingPolicy",
+            "value": "Customer email content and order data are never used to train or fine-tune any machine learning model. All LLM API calls are stateless inference requests with no data retention beyond the single request lifecycle."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "executionModel",
+            "value": "Human-in-the-loop (CS-in-Loop). No action is executed without an explicit agent confirmation click. The LLM provides analysis signals only; business rule decisions are made by deterministic code."
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "complianceStandards",
+            "value": "GDPR, CCPA, Shopify Partner Program data handling requirements, Google Workspace Marketplace security review"
+          },
+          {
+            "@type": "PropertyValue",
+            "name": "shopifyApiVersion",
+            "value": "2026-04"
+          }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://giihelpdeskagent.com/",
+        "url": "https://giihelpdeskagent.com/",
+        "name": "CS-AI Agent — Stop Your Shopify Team From Making Costly CS Decisions Without Rules",
+        "description": "CS-AI Agent locks your refund SOP into Gmail. Every complaint email is matched against your rules, drafted, and presented for one-click approval.",
+        "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
+        "about": { "@id": "https://giihelpdeskagent.com/#app" },
+        "inLanguage": "en",
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://giihelpdeskagent.com/" }
+          ]
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://giihelpdeskagent.com/#website",
+        "url": "https://giihelpdeskagent.com",
+        "name": "giiHelpdeskAgent",
+        "publisher": { "@id": "https://giihelpdeskagent.com/#org" },
+        "inLanguage": "en"
+      }
+    ]
+  }
+  </script>
 </head>
 
 <body>
   <div id="site-header"></div>
+
+  <main role="main">
 
   <!-- ====================================================
        HERO SECTION — First screen, above the fold
@@ -199,7 +330,7 @@
   <!-- ====================================================
        CORE VALUE PROPS — 3 Cards (replaces vague Features)
        ==================================================== -->
-  <main class="features-section section" role="main">
+  <section id="features" class="features-section section">
     <div class="section__inner">
       <h2 class="section__title" style="text-align:center;">What changes when rules are locked in the system</h2>
       <p class="section__subtitle">
@@ -233,7 +364,7 @@
         </article>
       </div>
     </div>
-  </main>
+  </section>
 
   <!-- ====================================================
        REAL SCENARIOS — Replaces bloated 5-case layout
@@ -306,7 +437,7 @@
   <!-- ====================================================
        ZONE 4: SOCIAL PROOF — Beta metrics + honest credibility
        ==================================================== -->
-  <section class="social-proof section" aria-labelledby="social-proof-title">
+  <section id="social-proof" class="social-proof section" aria-labelledby="social-proof-title">
     <div class="section__inner">
       <h2 id="social-proof-title" class="section__title" style="text-align:center;">
         Numbers from our internal beta
@@ -436,6 +567,7 @@
       </a>
     </div>
   </section>
+</main>
 
   <div id="site-footer"></div>
 
@@ -503,6 +635,7 @@
       manageCTAButtonsState();
     });
   </script>
+  <script src="js/motion-controller.js" defer></script>
 </body>
 
 </html>
