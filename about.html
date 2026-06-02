@@ -4,9 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About CS-AI Agent — Why We Built It This Way</title>
+  <title>About giiHelpdeskAgent  -  Why We Built It This Way</title>
   <meta name="description"
-    content="Learn why CS-AI Agent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.">
+    content="Learn why giiHelpdeskAgent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.">
   <link rel="icon" href="images/giiLogo-noBackgroud32.png" type="image/png" />
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/design-system.css">
@@ -21,8 +21,8 @@
         "@type": "WebPage",
         "@id": "https://giihelpdeskagent.com/about.html",
         "url": "https://giihelpdeskagent.com/about.html",
-        "name": "About CS-AI Agent — Why We Built It This Way",
-        "description": "Learn why CS-AI Agent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.",
+        "name": "About giiHelpdeskAgent  -  Why We Built It This Way",
+        "description": "Learn why giiHelpdeskAgent uses a rules-first design, why we chose to never store email content, and what our product will and won't do for Shopify DTC customer service teams.",
         "isPartOf": { "@id": "https://giihelpdeskagent.com/#website" },
         "about": { "@id": "https://giihelpdeskagent.com/#app" },
         "inLanguage": "en",
@@ -51,7 +51,7 @@
   <main role="main">
 
     <!-- ====================================================
-         HERO — Question-first, not company-first
+         HERO  -  Question-first, not company-first
          ==================================================== -->
     <section class="about-hero-v2" aria-labelledby="about-hero-v2-title">
       <div class="about-hero-v2__inner">
@@ -68,7 +68,7 @@
     </section>
 
     <!-- ====================================================
-         DESIGN DECISIONS — The "why we built it this way"
+         DESIGN DECISIONS  -  The "why we built it this way"
          ==================================================== -->
     <section class="design-decisions section" aria-labelledby="decisions-title">
       <div class="section__inner">
@@ -84,8 +84,8 @@
             <div class="design-decision__body">
               <p>
                 Most AI CS tools let the LLM decide what to do and then suggest an action.
-                CS-AI Agent does the opposite: your rules run first, and the LLM only drafts the
-                <em>reply</em> — it never decides the <em>action</em>.
+                giiHelpdeskAgent does the opposite: your rules run first, and the LLM only drafts the
+                <em>reply</em>  -  it never decides the <em>action</em>.
               </p>
               <p>
                 Here's why this matters: an LLM can be confident and wrong. It has no memory of
@@ -116,13 +116,13 @@
             <div class="design-decision__body">
               <p>
                 This is an architectural decision, not just a policy. We designed the system
-                so that storing email content is technically impossible — not just prohibited.
+                so that storing email content is technically impossible  -  not just prohibited.
               </p>
               <p>
                 Every time a Gmail thread is analyzed, the content is processed in memory,
                 used to generate the analysis and draft, and then discarded. Nothing is written
                 to our database. Our audit logs record hashed identifiers (thread ID hash, order ID)
-                — never the email text itself.
+                 -  never the email text itself.
               </p>
               <p>
                 Why did we build it this way when storing emails would give us more training data
@@ -149,7 +149,7 @@
             </h2>
             <div class="design-decision__body">
               <p>
-                CS-AI Agent never cancels an order, processes a refund, or sends an email
+                giiHelpdeskAgent never cancels an order, processes a refund, or sends an email
                 without a human explicitly clicking "Confirm." Not on simple cases. Not on
                 high-confidence matches. Always a human in the loop.
               </p>
@@ -159,7 +159,7 @@
                 shouldn't have been cancelled, or a refund that's now been issued and can't be reversed.
               </p>
               <p>
-                The speed we deliver — 90 seconds from email open to action complete — comes from
+                The speed we deliver  -  90 seconds from email open to action complete  -  comes from
                 eliminating the manual research and decision steps, not from removing the human.
                 Your agent still makes the call. They just make it with full information,
                 in 6 seconds instead of 8 minutes.
@@ -167,8 +167,8 @@
             </div>
             <div class="design-decision__consequence">
               <span class="design-decision__consequence-label">What this means for you:</span>
-              Your team is still responsible for every CS decision. CS-AI Agent removes the
-              research burden and the policy memory burden — not the accountability.
+              Your team is still responsible for every CS decision. giiHelpdeskAgent removes the
+              research burden and the policy memory burden  -  not the accountability.
             </div>
           </div>
         </article>
@@ -177,12 +177,12 @@
     </section>
 
     <!-- ====================================================
-         PRODUCT BOUNDARIES — What we don't do
+         PRODUCT BOUNDARIES  -  What we don't do
          ==================================================== -->
     <section class="product-scope section" aria-labelledby="scope-title">
       <div class="section__inner">
         <h2 id="scope-title" class="product-scope__title">
-          What CS-AI Agent deliberately does not do
+          What giiHelpdeskAgent deliberately does not do
         </h2>
         <p class="product-scope__subtitle">
           Focus is a product decision. These are things we've chosen not to build,
@@ -190,7 +190,7 @@
         </p>
         <div class="scope-grid">
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">✗</div>
+            <div class="scope-item__icon">âœ—</div>
             <h3 class="scope-item__title">Fully autonomous refund processing</h3>
             <p class="scope-item__reason">
               AI confidence scores don't map to refund risk tolerances.
@@ -198,7 +198,7 @@
             </p>
           </div>
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">✗</div>
+            <div class="scope-item__icon">âœ—</div>
             <h3 class="scope-item__title">Abandoned cart recovery / marketing messages</h3>
             <p class="scope-item__reason">
               That's a separate use case with separate tools. We focus exclusively on
@@ -206,27 +206,27 @@
             </p>
           </div>
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">✗</div>
+            <div class="scope-item__icon">âœ—</div>
             <h3 class="scope-item__title">Customer history profiles</h3>
             <p class="scope-item__reason">
               Storing historical customer data conflicts with our zero-storage architecture.
-              Shopify already has this data — we look it up per-session when needed.
+              Shopify already has this data  -  we look it up per-session when needed.
             </p>
           </div>
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">✗</div>
+            <div class="scope-item__icon">âœ—</div>
             <h3 class="scope-item__title">Omnichannel (Instagram, WhatsApp, phone)</h3>
             <p class="scope-item__reason">
               We work inside Gmail. That's the primary CS channel for Shopify DTC teams
-              at the 5–50 person stage. Other channels may come later.
+              at the 5â€“50 person stage. Other channels may come later.
             </p>
           </div>
           <div class="scope-item scope-item--yes">
-            <div class="scope-item__icon">✓</div>
+            <div class="scope-item__icon">âœ“</div>
             <h3 class="scope-item__title">What we do focus on</h3>
             <p class="scope-item__reason">
-              Refund requests · Order cancellations · Escalation risk detection ·
-              SOP rule matching · Draft reply generation · Shopify write actions ·
+              Refund requests Â· Order cancellations Â· Escalation risk detection Â·
+              SOP rule matching Â· Draft reply generation Â· Shopify write actions Â·
               Per-action audit logging. That's it.
             </p>
           </div>
@@ -244,13 +244,13 @@
           <div class="founding__body">
             <p>
               In 2025, we were helping a small Shopify brand (15 people, ~$800k/yr revenue)
-              diagnose why their refund rate was climbing. What we found wasn't an AI problem —
+              diagnose why their refund rate was climbing. What we found wasn't an AI problem  - 
               it was a consistency problem.
             </p>
             <p>
               Three different CS agents were handling refund requests. Each one had read the same
               refund policy document. But faced with an angry email at 7pm on a Friday,
-              each agent made a different call. The policy document wasn't in the system —
+              each agent made a different call. The policy document wasn't in the system  - 
               it was in their head, competing with their desire to end the shift.
             </p>
             <p>
@@ -258,7 +258,7 @@
               in the tool the agent is already using, at the moment the complaint arrives.
             </p>
             <p>
-              That's CS-AI Agent. It's a narrow tool. It solves a specific problem.
+              That's giiHelpdeskAgent. It's a narrow tool. It solves a specific problem.
               And we think that's exactly what makes it worth using.
             </p>
           </div>
@@ -286,10 +286,10 @@
         <div class="about-cta__actions">
           <a href="auth/register.html" class="about-cta__btn about-cta__btn--primary"
             id="aboutRegisterBtn" aria-label="Start free trial">
-            Start Free — No Credit Card
+            Start Free  -  No Credit Card
           </a>
           <a href="case.html" class="about-cta__btn about-cta__btn--secondary">
-            See Real Scenarios →
+            See Real Scenarios â†’
           </a>
         </div>
       </div>
@@ -304,7 +304,7 @@
       let isLoggedIn = false;
       if (stored) { try { const u = JSON.parse(stored); isLoggedIn = !!(u.token && u.email); } catch (e) { } }
       const btn = document.getElementById('aboutRegisterBtn');
-      if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard →'; btn.href = 'account/dashboard.html'; }
+      if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard â†’'; btn.href = 'account/dashboard.html'; }
     });
   </script>
   <script src="js/motion-controller.js" defer></script>

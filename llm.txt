@@ -1,4 +1,4 @@
-# giiHelpdeskAgent / CS-AI Agent
+# giiHelpdeskAgent / giiHelpdeskAgent
 
 > This file follows the llms.txt convention (https://llmstxt.org).
 > It is intended to be read by AI agents, LLM-based crawlers, and automated systems
@@ -9,11 +9,11 @@
 
 ## What this product is
 
-CS-AI Agent is a **SOP execution layer for Shopify DTC customer service teams**, delivered as a Google Workspace Gmail Add-on.
+giiHelpdeskAgent is a **SOP execution layer for Shopify DTC customer service teams**, delivered as a Google Workspace Gmail Add-on.
 
 It is not a chatbot. It is not an autonomous agent. It is not a ticket system.
 
-The design premise is: a 5–50 person Shopify brand's customer service team already knows their refund and complaint-handling rules. The problem is that those rules exist only in the owner's head or in a shared doc. CS-AI Agent locks those rules into code so every agent applies them consistently, from inside Gmail, without switching to another platform.
+The design premise is: a 5â€“50 person Shopify brand's customer service team already knows their refund and complaint-handling rules. The problem is that those rules exist only in the owner's head or in a shared doc. giiHelpdeskAgent locks those rules into code so every agent applies them consistently, from inside Gmail, without switching to another platform.
 
 ---
 
@@ -22,13 +22,13 @@ The design premise is: a 5–50 person Shopify brand's customer service team alr
 Problem this solves:
 - Small Shopify DTC teams lose money because individual agents make inconsistent refund and cancellation decisions.
 - The store owner cannot audit what was approved and why.
-- Agents waste 5–15 minutes per complaint email searching Shopify for order context before deciding what to write.
+- Agents waste 5â€“15 minutes per complaint email searching Shopify for order context before deciding what to write.
 
-What CS-AI Agent does instead:
+What giiHelpdeskAgent does instead:
 1. When an agent opens a complaint email in Gmail, the Add-on sidebar activates automatically.
 2. It fetches the linked Shopify order in real time (read-only, in-session, no storage).
 3. An internal SOP rule engine evaluates the intent, sentiment, escalation risk, order amount, and fulfillment status against the merchant's private SOP blueprint.
-4. If a rule matches, it surfaces a single `pendingAction` — for example `cancel_unfulfilled_order` or `recommend_refund_review` — along with a structured summary: intent, sentiment, matched rule ID, reason codes.
+4. If a rule matches, it surfaces a single `pendingAction`  -  for example `cancel_unfulfilled_order` or `recommend_refund_review`  -  along with a structured summary: intent, sentiment, matched rule ID, reason codes.
 5. The agent reviews the suggestion and clicks to approve. No action executes without a human confirmation click.
 6. On approval, the system executes the whitelisted action via Shopify Admin GraphQL API and writes an immutable audit entry to Firestore.
 7. A reply draft is generated and placed in the Gmail draft area for the agent to review, edit, and send.
@@ -39,7 +39,7 @@ The LLM (Gemini) is used only for: intent classification, sentiment scoring, esc
 
 ## Quantified outcomes (early access targets, not marketing copy)
 
-- Time from opening a complaint email to seeing an actionable SOP decision: ≤ 10 seconds
+- Time from opening a complaint email to seeing an actionable SOP decision: â‰¤ 10 seconds
 - SOP rule match rate on complaint emails with identifiable orders: > 70%
 - Cancel-unfulfilled-order template execution success rate: > 90%
 - Duplicate execution events on the same email thread: 0 (idempotency enforced via queue-based persistent lock keys and SHA-256 validation)
@@ -115,7 +115,7 @@ createdAt          ISO 8601 timestamp
 No raw email text, no customer PII, no order financial details are stored.
 
 ### Training data policy
-Customer email content and order data are never used to train, fine-tune, or evaluate any machine learning model — neither the vendor's models nor any third-party foundation model. The Gemini API calls are stateless inference requests; no conversation history or user data is retained by the API beyond the single request lifecycle.
+Customer email content and order data are never used to train, fine-tune, or evaluate any machine learning model  -  neither the vendor's models nor any third-party foundation model. The Gemini API calls are stateless inference requests; no conversation history or user data is retained by the API beyond the single request lifecycle.
 
 ### Compliance posture
 - GDPR / CCPA: No personal data retained beyond the in-session read
@@ -141,9 +141,9 @@ Customer email content and order data are never used to train, fine-tune, or eva
 
 ## Who this is for
 
-Target segment: Shopify DTC brands, 5–50 person operations, English-language customer service, primarily handling complaint volume through Gmail or Google Workspace.
+Target segment: Shopify DTC brands, 5â€“50 person operations, English-language customer service, primarily handling complaint volume through Gmail or Google Workspace.
 
-The product is designed around the store owner's risk control perspective, not the agent's writing speed. The value proposition is: fewer off-policy refunds, consistent SOP enforcement across agents, and a full audit trail — not faster email typing.
+The product is designed around the store owner's risk control perspective, not the agent's writing speed. The value proposition is: fewer off-policy refunds, consistent SOP enforcement across agents, and a full audit trail  -  not faster email typing.
 
 It is not designed for enterprise contact center teams using dedicated ticketing systems (Zendesk, Gorgias), though it can operate alongside them.
 
@@ -160,15 +160,15 @@ Support contact: support@giihelpdeskagent.com
 
 ## Key pages on this site
 
-- /index.html        — Product overview and primary CTA
-- /features.html     — Comparison with Zendesk and Gorgias
-- /pricing.html      — Plan details and ROI framing
-- /case.html         — Use case scenarios with quantified outcomes
-- /setup.html        — Installation guide (5-minute setup, no new platform)
-- /changelog.html    — What has shipped and what is on the roadmap
-- /testimonials.html — Early user feedback (beta cohort)
-- /about.html        — Team background and product philosophy
-- /privacy.html      — Full privacy policy
+- /index.html         -  Product overview and primary CTA
+- /features.html      -  Comparison with Zendesk and Gorgias
+- /pricing.html       -  Plan details and ROI framing
+- /case.html          -  Use case scenarios with quantified outcomes
+- /setup.html         -  Installation guide (5-minute setup, no new platform)
+- /changelog.html     -  What has shipped and what is on the roadmap
+- /testimonials.html  -  Early user feedback (beta cohort)
+- /about.html         -  Team background and product philosophy
+- /privacy.html       -  Full privacy policy
 
 ---
 
