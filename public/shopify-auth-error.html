@@ -63,7 +63,7 @@
         }
         
         .error-icon::before {
-            content: "✕";
+            content: "?";
             color: white;
             font-size: 40px;
             font-weight: bold;
@@ -173,7 +173,7 @@
         <p class="subtitle">We couldn't complete the Shopify authorization process</p>
         
         <div class="error-message" id="errorMessage">
-            ❌ An error occurred during the authorization process. Please try again.
+            ? An error occurred during the authorization process. Please try again.
         </div>
         
         <div class="details">
@@ -213,7 +213,7 @@
         document.getElementById('errorType').textContent = errorType;
         
         if (error) {
-            document.getElementById('errorMessage').textContent = `❌ ${error}`;
+            document.getElementById('errorMessage').textContent = `? ${error}`;
         }
         
         // Countdown and redirect

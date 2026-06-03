@@ -101,7 +101,7 @@
 
             <div class="social-login">
                 <a href="#" class="social-btn" onclick="handleGoogleRegister()">
-                    <span>ðŸ”</span>
+                    <span>🔍</span>
                     Continue with Google
                 </a>
             </div>
@@ -132,7 +132,7 @@
         //     domainStatus.style.display = 'flex';
         //     domainStatus.className = 'domain-status domain-status--checking';
         //     domainStatus.innerHTML = `
-        //         <span class="domain-status__icon">â³</span>
+        //         <span class="domain-status__icon">⏳</span>
         //         <span class="domain-status__text">Checking availability...</span>
         //     `;
             
@@ -262,7 +262,7 @@
                     console.error('Domain check API failed:', result.error);
                     domainStatus.className = 'domain-status domain-status--unavailable';
                     domainStatus.innerHTML = `
-                        <span class="domain-status__icon">âš </span>
+                        <span class="domain-status__icon">⚠</span>
                         <span class="domain-status__text">Unable to check Shopify domain availability</span>
                     `;
                     domainInput.classList.remove('success');
@@ -276,7 +276,7 @@
                     console.error('Domain check response missing data:', result);
                     domainStatus.className = 'domain-status domain-status--unavailable';
                     domainStatus.innerHTML = `
-                        <span class="domain-status__icon">âš </span>
+                        <span class="domain-status__icon">⚠</span>
                         <span class="domain-status__text">Invalid response from server</span>
                     `;
                     domainInput.classList.remove('success');
@@ -289,7 +289,7 @@
                 if (isAvailable) {
                     domainStatus.className = 'domain-status domain-status--available';
                     domainStatus.innerHTML = `
-                        <span class="domain-status__icon">âœ“</span>
+                        <span class="domain-status__icon">✓</span>
                         <span class="domain-status__text">Shopify domain is available</span>
                     `;
                     domainInput.classList.add('success');
@@ -300,7 +300,7 @@
                     const reason = result.data.reason || 'Shopify domain is already registered';
                     domainStatus.className = 'domain-status domain-status--unavailable';
                     domainStatus.innerHTML = `
-                        <span class="domain-status__icon">âœ•</span>
+                        <span class="domain-status__icon">✕</span>
                         <span class="domain-status__text">${reason}</span>
                     `;
                     domainInput.classList.add('error');
@@ -312,7 +312,7 @@
                 const domainStatus = document.getElementById('domainStatus');
                 domainStatus.className = 'domain-status domain-status--unavailable';
                 domainStatus.innerHTML = `
-                    <span class="domain-status__icon">âš </span>
+                    <span class="domain-status__icon">⚠</span>
                     <span class="domain-status__text">Unable to check Shopify domain availability</span>
                 `;
                 // Return null to indicate check failed

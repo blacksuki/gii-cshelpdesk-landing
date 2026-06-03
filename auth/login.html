@@ -173,7 +173,7 @@
                             console.error('Cannot redirect: user not authenticated');
                             Toast.error('Redirect Error', 'Authentication failed. Please try logging in again.');
                         }
-                    }, 600); // 3ç§’åŽè·³è½¬ï¼Œç»™tokenéªŒè¯è¶³å¤Ÿæ—¶é—´
+                    }, 600); // 3秒后跳转，给token验证足够时间
                 } else {
                     let errorMessage = 'Login failed. Please try again.';
                     
@@ -209,7 +209,7 @@
                     console.warn('Google OAuth Client ID not configured or using placeholder');
                     document.getElementById('googleBtnContainer').innerHTML = `
                         <button class="social-btn" onclick="Toast.error('Config Error', 'Google Login is not configured.')" style="width: 100%;">
-                            <span>ðŸ”</span> Continue with Google (Not Configured)
+                            <span>🔍</span> Continue with Google (Not Configured)
                         </button>`;
                     return;
                 }

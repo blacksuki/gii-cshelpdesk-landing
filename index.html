@@ -12,13 +12,16 @@
   <link rel="stylesheet" href="css/design-system.css">
   <link rel="stylesheet" href="css/motion.css">
   <link rel="stylesheet" href="css/index-hero.css" />
+  <script src="js/toast.js" defer></script>
+  <script src="js/api-config.js" defer></script>
+  <script src="js/api-client.js" defer></script>
   <script src="js/common.js" defer></script>
   <script src="js/auth.js" defer></script>
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  <!-- ═══════════════════════════════════════════════════════
        Structured Data  -  Schema.org SoftwareApplication
        Machine-readable product metadata for AI search engines,
        LLM crawlers, and rich-result indexers.
-       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+       ═══════════════════════════════════════════════════════ -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -156,7 +159,7 @@
 
       <!-- Left: Hook Copy -->
       <div class="hero-primary__copy">
-        <div class="hero-primary__eyebrow">For Shopify DTC Teams Â· 5â€“50 People</div>
+        <div class="hero-primary__eyebrow">For Shopify DTC Teams · 5–50 People</div>
         <h1 id="hero-primary-title" class="hero-primary__title">
           Your customer service team makes high-stakes decisions every day.
           <span class="hero-primary__title--accent">Without your rules in the system.</span>
@@ -191,13 +194,17 @@
             aria-label="Start your free trial">
             Start Free  -  No Credit Card
           </a>
+          <a href="#" class="hero-cta hero-cta--secondary" id="heroBillingBtn"
+            aria-label="Open billing in Shopify Admin" onclick="openHeroBilling(event)" hidden>
+            Open Billing in Shopify Admin
+          </a>
           <a href="#how-it-works" class="hero-cta hero-cta--secondary" aria-label="See how it works">
-            See How It Works â†“
+            See How It Works ↓
           </a>
         </div>
 
         <p class="hero-primary__trust">
-          ðŸ”’ Zero customer data stored &nbsp;Â·&nbsp; Works inside your existing Gmail &nbsp;Â·&nbsp; Free through Aug 31, 2026
+          🔒 Zero customer data stored &nbsp;·&nbsp; Works inside your existing Gmail &nbsp;·&nbsp; Free through Aug 31, 2026
         </p>
       </div>
 
@@ -219,21 +226,21 @@
             <div class="demo-analysis">
               <div class="demo-analysis__row">
                 <span class="demo-tag demo-tag--intent">Intent: REFUND REQUEST</span>
-                <span class="demo-tag demo-tag--risk">Risk: HIGH ðŸ”´</span>
+                <span class="demo-tag demo-tag--risk">Risk: HIGH 🔴</span>
               </div>
               <div class="demo-analysis__row">
-                <span class="demo-tag demo-tag--order">Order #4821 Â· UNFULFILLED Â· $280</span>
+                <span class="demo-tag demo-tag--order">Order #4821 · UNFULFILLED · $280</span>
               </div>
             </div>
             <div class="demo-sop">
-              <div class="demo-sop__label">âœ… SOP MATCHED</div>
+              <div class="demo-sop__label">✅ SOP MATCHED</div>
               <div class="demo-sop__rule">Rule: cancel_unfulfilled_order</div>
-              <div class="demo-sop__reason">Because: status=UNFULFILLED Â· sentiment=ANGRY</div>
+              <div class="demo-sop__reason">Because: status=UNFULFILLED · sentiment=ANGRY</div>
             </div>
             <div class="demo-action">
               <div class="demo-action__label">Pending Action</div>
               <div class="demo-action__name">Cancel Order #4821 + Draft Reply</div>
-              <button class="demo-action__btn" disabled aria-label="Demo confirm button">âœ“ Confirm &amp; Execute</button>
+              <button class="demo-action__btn" disabled aria-label="Demo confirm button">✓ Confirm &amp; Execute</button>
             </div>
           </div>
         </div>
@@ -255,26 +262,26 @@
           The average Shopify DTC team processes dozens of customer complaints every week. Without <strong style="color: #ff4d4f;">standard operating rules (SOPs)</strong> locked in, every single ticket becomes a risky judgment call: <em>Does this order qualify for a refund? Can we cancel this before it ships?</em>
         </p>
         <p class="pain-section__body">
-          Relying on agents to memorize policies or dig through PDFs leads to costly mistakes—especially when team members are rushed, tired, or newly hired.
+          Relying on agents to memorize policies or dig through PDFs leads to costly mistakes�especially when team members are rushed, tired, or newly hired.
         </p>
       </div>
       <div class="pain-section__list">
         <div class="pain-item">
-          <span class="pain-item__icon">ðŸ’¸</span>
+          <span class="pain-item__icon">💸</span>
           <div class="pain-item__content">
             <strong>Refunds approved that shouldn't be</strong>
             <span>Because the order was already shipped, or the customer was outside the return window  -  but no one checked.</span>
           </div>
         </div>
         <div class="pain-item">
-          <span class="pain-item__icon">ðŸ“‹</span>
+          <span class="pain-item__icon">📋</span>
           <div class="pain-item__content">
             <strong>Rules exist only in someone's head</strong>
             <span>The moment that person leaves, so does your entire refund policy enforcement.</span>
           </div>
         </div>
         <div class="pain-item">
-          <span class="pain-item__icon">ðŸ”</span>
+          <span class="pain-item__icon">🔍</span>
           <div class="pain-item__content">
             <strong>No audit trail when things go wrong</strong>
             <span>Who approved that $380 refund last Tuesday? Nobody knows.</span>
@@ -331,11 +338,11 @@
     <div class="section__inner">
       <h2 class="section__title" style="text-align:center;">What changes when rules are locked in the system</h2>
       <p class="section__subtitle">
-        Not "AI magic." Specific, measurable outcomes for 5â€“50 person Shopify teams.
+        Not "AI magic." Specific, measurable outcomes for 5–50 person Shopify teams.
       </p>
       <div class="features-grid">
         <article class="feature-item">
-          <div class="feature-icon">ðŸ›¡ï¸</div>
+          <div class="feature-icon">🛡️</div>
           <h3 class="feature-item__title">Zero Off-Policy Refunds</h3>
           <p class="feature-item__desc">
             Your refund rules are encoded as conditions, not guidelines. If an order doesn't match
@@ -344,7 +351,7 @@
           </p>
         </article>
         <article class="feature-item">
-          <div class="feature-icon">âš¡</div>
+          <div class="feature-icon">⚡</div>
           <h3 class="feature-item__title">90-Second Complaint Resolution</h3>
           <p class="feature-item__desc">
             Open the email. The sidebar shows: order status, emotion level, matched SOP rule, and a ready-to-send reply draft.
@@ -352,7 +359,7 @@
           </p>
         </article>
         <article class="feature-item">
-          <div class="feature-icon">ðŸ“‘</div>
+          <div class="feature-icon">📑</div>
           <h3 class="feature-item__title">Full Audit Trail, Always</h3>
           <p class="feature-item__desc">
             Every action  -  who approved it, which rule triggered it, which order it touched  -  is logged
@@ -387,13 +394,13 @@
             </div>
             <div class="use-case-field">
               <span class="field-label">Without giiHelpdeskAgent</span>
-              <span class="field-value">Agent opens Gmail â†’ manually searches Shopify for the order â†’ tries to recall the refund policy â†’ makes a judgment call â†’ responds. Average time: 8â€“12 minutes. Error rate in practice: ~20%.</span>
+              <span class="field-value">Agent opens Gmail → manually searches Shopify for the order → tries to recall the refund policy → makes a judgment call → responds. Average time: 8–12 minutes. Error rate in practice: ~20%.</span>
             </div>
             <div class="use-case-solution">
               <span class="solution-label">With giiHelpdeskAgent</span>
               <span class="solution-value">
-                Sidebar activates on email open â†’ Shopify order pulled in 3 seconds â†’ system identifies UNFULFILLED status â†’
-                rule <code>cancel_unfulfilled_order</code> triggered â†’ draft reply + cancel action presented for one-click approval â†’
+                Sidebar activates on email open → Shopify order pulled in 3 seconds → system identifies UNFULFILLED status →
+                rule <code>cancel_unfulfilled_order</code> triggered → draft reply + cancel action presented for one-click approval →
                 Shopify order cancelled, note logged with agent ID.
                 <br><strong>Total time: ~90 seconds. Policy compliance: 100%.</strong>
               </span>
@@ -419,8 +426,8 @@
             <div class="use-case-solution">
               <span class="solution-label">With giiHelpdeskAgent</span>
               <span class="solution-value">
-                System detects ANGRY sentiment + escalation risk flag â†’ email surfaces as HIGH priority in sidebar â†’
-                draft response written with de-escalation tone â†’ agent responds within minutes, not hours.
+                System detects ANGRY sentiment + escalation risk flag → email surfaces as HIGH priority in sidebar →
+                draft response written with de-escalation tone → agent responds within minutes, not hours.
                 <br><strong>Chargebacks prevented before they're filed. Negative reviews defused before they go public.</strong>
               </span>
             </div>
@@ -468,7 +475,7 @@
 
       <div class="sp-cards">
         <div class="sp-card">
-          <div class="sp-card__icon">ðŸ—ï¸</div>
+          <div class="sp-card__icon">🏗️</div>
           <h3 class="sp-card__title">Built on a real CS problem</h3>
           <p class="sp-card__body">
             This product was built after we spent time inside a Shopify brand's support inbox  - 
@@ -477,7 +484,7 @@
           </p>
         </div>
         <div class="sp-card">
-          <div class="sp-card__icon">ðŸ”</div>
+          <div class="sp-card__icon">🔍</div>
           <h3 class="sp-card__title">Honesty about what we are</h3>
           <p class="sp-card__body">
             We're a focused MVP for Shopify DTC teams using Gmail. We're not Zendesk.
@@ -486,7 +493,7 @@
           </p>
         </div>
         <div class="sp-card">
-          <div class="sp-card__icon">âš¡</div>
+          <div class="sp-card__icon">⚡</div>
           <h3 class="sp-card__title">Free until Aug 31  -  for a reason</h3>
           <p class="sp-card__body">
             We're offering free access because we want real production data, not just beta data.
@@ -498,7 +505,7 @@
 
       <p class="sp-footnote">
         Beta data collected on a real Shopify store. Not independently audited.
-        <a href="case.html" class="sp-footnote__link">Read the full scenario breakdown â†’</a>
+        <a href="case.html" class="sp-footnote__link">Read the full scenario breakdown →</a>
       </p>
     </div>
   </section>
@@ -509,21 +516,21 @@
   <section class="trust-strip" aria-label="Security and compliance highlights">
     <div class="trust-strip__inner">
       <div class="trust-item">
-        <span class="trust-item__icon">ðŸ”’</span>
+        <span class="trust-item__icon">🔒</span>
         <div class="trust-item__text">
           <strong>Zero Email Content Stored</strong>
           <span>We read your emails in-session to process requests. We do not store, index, or train on your customer conversations.</span>
         </div>
       </div>
       <div class="trust-item">
-        <span class="trust-item__icon">ðŸª</span>
+        <span class="trust-item__icon">🏪</span>
         <div class="trust-item__text">
           <strong>Shopify Partner Certified</strong>
           <span>Installed directly through your Shopify admin. OAuth-authorized, not credential-based. You can revoke access anytime.</span>
         </div>
       </div>
       <div class="trust-item">
-        <span class="trust-item__icon">ðŸ‘¤</span>
+        <span class="trust-item__icon">👤</span>
         <div class="trust-item__text">
           <strong>Per-Agent Authentication</strong>
           <span>Each team member has their own secure session. No shared tokens. Every action is traceable to a specific agent.</span>
@@ -537,7 +544,7 @@
        ==================================================== -->
   <section class="promo-banner-2026" aria-labelledby="promo-2026-title">
     <div class="promo-banner-2026__inner">
-      <div class="promo-banner-2026__badge">â° EARLY ACCESS  -  LIMITED TIME</div>
+      <div class="promo-banner-2026__badge">⏰ EARLY ACCESS  -  LIMITED TIME</div>
       <h2 id="promo-2026-title" class="promo-banner-2026__title">
         Free Through August 31, 2026
       </h2>
@@ -547,20 +554,20 @@
       </p>
       <div class="promo-banner-2026__features">
         <div class="promo-feature">
-          <span class="promo-feature__icon">âœ…</span>
+          <span class="promo-feature__icon">✅</span>
           <span class="promo-feature__text">SOP Rule Engine</span>
         </div>
         <div class="promo-feature">
-          <span class="promo-feature__icon">âœ…</span>
+          <span class="promo-feature__icon">✅</span>
           <span class="promo-feature__text">Shopify Write Actions</span>
         </div>
         <div class="promo-feature">
-          <span class="promo-feature__icon">âœ…</span>
+          <span class="promo-feature__icon">✅</span>
           <span class="promo-feature__text">Full Audit Logs</span>
         </div>
       </div>
       <a href="auth/register.html" class="promo-banner-2026__cta" id="claimAccessBtn">
-        Claim Free Access â†’
+        Claim Free Access →
       </a>
     </div>
   </section>
@@ -580,6 +587,53 @@
       manageCTAButtonsState();
     });
 
+    async function openHeroBilling(event) {
+      if (event) {
+        event.preventDefault();
+      }
+
+      const storedUser = localStorage.getItem("user");
+      let isLoggedIn = false;
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          isLoggedIn = !!(user.token && user.email);
+        } catch (error) {
+          console.error("Error parsing stored user:", error);
+          localStorage.removeItem("user");
+        }
+      }
+
+      if (!isLoggedIn) {
+        window.location.href = "auth/login.html?redirect=dashboard&plan=pro";
+        return;
+      }
+
+      try {
+        Toast.loading("Opening Billing", "Opening billing in Shopify Admin...");
+        const result = await window.apiClient.upgradeSubscription("pro", 1);
+        Toast.hideLoading();
+
+        if (result.success && result.data && result.data.hostedPricingUrl) {
+          Toast.info("Redirecting", "Redirecting to Shopify Admin billing...");
+          window.location.href = result.data.hostedPricingUrl;
+          return;
+        }
+
+        Toast.error(
+          "Billing Unavailable",
+          result.error || "Unable to open Shopify billing right now."
+        );
+      } catch (error) {
+        Toast.hideLoading();
+        console.error("Error opening Shopify hosted billing:", error);
+        Toast.error(
+          "Upgrade Error",
+          "An error occurred while opening Shopify billing."
+        );
+      }
+    }
+
     function manageCTAButtonsState() {
       const storedUser = localStorage.getItem("user");
       let isLoggedIn = false;
@@ -597,21 +651,26 @@
       const heroRegisterBtn = document.getElementById("heroRegisterBtn");
       if (heroRegisterBtn) {
         if (isLoggedIn) {
-          heroRegisterBtn.textContent = "Go to Dashboard â†’";
+          heroRegisterBtn.textContent = "Go to Dashboard →";
           heroRegisterBtn.href = "account/dashboard.html";
           heroRegisterBtn.setAttribute("aria-label", "Go to your dashboard");
         }
+      }
+
+      const heroBillingBtn = document.getElementById("heroBillingBtn");
+      if (heroBillingBtn) {
+        heroBillingBtn.hidden = !isLoggedIn;
       }
 
       // Promo banner CTA
       const claimAccessBtn = document.getElementById("claimAccessBtn");
       if (claimAccessBtn) {
         if (isLoggedIn) {
-          claimAccessBtn.textContent = "Go to Dashboard â†’";
+          claimAccessBtn.textContent = "Go to Dashboard →";
           claimAccessBtn.href = "account/dashboard.html";
           claimAccessBtn.setAttribute("aria-label", "Go to your dashboard");
         } else {
-          claimAccessBtn.textContent = "Claim Free Access â†’";
+          claimAccessBtn.textContent = "Claim Free Access →";
           claimAccessBtn.href = "auth/register.html";
           claimAccessBtn.setAttribute("aria-label", "Register for free access");
         }

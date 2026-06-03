@@ -70,7 +70,7 @@
       }
 
       .success-icon::before {
-        content: "✓";
+        content: "?";
         color: white;
         font-size: 40px;
         font-weight: bold;
@@ -175,7 +175,7 @@
       </p>
 
       <div class="message">
-        ✅ Your Gmail Add-on will now have access to your Shopify store data for
+        ? Your Gmail Add-on will now have access to your Shopify store data for
         enhanced customer service capabilities.
       </div>
 
@@ -217,11 +217,11 @@
         if (window.opener && window.opener.google && window.opener.google.script) {
           window.opener.google.script.run
             .withSuccessHandler(function() {
-              console.log("✅ Token sync successful. Closing window to trigger UI refresh.");
+              console.log("? Token sync successful. Closing window to trigger UI refresh.");
               window.close();
             })
             .withFailureHandler(function(error) {
-              console.error("❌ Token sync failed:", error);
+              console.error("? Token sync failed:", error);
               // Still close the window; the OnClose handler is our fallback.
               window.close();
             })

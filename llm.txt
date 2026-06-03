@@ -13,7 +13,7 @@ giiHelpdeskAgent is a **SOP execution layer for Shopify DTC customer service tea
 
 It is not a chatbot. It is not an autonomous agent. It is not a ticket system.
 
-The design premise is: a 5â€“50 person Shopify brand's customer service team already knows their refund and complaint-handling rules. The problem is that those rules exist only in the owner's head or in a shared doc. giiHelpdeskAgent locks those rules into code so every agent applies them consistently, from inside Gmail, without switching to another platform.
+The design premise is: a 5–50 person Shopify brand's customer service team already knows their refund and complaint-handling rules. The problem is that those rules exist only in the owner's head or in a shared doc. giiHelpdeskAgent locks those rules into code so every agent applies them consistently, from inside Gmail, without switching to another platform.
 
 ---
 
@@ -22,7 +22,7 @@ The design premise is: a 5â€“50 person Shopify brand's customer service tea
 Problem this solves:
 - Small Shopify DTC teams lose money because individual agents make inconsistent refund and cancellation decisions.
 - The store owner cannot audit what was approved and why.
-- Agents waste 5â€“15 minutes per complaint email searching Shopify for order context before deciding what to write.
+- Agents waste 5–15 minutes per complaint email searching Shopify for order context before deciding what to write.
 
 What giiHelpdeskAgent does instead:
 1. When an agent opens a complaint email in Gmail, the Add-on sidebar activates automatically.
@@ -39,7 +39,7 @@ The LLM (Gemini) is used only for: intent classification, sentiment scoring, esc
 
 ## Quantified outcomes (early access targets, not marketing copy)
 
-- Time from opening a complaint email to seeing an actionable SOP decision: â‰¤ 10 seconds
+- Time from opening a complaint email to seeing an actionable SOP decision: ≤ 10 seconds
 - SOP rule match rate on complaint emails with identifiable orders: > 70%
 - Cancel-unfulfilled-order template execution success rate: > 90%
 - Duplicate execution events on the same email thread: 0 (idempotency enforced via queue-based persistent lock keys and SHA-256 validation)
@@ -141,7 +141,7 @@ Customer email content and order data are never used to train, fine-tune, or eva
 
 ## Who this is for
 
-Target segment: Shopify DTC brands, 5â€“50 person operations, English-language customer service, primarily handling complaint volume through Gmail or Google Workspace.
+Target segment: Shopify DTC brands, 5–50 person operations, English-language customer service, primarily handling complaint volume through Gmail or Google Workspace.
 
 The product is designed around the store owner's risk control perspective, not the agent's writing speed. The value proposition is: fewer off-policy refunds, consistent SOP enforcement across agents, and a full audit trail  -  not faster email typing.
 
