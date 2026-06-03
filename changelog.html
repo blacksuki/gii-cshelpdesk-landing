@@ -65,11 +65,11 @@
         </p>
         <div class="changelog-hero__meta">
           <span class="changelog-hero__version">Current: <strong>V4.0</strong></span>
-          <span class="changelog-hero__dot">Â·</span>
+          <span class="changelog-hero__dot">·</span>
           <span class="changelog-hero__stage">Early Access  -  Free through Aug 31, 2026</span>
-          <span class="changelog-hero__dot">Â·</span>
+          <span class="changelog-hero__dot">·</span>
           <a href="mailto:support@giihelpdesk.com" class="changelog-hero__feedback">
-            Submit a feature request â†’
+            Submit a feature request →
           </a>
         </div>
       </div>
@@ -123,7 +123,7 @@
               CS manager reviews, or dispute resolution with payment processors.
             </p>
             <div class="roadmap-item__why">
-              <strong>Why it matters:</strong> Chargebacks sometimes come 60â€“90 days after the original
+              <strong>Why it matters:</strong> Chargebacks sometimes come 60–90 days after the original
               complaint. You need a trail that survives that window.
             </div>
           </div>
@@ -207,17 +207,17 @@
               <p class="cl-entry__summary">
                 The core judgment engine was rebuilt from scratch. Instead of suggesting actions based
                 on email text alone, the system now runs a structured decision chain:
-                intent classification â†’ sentiment + escalation scoring â†’ Shopify order state fetch â†’
-                SOP rule matching â†’ confidence gating â†’ draft generation.
+                intent classification → sentiment + escalation scoring → Shopify order state fetch →
+                SOP rule matching → confidence gating → draft generation.
                 Actions are only surfaced when the rule match confidence exceeds threshold.
               </p>
               <ul class="cl-entry__changes">
                 <li><span class="cl-change cl-change--new">NEW</span> Structured intent + sentiment analysis on every email open</li>
-                <li><span class="cl-change cl-change--new">NEW</span> Escalation risk scoring (0â€“100)  -  HIGH triggers human-approval flag</li>
+                <li><span class="cl-change cl-change--new">NEW</span> Escalation risk scoring (0–100)  -  HIGH triggers human-approval flag</li>
                 <li><span class="cl-change cl-change--new">NEW</span> Idempotency guard &amp; concurrency safety: queue-based lock (SHA-256 validation) on repeat actions</li>
                 <li><span class="cl-change cl-change--new">NEW</span> Shopify GraphQL Leaky Bucket rate limiter: auto-throttle and queue API calls during high-concurrency peaks (e.g., BFCM)</li>
                 <li><span class="cl-change cl-change--new">NEW</span> Per-action audit log: agent ID + rule name + order ID + timestamp</li>
-                <li><span class="cl-change cl-change--improved">IMPROVED</span> Draft reply tone adapts to detected sentiment (ANGRY â†’ de-escalation tone)</li>
+                <li><span class="cl-change cl-change--improved">IMPROVED</span> Draft reply tone adapts to detected sentiment (ANGRY → de-escalation tone)</li>
                 <li><span class="cl-change cl-change--improved">IMPROVED</span> Shopify order fetch is now asynchronous  -  sidebar loads faster</li>
               </ul>
             </div>
@@ -309,7 +309,7 @@
         <div class="changelog-cta__actions">
           <a href="mailto:support@giihelpdesk.com?subject=Feature Request" class="changelog-cta__btn changelog-cta__btn--primary"
             id="changelogFeedbackBtn">
-            Request a Feature â†’
+            Request a Feature →
           </a>
           <a href="auth/register.html" class="changelog-cta__btn changelog-cta__btn--secondary"
             id="changelogTrialBtn">
@@ -328,7 +328,7 @@
       let isLoggedIn = false;
       if (stored) { try { const u = JSON.parse(stored); isLoggedIn = !!(u.token && u.email); } catch (e) { } }
       const trialBtn = document.getElementById('changelogTrialBtn');
-      if (trialBtn && isLoggedIn) { trialBtn.textContent = 'Go to Dashboard â†’'; trialBtn.href = 'account/dashboard.html'; }
+      if (trialBtn && isLoggedIn) { trialBtn.textContent = 'Go to Dashboard →'; trialBtn.href = 'account/dashboard.html'; }
     });
   </script>
   <script src="js/motion-controller.js" defer></script>

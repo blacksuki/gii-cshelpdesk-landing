@@ -55,7 +55,7 @@
          ==================================================== -->
     <section class="case-hero" aria-labelledby="case-hero-title">
       <div class="case-hero__inner">
-        <div class="case-hero__label">Beta Results Â· Illustrative Scenarios</div>
+        <div class="case-hero__label">Beta Results · Illustrative Scenarios</div>
         <h1 id="case-hero-title" class="case-hero__title">
           What actually happens when rules replace guesswork
         </h1>
@@ -74,7 +74,7 @@
       <h2 id="metrics-title" class="sr-only">Internal Beta Metrics</h2>
       <div class="metrics-bar__inner">
         <div class="metric-block">
-          <div class="metric-block__note">Internal Beta Â· 60-Day Test</div>
+          <div class="metric-block__note">Internal Beta · 60-Day Test</div>
           <span class="metric-block__number">847</span>
           <span class="metric-block__label">complaint emails processed</span>
         </div>
@@ -151,8 +151,8 @@
               </div>
             </div>
             <div class="scenario-outcome scenario-outcome--bad">
-              <strong>Total time:</strong> ~14 minutes &nbsp;Â·&nbsp;
-              <strong>Policy compliance:</strong> Unknown  -  agent recalled rules from memory &nbsp;Â·&nbsp;
+              <strong>Total time:</strong> ~14 minutes &nbsp;·&nbsp;
+              <strong>Policy compliance:</strong> Unknown  -  agent recalled rules from memory &nbsp;·&nbsp;
               <strong>Audit trail:</strong> None
             </div>
           </div>
@@ -178,11 +178,11 @@
               </div>
               <div class="scenario-step scenario-step--good">
                 <span class="scenario-step__time">+3 sec</span>
-                <span class="scenario-step__text">System fetches Order #4821 from Shopify: UNFULFILLED Â· $280</span>
+                <span class="scenario-step__text">System fetches Order #4821 from Shopify: UNFULFILLED · $280</span>
               </div>
               <div class="scenario-step scenario-step--good">
                 <span class="scenario-step__time">+6 sec</span>
-                <span class="scenario-step__text">Intent: REFUND Â· Sentiment: ANGRY Â· Risk: HIGH  -  rule <code>cancel_unfulfilled_order</code> matched</span>
+                <span class="scenario-step__text">Intent: REFUND · Sentiment: ANGRY · Risk: HIGH  -  rule <code>cancel_unfulfilled_order</code> matched</span>
               </div>
               <div class="scenario-step scenario-step--good">
                 <span class="scenario-step__time">+9 sec</span>
@@ -194,8 +194,8 @@
               </div>
             </div>
             <div class="scenario-outcome scenario-outcome--good">
-              <strong>Total time:</strong> ~90 seconds &nbsp;Â·&nbsp;
-              <strong>Policy compliance:</strong> 100%  -  code-enforced, not memory &nbsp;Â·&nbsp;
+              <strong>Total time:</strong> ~90 seconds &nbsp;·&nbsp;
+              <strong>Policy compliance:</strong> 100%  -  code-enforced, not memory &nbsp;·&nbsp;
               <strong>Audit trail:</strong> Full  -  agent ID + rule ID + order ID + timestamp
             </div>
           </div>
@@ -244,7 +244,7 @@
               </div>
               <div class="analysis-row">
                 <span class="analysis-label">Sentiment</span>
-                <span class="analysis-value analysis-value--angry">ANGRY ðŸ”´</span>
+                <span class="analysis-value analysis-value--angry">ANGRY 🔴</span>
               </div>
               <div class="analysis-row">
                 <span class="analysis-label">Escalation Risk</span>
@@ -252,11 +252,11 @@
               </div>
               <div class="analysis-row">
                 <span class="analysis-label">SOP Match</span>
-                <span class="analysis-value analysis-value--match">âš ï¸ Escalation Review Rule  -  Human approval required</span>
+                <span class="analysis-value analysis-value--match">⚠️ Escalation Review Rule  -  Human approval required</span>
               </div>
               <div class="analysis-row">
                 <span class="analysis-label">Draft Generated</span>
-                <span class="analysis-value">De-escalation tone Â· Acknowledges urgency Â· Offers resolution path</span>
+                <span class="analysis-value">De-escalation tone · Acknowledges urgency · Offers resolution path</span>
               </div>
             </div>
           </div>
@@ -265,7 +265,7 @@
         <div class="scenario-outcome-box">
           <div class="scenario-outcome-box__item">
             <strong>Without giiHelpdeskAgent:</strong>
-            Email sits in queue 4â€“8 hours. Negative review goes live before a response is sent.
+            Email sits in queue 4–8 hours. Negative review goes live before a response is sent.
             Chargeback filed. PR damage done.
           </div>
           <div class="scenario-outcome-box__item scenario-outcome-box__item--good">
@@ -328,7 +328,7 @@
         <div class="case-cta__actions">
           <a href="auth/register.html" class="case-cta__btn case-cta__btn--primary"
             id="caseRegisterBtn" aria-label="Start free trial">
-            Start Free Trial â†’
+            Start Free Trial →
           </a>
           <a href="pricing.html" class="case-cta__btn case-cta__btn--secondary"
             aria-label="View pricing plans">
@@ -351,7 +351,7 @@
       }
       const btn = document.getElementById('caseRegisterBtn');
       if (btn && isLoggedIn) {
-        btn.textContent = 'Go to Dashboard â†’';
+        btn.textContent = 'Go to Dashboard →';
         btn.href = 'account/dashboard.html';
       }
     });

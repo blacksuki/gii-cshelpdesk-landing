@@ -190,7 +190,7 @@
         </p>
         <div class="scope-grid">
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">âœ—</div>
+            <div class="scope-item__icon">✗</div>
             <h3 class="scope-item__title">Fully autonomous refund processing</h3>
             <p class="scope-item__reason">
               AI confidence scores don't map to refund risk tolerances.
@@ -198,7 +198,7 @@
             </p>
           </div>
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">âœ—</div>
+            <div class="scope-item__icon">✗</div>
             <h3 class="scope-item__title">Abandoned cart recovery / marketing messages</h3>
             <p class="scope-item__reason">
               That's a separate use case with separate tools. We focus exclusively on
@@ -206,7 +206,7 @@
             </p>
           </div>
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">âœ—</div>
+            <div class="scope-item__icon">✗</div>
             <h3 class="scope-item__title">Customer history profiles</h3>
             <p class="scope-item__reason">
               Storing historical customer data conflicts with our zero-storage architecture.
@@ -214,19 +214,19 @@
             </p>
           </div>
           <div class="scope-item scope-item--no">
-            <div class="scope-item__icon">âœ—</div>
+            <div class="scope-item__icon">✗</div>
             <h3 class="scope-item__title">Omnichannel (Instagram, WhatsApp, phone)</h3>
             <p class="scope-item__reason">
               We work inside Gmail. That's the primary CS channel for Shopify DTC teams
-              at the 5â€“50 person stage. Other channels may come later.
+              at the 5–50 person stage. Other channels may come later.
             </p>
           </div>
           <div class="scope-item scope-item--yes">
-            <div class="scope-item__icon">âœ“</div>
+            <div class="scope-item__icon">✓</div>
             <h3 class="scope-item__title">What we do focus on</h3>
             <p class="scope-item__reason">
-              Refund requests Â· Order cancellations Â· Escalation risk detection Â·
-              SOP rule matching Â· Draft reply generation Â· Shopify write actions Â·
+              Refund requests · Order cancellations · Escalation risk detection ·
+              SOP rule matching · Draft reply generation · Shopify write actions ·
               Per-action audit logging. That's it.
             </p>
           </div>
@@ -289,7 +289,7 @@
             Start Free  -  No Credit Card
           </a>
           <a href="case.html" class="about-cta__btn about-cta__btn--secondary">
-            See Real Scenarios â†’
+            See Real Scenarios →
           </a>
         </div>
       </div>
@@ -304,7 +304,7 @@
       let isLoggedIn = false;
       if (stored) { try { const u = JSON.parse(stored); isLoggedIn = !!(u.token && u.email); } catch (e) { } }
       const btn = document.getElementById('aboutRegisterBtn');
-      if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard â†’'; btn.href = 'account/dashboard.html'; }
+      if (btn && isLoggedIn) { btn.textContent = 'Go to Dashboard →'; btn.href = 'account/dashboard.html'; }
     });
   </script>
   <script src="js/motion-controller.js" defer></script>
