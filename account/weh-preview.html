@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🤖 Web Email Helper — Preview</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <style>
+    body { background: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; padding: 32px 16px; }
+    .preview-banner {
+      max-width: 860px; margin: 0 auto 24px;
+      background: #fffbeb; border: 1px solid #f59e0b; border-radius: 10px;
+      padding: 12px 20px; font-size: 13px; color: #92400e;
+      display: flex; align-items: center; gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preview-banner">
+    ⚡ <strong>Local Preview Mode</strong> — This page is for UI testing only and does not require login. The live feature is in <code>dashboard.html</code> and requires an authenticated session.
+  </div>
+
+  <div class="account-container" style="padding-top: 0;">
+
+    <!-- ══════════════════════════════════════════════════════
+         WEB EMAIL HELPER CARD (exact copy from dashboard.html)
+    ══════════════════════════════════════════════════════ -->
+    <div class="account-card" id="webEmailHelperCard"
+         style="margin-bottom: 32px; border: 2px solid #6366f1; border-radius: 16px; overflow: hidden; padding: 0;">
+
+      <!-- Card Header -->
+      <div class="account-card__title"
+           style="background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; padding: 20px 24px; display:flex; justify-content:space-between; align-items:center; margin-bottom:0;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:24px;">🤖</span>
+          <div>
+            <div style="font-size:17px; font-weight:700;">Web Email Helper</div>
+            <div style="font-size:12px; font-weight:400; opacity:0.8; margin-top:2px;">Analyze customer emails &amp; generate AI replies — right here in your dashboard</div>
+          </div>
+        </div>
+        <span style="font-size:11px; background:rgba(255,255,255,0.2); color:#fff; padding:4px 12px; border-radius:20px; font-weight:600; white-space:nowrap;">✓ No Add-on Needed</span>
+      </div>
+
+      <div class="account-card__content" style="padding: 28px 24px;">
+
+        <!-- Step 1: Paste email -->
+        <div id="weh-step1" class="weh-step">
+          <div style="font-size:14px; font-weight:600; color:#374151; margin-bottom:8px;">Step 1 — Paste a customer complaint email</div>
+          <div style="font-size:13px; color:#6b7280; margin-bottom:14px; line-height:1.5;">
+            Copy the email body from your inbox and paste it below. The AI will detect the intent, look up the matching Shopify order, and generate a professional reply.
+          </div>
+
+          <textarea
+            id="weh-email-input"
+            rows="8"
+            placeholder="Paste customer email here…
+
+Example:
+  Subject: Order #1234 hasn't arrived
+  Hi, I placed my order 3 weeks ago but still haven't received it. My order number is 1234. Can you please help?"
+            style="width:100%; box-sizing:border-box; padding:14px 16px; border:1px solid #d1d5db; border-radius:10px; font-size:13px; font-family:inherit; line-height:1.6; resize:vertical; outline:none; transition:border 0.2s; color:#111;"
+            onfocus="this.style.borderColor='#6366f1'"
+            onblur="this.style.borderColor='#d1d5db'"
+          ></textarea>
+
+          <div style="display:flex; gap:12px; margin-top:14px; align-items:center; flex-wrap:wrap;">
+            <div style="flex:1; min-width:200px;">
+              <label style="font-size:12px; color:#6b7280; margin-bottom:4px; display:block;">Order # (optional — AI will auto-detect from email)</label>
+              <input id="weh-order-hint" type="text" placeholder="e.g. 1234"
+                style="width:100%; box-sizing:border-box; padding:9px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; outline:none; transition:border 0.2s;"
+                onfocus="this.style.borderColor='#6366f1'"
+                onblur="this.style.borderColor='#d1d5db'" />
+            </div>
+            <button id="weh-analyze-btn" onclick="wehAnalyze()"
+              style="padding:10px 24px; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; transition:opacity 0.2s; margin-top:18px;">
+              🔍 Analyze Email
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Analysis Result -->
+        <div id="weh-step2" class="weh-step" style="display:none; margin-top:24px; border-top:1px solid #e5e7eb; padding-top:24px;">
+          <div style="font-size:14px; font-weight:600; color:#374151; margin-bottom:14px;">Step 2 — Analysis Results</div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:20px;">
+            <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:14px;">
+              <div style="font-size:11px; color:#0369a1; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Detected Intent</div>
+              <div id="weh-intent-badge" style="font-size:15px; font-weight:700; color:#0c4a6e;">—</div>
+            </div>
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px;">
+              <div style="font-size:11px; color:#15803d; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Order Found</div>
+              <div id="weh-order-badge" style="font-size:15px; font-weight:700; color:#14532d;">—</div>
+            </div>
+            <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:10px; padding:14px;">
+              <div style="font-size:11px; color:#7e22ce; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Policy Match</div>
+              <div id="weh-sop-badge" style="font-size:15px; font-weight:700; color:#581c87;">—</div>
+            </div>
+          </div>
+
+          <div id="weh-analysis-detail"
+            style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; font-size:13px; color:#374151; line-height:1.7; white-space:pre-wrap; margin-bottom:20px; max-height:180px; overflow-y:auto;"></div>
+
+          <button id="weh-generate-btn" onclick="wehGenerate()"
+            style="padding:10px 24px; background:linear-gradient(135deg,#059669,#047857); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:opacity 0.2s;">
+            ✍️ Generate Reply Draft
+          </button>
+        </div>
+
+        <!-- Step 3: Draft Reply -->
+        <div id="weh-step3" class="weh-step" style="display:none; margin-top:24px; border-top:1px solid #e5e7eb; padding-top:24px;">
+          <div style="font-size:14px; font-weight:600; color:#374151; margin-bottom:8px;">Step 3 — Your AI Draft Reply</div>
+          <div style="font-size:13px; color:#6b7280; margin-bottom:14px;">Review and copy the reply below. You can paste it directly into Gmail, Outlook, or any email client.</div>
+
+          <div id="weh-draft-output"
+            style="background:#fff; border:1px solid #d1d5db; border-radius:10px; padding:16px; font-size:13px; color:#111; line-height:1.75; white-space:pre-wrap; max-height:320px; overflow-y:auto; margin-bottom:16px;"></div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button onclick="wehCopyDraft()" id="weh-copy-btn"
+              style="padding:9px 20px; background:#4f46e5; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;">
+              📋 Copy to Clipboard
+            </button>
+            <button onclick="wehReset()"
+              style="padding:9px 20px; background:#fff; color:#374151; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;">
+              ↩ Start Over
+            </button>
+          </div>
+        </div>
+
+        <!-- Status / Loading area -->
+        <div id="weh-status" style="display:none; margin-top:16px; padding:12px 16px; border-radius:8px; font-size:13px;"></div>
+
+      </div>
+    </div>
+    <!-- ══════════════════════════════════════════════════════ -->
+
+  </div>
+
+  <script>
+    // ─── Web Email Helper — standalone preview with mock API ──────────────────
+    let _wehAnalysisResult = null;
+
+    function wehSetStatus(msg, type = 'info') {
+      const el = document.getElementById('weh-status');
+      el.style.display = 'block';
+      el.textContent = msg;
+      const styles = {
+        info:    { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
+        success: { bg: '#f0fdf4', color: '#15803d', border: '#86efac' },
+        error:   { bg: '#fef2f2', color: '#b91c1c', border: '#fca5a5' },
+        loading: { bg: '#fdf4ff', color: '#7e22ce', border: '#e9d5ff' },
+      };
+      const s = styles[type] || styles.info;
+      el.style.background = s.bg;
+      el.style.color = s.color;
+      el.style.border = `1px solid ${s.border}`;
+      el.style.borderRadius = '8px';
+    }
+
+    function wehClearStatus() {
+      const el = document.getElementById('weh-status');
+      el.style.display = 'none';
+      el.textContent = '';
+    }
+
+    function wehSetLoading(btn, loading) {
+      if (!btn) return;
+      btn.disabled = loading;
+      btn.style.opacity = loading ? '0.65' : '1';
+      btn.style.cursor  = loading ? 'not-allowed' : 'pointer';
+    }
+
+    // ── MOCK API (preview mode) ─────────────────────────────────────────────
+    async function mockAnalyzeIntent(emailContent, emailMetadata) {
+      await new Promise(r => setTimeout(r, 1200)); // simulate latency
+      const isRefund   = /refund|return/i.test(emailContent);
+      const isShipping = /ship|shipping|track|haven't received/i.test(emailContent);
+      const isCancell  = /cancel/i.test(emailContent);
+      const orderMatch = emailContent.match(/#?(\d{4,6})/);
+      const orderNum   = emailMetadata?.orderNumberHint || (orderMatch ? orderMatch[1] : null);
+
+      return {
+        success: true,
+        data: {
+          analysis: {
+            primaryIntent: isRefund ? 'REFUND_REQUEST' : isShipping ? 'SHIPPING_INQUIRY' : isCancell ? 'ORDER_CANCELLATION' : 'GENERAL_INQUIRY',
+            summary: 'Customer is concerned about the delivery status of their order and is requesting an update.',
+            sentiment: 'Frustrated',
+            urgency: 'Medium',
+          },
+          orderSummary: orderNum ? {
+            orderNumber: orderNum,
+            status: 'fulfilled',
+            trackingNumber: 'YT2309876543210',
+          } : null,
+          sopMatch: {
+            title: isShipping ? 'Standard Shipping Inquiry Policy' : isRefund ? 'Refund Processing Policy' : null,
+            recommendedAction: isShipping ? 'Provide tracking number and estimated delivery date' : isRefund ? 'Initiate refund within 1 business day' : 'Escalate to senior CS agent',
+          }
+        }
+      };
+    }
+
+    async function mockGenerateReply(emailContent, intent, context) {
+      await new Promise(r => setTimeout(r, 1400));
+      const orderNum = context?.orderSummary?.orderNumber || 'XXXX';
+      const tracking = context?.orderSummary?.trackingNumber || 'TRACKING#';
+      return {
+        success: true,
+        data: {
+          draft: `Dear Customer,
+
+Thank you for reaching out to us regarding your order #${orderNum}. We sincerely apologize for any inconvenience this may have caused.
+
+We have checked on your order and can confirm that it has been fulfilled and is currently in transit. Your tracking number is **${tracking}**, and you can use it to track your package via the carrier's website.
+
+Based on our current estimates, your order should arrive within the next 2–3 business days. If you have not received your package by then, please don't hesitate to contact us again and we will investigate further.
+
+Thank you for your patience and understanding.
+
+Best regards,
+Customer Support Team`
+        }
+      };
+    }
+    // ── END MOCK API ─────────────────────────────────────────────────────────
+
+    async function wehAnalyze() {
+      const emailContent = document.getElementById('weh-email-input').value.trim();
+      const orderHint    = document.getElementById('weh-order-hint').value.trim();
+
+      if (!emailContent) {
+        wehSetStatus('⚠️ Please paste a customer email before analyzing.', 'error');
+        return;
+      }
+
+      const analyzeBtn = document.getElementById('weh-analyze-btn');
+      wehSetLoading(analyzeBtn, true);
+      wehSetStatus('🤖 Analyzing email intent and looking up order data…', 'loading');
+      document.getElementById('weh-step2').style.display = 'none';
+      document.getElementById('weh-step3').style.display = 'none';
+      _wehAnalysisResult = null;
+
+      try {
+        const emailMetadata = orderHint ? { orderNumberHint: orderHint } : {};
+        // In real dashboard, this calls: window.apiClient.analyzeEmailIntent(emailContent, emailMetadata)
+        const result = await mockAnalyzeIntent(emailContent, emailMetadata);
+
+        if (result?.success && result?.data) {
+          _wehAnalysisResult = result.data;
+          wehRenderAnalysis(result.data);
+          wehClearStatus();
+        } else {
+          wehSetStatus(`❌ ${result?.message || 'Analysis failed. Please try again.'}`, 'error');
+        }
+      } catch (err) {
+        wehSetStatus('❌ Network error. Please check your connection and try again.', 'error');
+      } finally {
+        wehSetLoading(analyzeBtn, false);
+      }
+    }
+
+    function wehRenderAnalysis(data) {
+      document.getElementById('weh-intent-badge').textContent =
+        data.analysis?.primaryIntent || 'Unknown';
+      const orderNum = data.orderSummary?.orderNumber;
+      document.getElementById('weh-order-badge').textContent =
+        orderNum ? `#${orderNum}` : 'Not found';
+      document.getElementById('weh-sop-badge').textContent =
+        data.sopMatch?.title || 'No match';
+
+      const lines = [];
+      if (data.analysis?.summary)              lines.push(`Summary: ${data.analysis.summary}`);
+      if (data.analysis?.sentiment)            lines.push(`Customer Sentiment: ${data.analysis.sentiment}`);
+      if (data.analysis?.urgency)              lines.push(`Urgency: ${data.analysis.urgency}`);
+      if (data.orderSummary?.status)           lines.push(`Order Status: ${data.orderSummary.status}`);
+      if (data.orderSummary?.trackingNumber)   lines.push(`Tracking #: ${data.orderSummary.trackingNumber}`);
+      if (data.sopMatch?.recommendedAction)    lines.push(`Recommended Action: ${data.sopMatch.recommendedAction}`);
+      document.getElementById('weh-analysis-detail').textContent =
+        lines.length ? lines.join('\n') : JSON.stringify(data, null, 2);
+
+      document.getElementById('weh-step2').style.display = 'block';
+      document.getElementById('weh-step2').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    async function wehGenerate() {
+      if (!_wehAnalysisResult) {
+        wehSetStatus('⚠️ Please analyze an email first.', 'error');
+        return;
+      }
+      const emailContent = document.getElementById('weh-email-input').value.trim();
+      const intent = _wehAnalysisResult.analysis?.primaryIntent || '';
+      const generateBtn = document.getElementById('weh-generate-btn');
+      wehSetLoading(generateBtn, true);
+      wehSetStatus('✍️ Generating reply draft…', 'loading');
+      document.getElementById('weh-step3').style.display = 'none';
+
+      try {
+        // In real dashboard: window.apiClient.generateEmailReply(emailContent, intent, _wehAnalysisResult, {})
+        const result = await mockGenerateReply(emailContent, intent, _wehAnalysisResult);
+        if (result?.success && result?.data) {
+          const draft = result.data.draft || result.data.replyDraft || result.data.reply || '';
+          document.getElementById('weh-draft-output').textContent = draft;
+          document.getElementById('weh-step3').style.display = 'block';
+          document.getElementById('weh-step3').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          wehClearStatus();
+        } else {
+          wehSetStatus(`❌ ${result?.message || 'Draft generation failed. Please try again.'}`, 'error');
+        }
+      } catch (err) {
+        wehSetStatus('❌ Network error. Please check your connection and try again.', 'error');
+      } finally {
+        wehSetLoading(generateBtn, false);
+      }
+    }
+
+    async function wehCopyDraft() {
+      const draftText = document.getElementById('weh-draft-output').textContent;
+      try {
+        await navigator.clipboard.writeText(draftText);
+        const btn = document.getElementById('weh-copy-btn');
+        const orig = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        btn.style.background = '#059669';
+        setTimeout(() => { btn.textContent = orig; btn.style.background = '#4f46e5'; }, 2000);
+      } catch (e) {
+        wehSetStatus('❌ Copy failed. Please select the text manually.', 'error');
+      }
+    }
+
+    function wehReset() {
+      document.getElementById('weh-email-input').value = '';
+      document.getElementById('weh-order-hint').value = '';
+      document.getElementById('weh-step2').style.display = 'none';
+      document.getElementById('weh-step3').style.display = 'none';
+      _wehAnalysisResult = null;
+      wehClearStatus();
+      document.getElementById('weh-step1').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+</body>
+</html>

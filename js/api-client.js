@@ -707,6 +707,68 @@ class ApiClient {
             return this.handleError(error);
         }
     }
+    // ─── Web Email Helper Methods ─────────────────────────────────────────────
+
+    /**
+     * Analyze customer email intent via LLM (Web Email Helper)
+     * @param {string} emailContent  - Raw email text pasted by merchant
+     * @param {Object} emailMetadata - Optional metadata (subject, orderNumber, etc.)
+     * @returns {Promise<Object>}    - { success, data: { analysis, orderSummary, sopMatch, … } }
+     */
+    async analyzeEmailIntent(emailContent, emailMetadata = {}) {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const response = await this.request(window.API_CONFIG.endpoints.llm.promptLLM, {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'analyzeIntent',
+                    emailContent,
+                    emailMetadata,
+                    userEmail: user.email || null,
+                    userSettings: { shopifyDomain: user.domain || null },
+                    debug: false
+                })
+            });
+            console.log('analyzeEmailIntent API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+
+    /**
+     * Generate a reply draft for the given email + intent (Web Email Helper)
+     * @param {string} emailContent  - Raw email text
+     * @param {string} intent        - Detected intent string (e.g. 'REFUND')
+     * @param {Object} context       - Analysis context (orderSummary, sopMatch, …)
+     * @param {Object} userSettings  - { shopifyDomain, emailSignature, … }
+     * @returns {Promise<Object>}    - { success, data: { draft, … } }
+     */
+    async generateEmailReply(emailContent, intent, context = {}, userSettings = {}) {
+        try {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const response = await this.request(window.API_CONFIG.endpoints.llm.promptLLM, {
+                method: 'POST',
+                body: JSON.stringify({
+                    operation: 'generateReply',
+                    emailContent,
+                    intent,
+                    context,
+                    userEmail: user.email || null,
+                    userSettings: {
+                        shopifyDomain: user.domain || null,
+                        ...userSettings
+                    },
+                    debug: false
+                })
+            });
+            console.log('generateEmailReply API response:', response);
+            return response;
+        } catch (error) {
+            return this.handleError(error);
+        }
+    }
+
     // Logout
     logout() {
         console.log('[api-client] logout() called');
