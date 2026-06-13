@@ -193,32 +193,78 @@
         
         <div class="actions">
             <a href="#" class="btn btn-primary" onclick="retryAuth()">Try Again</a>
-            <a href="https://mail.google.com/mail/u/0/#inbox" class="btn btn-secondary">Return to Gmail</a>
+            <a href="https://mail.google.com/mail/u/0/#inbox" class="btn btn-secondary" id="secondaryAction">Return to Gmail</a>
         </div>
         
         <div class="countdown">
-            <span>Auto-returning to Gmail in <span id="countdown">10</span> seconds</span>
+            <span id="countdownMessage">Auto-returning in <span id="countdown">10</span> seconds</span>
         </div>
     </div>
 
     <script>
+        const APP_HANDLE = 'giihelpdeskagent';
+
+        function getStoreHandle(shopDomain) {
+            return String(shopDomain || '')
+                .replace(/^(https?:\/\/)?(www\.)?/i, '')
+                .split('.')[0];
+        }
+
+        function buildEmbeddedReturnUrl(shopDomain, host, message) {
+            const storeHandle = getStoreHandle(shopDomain);
+            if (!storeHandle) {
+                const fallbackUrl = new URL('/app', window.location.origin);
+                if (shopDomain) fallbackUrl.searchParams.set('shop', shopDomain);
+                if (host) fallbackUrl.searchParams.set('host', host);
+                fallbackUrl.searchParams.set('reauth', 'error');
+                if (message) fallbackUrl.searchParams.set('message', message);
+                return fallbackUrl.toString();
+            }
+
+            const url = new URL(`https://admin.shopify.com/store/${storeHandle}/apps/${APP_HANDLE}`);
+            url.searchParams.set('shop', shopDomain);
+            if (host) {
+                url.searchParams.set('host', host);
+            }
+            url.searchParams.set('reauth', 'error');
+            if (message) {
+                url.searchParams.set('message', message);
+            }
+            return url.toString();
+        }
+
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const shop = urlParams.get('shop');
         const error = urlParams.get('error');
+        const errorMessage = urlParams.get('message');
         const errorType = urlParams.get('error_type') || 'Authorization Error';
+        const requestSource = urlParams.get('request_source') || 'gmail_addon';
+        const host = urlParams.get('host') || '';
+        const hasGmailOpener = !!(window.opener && window.opener.google && window.opener.google.script);
+        const resolvedMessage = errorMessage || error || 'Authorization failed';
+        const returnUrl = requestSource === 'embedded_app_home'
+            ? buildEmbeddedReturnUrl(shop, host, resolvedMessage)
+            : `/app${shop ? `?shop=${encodeURIComponent(shop)}` : ''}${shop ? '&' : '?'}reauth=error&message=${encodeURIComponent(resolvedMessage)}`;
         
         // Update page content
         document.getElementById('shopName').textContent = shop || 'Unknown Store';
         document.getElementById('errorType').textContent = errorType;
+        document.getElementById('countdownMessage').innerHTML = hasGmailOpener
+            ? 'Auto-returning to Gmail in <span id="countdown">10</span> seconds'
+            : 'Auto-returning to the app in <span id="countdown">10</span> seconds';
+        document.getElementById('secondaryAction').textContent = hasGmailOpener ? 'Return to Gmail' : 'Return to app';
+        document.getElementById('secondaryAction').href = hasGmailOpener
+            ? 'https://mail.google.com/mail/u/0/#inbox'
+            : returnUrl;
         
-        if (error) {
-            document.getElementById('errorMessage').textContent = `? ${error}`;
+        if (errorMessage || error) {
+            document.getElementById('errorMessage').textContent = `? ${errorMessage || error}`;
         }
         
         // Countdown and redirect
         let countdown = 10;
-        const countdownElement = document.getElementById('countdown');
+        let countdownElement = document.getElementById('countdown');
         
         const timer = setInterval(() => {
             countdown--;
@@ -226,22 +272,38 @@
             
             if (countdown <= 0) {
                 clearInterval(timer);
-                window.close();
-                // window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
+                if (hasGmailOpener) {
+                    window.close();
+                } else {
+                    window.location.href = returnUrl;
+                }
             }
         }, 1000);
         
         function retryAuth() {
-            // Redirect to the authorization initiation URL using handleRouter
-            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/handleRouter?route=initiateShopifyAuth&shop=${shop}&user_email=${encodeURIComponent(localStorage.getItem('userEmail') || '')}`;
+            if (requestSource === 'embedded_app_home') {
+                window.location.href = returnUrl;
+                return;
+            }
+
+            const authorizationEmail = urlParams.get('authorization_email') || '';
+            if (!authorizationEmail) {
+                window.location.href = returnUrl;
+                return;
+            }
+
+            const authUrl = `https://us-central1-giicsagent.cloudfunctions.net/handleRouter?route=initiateShopifyAuth&shop=${shop}&authorizationEmail=${encodeURIComponent(authorizationEmail)}`;
             window.location.href = authUrl;
         }
         
         // Allow manual close with escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                window.close();
-                // window.location.href = 'https://mail.google.com/mail/u/0/#inbox';
+                if (hasGmailOpener) {
+                    window.close();
+                } else {
+                    window.location.href = returnUrl;
+                }
             }
         });
     </script>
