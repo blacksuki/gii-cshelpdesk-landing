@@ -377,6 +377,103 @@
       </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         WEB EMAIL HELPER
+         AI email analysis + draft generation — no Gmail Add-on required.
+    ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="account-container" style="margin-top: 0; padding-top: 0;">
+
+      <div class="account-card" id="webEmailHelperCard" style="margin-bottom: 32px; border: 2px solid #6366f1; border-radius: 16px; overflow: hidden; padding: 0;">
+
+        <!-- Card Header -->
+        <div class="account-card__title" style="background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; padding: 20px 24px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:24px;">🤖</span>
+            <div>
+              <div style="font-size:17px; font-weight:700;">Web Email Helper</div>
+              <div style="font-size:12px; font-weight:400; opacity:0.8; margin-top:2px;">Analyze customer emails &amp; generate AI replies — right here in your dashboard</div>
+            </div>
+          </div>
+          <span style="font-size:11px; background:rgba(255,255,255,0.2); color:#fff; padding:4px 12px; border-radius:20px; font-weight:600; white-space:nowrap;">✓ No Add-on Needed</span>
+        </div>
+
+        <div class="account-card__content" style="padding: 28px 24px;">
+
+          <!-- Step 1: Paste email -->
+          <div id="weh-step1" class="weh-step">
+            <div style="font-size:14px; font-weight:600; color:#374151; margin-bottom:8px;">Step 1 — Paste a customer complaint email</div>
+            <div style="font-size:13px; color:#6b7280; margin-bottom:14px; line-height:1.5;">Copy the email body from your inbox and paste it below. The AI will detect the intent, look up the matching Shopify order, and generate a professional reply.</div>
+
+            <textarea
+              id="weh-email-input"
+              rows="8"
+              placeholder="Paste customer email here…
+
+Example:
+  Subject: Order #1234 hasn't arrived
+  Hi, I placed my order 3 weeks ago but still haven't received it. My order number is 1234. Can you please help?"
+              style="width:100%; box-sizing:border-box; padding:14px 16px; border:1px solid #d1d5db; border-radius:10px; font-size:13px; font-family:inherit; line-height:1.6; resize:vertical; outline:none; transition:border 0.2s; color:#111;"
+              onfocus="this.style.borderColor='#6366f1'"
+              onblur="this.style.borderColor='#d1d5db'"
+            ></textarea>
+
+            <div style="display:flex; gap:12px; margin-top:14px; align-items:center; flex-wrap:wrap;">
+              <div style="flex:1; min-width:200px;">
+                <label style="font-size:12px; color:#6b7280; margin-bottom:4px; display:block;">Order # (optional — AI will auto-detect from email)</label>
+                <input id="weh-order-hint" type="text" placeholder="e.g. 1234" style="width:100%; box-sizing:border-box; padding:9px 12px; border:1px solid #d1d5db; border-radius:8px; font-size:13px; outline:none; transition:border 0.2s;" onfocus="this.style.borderColor='#6366f1'" onblur="this.style.borderColor='#d1d5db'" />
+              </div>
+              <button id="weh-analyze-btn" onclick="wehAnalyze()" style="padding:10px 24px; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; white-space:nowrap; transition:opacity 0.2s; margin-top:18px;">
+                🔍 Analyze Email
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Analysis Result (hidden initially) -->
+          <div id="weh-step2" class="weh-step" style="display:none; margin-top:24px; border-top:1px solid #e5e7eb; padding-top:24px;">
+            <div style="font-size:14px; font-weight:600; color:#374151; margin-bottom:14px;">Step 2 — Analysis Results</div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:20px;">
+              <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:10px; padding:14px;">
+                <div style="font-size:11px; color:#0369a1; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Detected Intent</div>
+                <div id="weh-intent-badge" style="font-size:15px; font-weight:700; color:#0c4a6e;">—</div>
+              </div>
+              <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px;">
+                <div style="font-size:11px; color:#15803d; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Order Found</div>
+                <div id="weh-order-badge" style="font-size:15px; font-weight:700; color:#14532d;">—</div>
+              </div>
+              <div style="background:#fdf4ff; border:1px solid #e9d5ff; border-radius:10px; padding:14px;">
+                <div style="font-size:11px; color:#7e22ce; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Policy Match</div>
+                <div id="weh-sop-badge" style="font-size:15px; font-weight:700; color:#581c87;">—</div>
+              </div>
+            </div>
+
+            <div id="weh-analysis-detail" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; font-size:13px; color:#374151; line-height:1.7; white-space:pre-wrap; margin-bottom:20px; max-height:180px; overflow-y:auto;"></div>
+
+            <button id="weh-generate-btn" onclick="wehGenerate()" style="padding:10px 24px; background:linear-gradient(135deg,#059669,#047857); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; transition:opacity 0.2s;">
+              ✍️ Generate Reply Draft
+            </button>
+          </div>
+
+          <!-- Step 3: Draft Reply (hidden initially) -->
+          <div id="weh-step3" class="weh-step" style="display:none; margin-top:24px; border-top:1px solid #e5e7eb; padding-top:24px;">
+            <div style="font-size:14px; font-weight:600; color:#374151; margin-bottom:8px;">Step 3 — Your AI Draft Reply</div>
+            <div style="font-size:13px; color:#6b7280; margin-bottom:14px;">Review and copy the reply below. You can paste it directly into Gmail, Outlook, or any email client.</div>
+
+            <div id="weh-draft-output" style="background:#fff; border:1px solid #d1d5db; border-radius:10px; padding:16px; font-size:13px; color:#111; line-height:1.75; white-space:pre-wrap; max-height:320px; overflow-y:auto; margin-bottom:16px;"></div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button onclick="wehCopyDraft()" style="padding:9px 20px; background:#4f46e5; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;" id="weh-copy-btn">📋 Copy to Clipboard</button>
+              <button onclick="wehReset()" style="padding:9px 20px; background:#fff; color:#374151; border:1px solid #d1d5db; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;">↩ Start Over</button>
+            </div>
+          </div>
+
+          <!-- Status / Loading area -->
+          <div id="weh-status" style="display:none; margin-top:16px; padding:12px 16px; border-radius:8px; font-size:13px;"></div>
+
+        </div>
+      </div>
+    </div>
+
     <div id="site-footer"></div>
 
     <script>
@@ -389,6 +486,7 @@
         loadShopifyDomainStatus();
         loadPoliciesOverview(); // V3.5 NEW: Load policies overview
         loadQuotaInfo(); // V3.6 NEW: Load quota usage info
+        wehInit();  // Web Email Helper
         
         // Check if user needs to set up Shopify domain
         const urlParams = new URLSearchParams(window.location.search);
@@ -1156,6 +1254,179 @@
       function logout() {
         handleLogout();
       }
+
+      // ─── Web Email Helper ─────────────────────────────────────────────────────
+      // State
+      let _wehAnalysisResult = null;
+
+      function wehInit() {
+        // Nothing to pre-load; UI is ready to use immediately
+      }
+
+      function wehSetStatus(msg, type = 'info') {
+        const el = document.getElementById('weh-status');
+        el.style.display = 'block';
+        el.textContent = msg;
+        const styles = {
+          info:    { bg: '#eff6ff', color: '#1d4ed8', border: '#bfdbfe' },
+          success: { bg: '#f0fdf4', color: '#15803d', border: '#86efac' },
+          error:   { bg: '#fef2f2', color: '#b91c1c', border: '#fca5a5' },
+          loading: { bg: '#fdf4ff', color: '#7e22ce', border: '#e9d5ff' },
+        };
+        const s = styles[type] || styles.info;
+        el.style.background = s.bg;
+        el.style.color = s.color;
+        el.style.border = `1px solid ${s.border}`;
+        el.style.borderRadius = '8px';
+      }
+
+      function wehClearStatus() {
+        const el = document.getElementById('weh-status');
+        el.style.display = 'none';
+        el.textContent = '';
+      }
+
+      function wehSetLoading(btn, loading) {
+        if (!btn) return;
+        btn.disabled = loading;
+        btn.style.opacity = loading ? '0.65' : '1';
+        btn.style.cursor = loading ? 'not-allowed' : 'pointer';
+      }
+
+      async function wehAnalyze() {
+        const emailContent = document.getElementById('weh-email-input').value.trim();
+        const orderHint = document.getElementById('weh-order-hint').value.trim();
+
+        if (!emailContent) {
+          wehSetStatus('⚠️ Please paste a customer email before analyzing.', 'error');
+          return;
+        }
+
+        const analyzeBtn = document.getElementById('weh-analyze-btn');
+        wehSetLoading(analyzeBtn, true);
+        wehSetStatus('🤖 Analyzing email intent and looking up order data…', 'loading');
+
+        // Hide previous results
+        document.getElementById('weh-step2').style.display = 'none';
+        document.getElementById('weh-step3').style.display = 'none';
+        _wehAnalysisResult = null;
+
+        try {
+          const emailMetadata = orderHint ? { orderNumberHint: orderHint } : {};
+          const result = await window.apiClient.analyzeEmailIntent(emailContent, emailMetadata);
+
+          console.log('[WebEmailHelper] analyzeIntent result:', result);
+
+          if (result && result.success && result.data) {
+            _wehAnalysisResult = result.data;
+            wehRenderAnalysis(result.data);
+            wehClearStatus();
+          } else {
+            const errMsg = result?.error?.message || result?.message || 'Analysis failed. Please try again.';
+            wehSetStatus(`❌ ${errMsg}`, 'error');
+          }
+        } catch (err) {
+          console.error('[WebEmailHelper] analyzeEmailIntent error:', err);
+          wehSetStatus('❌ Network error. Please check your connection and try again.', 'error');
+        } finally {
+          wehSetLoading(analyzeBtn, false);
+        }
+      }
+
+      function wehRenderAnalysis(data) {
+        // Intent badge
+        const intent = data.analysis?.primaryIntent || data.intent || data.primaryIntent || 'Unknown';
+        document.getElementById('weh-intent-badge').textContent = intent;
+
+        // Order badge
+        const orderNum = data.orderSummary?.orderNumber || data.orderNumber || data.analysis?.orderNumber;
+        document.getElementById('weh-order-badge').textContent = orderNum ? `#${orderNum}` : 'Not found';
+
+        // SOP / policy badge
+        const sopMatch = data.sopMatch?.title || data.analysis?.sopTitle || data.policyTitle || (data.sopMatch ? 'Matched' : 'No match');
+        document.getElementById('weh-sop-badge').textContent = sopMatch;
+
+        // Detail block — show a readable summary
+        const lines = [];
+        if (data.analysis?.summary)        lines.push(`Summary: ${data.analysis.summary}`);
+        if (data.analysis?.sentiment)      lines.push(`Customer Sentiment: ${data.analysis.sentiment}`);
+        if (data.analysis?.urgency)        lines.push(`Urgency: ${data.analysis.urgency}`);
+        if (data.orderSummary?.status)     lines.push(`Order Status: ${data.orderSummary.status}`);
+        if (data.orderSummary?.trackingNumber) lines.push(`Tracking #: ${data.orderSummary.trackingNumber}`);
+        if (data.sopMatch?.recommendedAction) lines.push(`Recommended Action: ${data.sopMatch.recommendedAction}`);
+        if (lines.length === 0)            lines.push(JSON.stringify(data, null, 2));
+        document.getElementById('weh-analysis-detail').textContent = lines.join('\n');
+
+        document.getElementById('weh-step2').style.display = 'block';
+        document.getElementById('weh-step2').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      async function wehGenerate() {
+        if (!_wehAnalysisResult) {
+          wehSetStatus('⚠️ Please analyze an email first.', 'error');
+          return;
+        }
+
+        const emailContent = document.getElementById('weh-email-input').value.trim();
+        const intent = _wehAnalysisResult.analysis?.primaryIntent || _wehAnalysisResult.intent || _wehAnalysisResult.primaryIntent || '';
+
+        const generateBtn = document.getElementById('weh-generate-btn');
+        wehSetLoading(generateBtn, true);
+        wehSetStatus('✍️ Generating reply draft…', 'loading');
+        document.getElementById('weh-step3').style.display = 'none';
+
+        try {
+          const result = await window.apiClient.generateEmailReply(
+            emailContent,
+            intent,
+            _wehAnalysisResult,
+            {}
+          );
+
+          console.log('[WebEmailHelper] generateReply result:', result);
+
+          if (result && result.success && result.data) {
+            const draft = result.data.draft || result.data.replyDraft || result.data.reply || result.data.text || JSON.stringify(result.data, null, 2);
+            document.getElementById('weh-draft-output').textContent = draft;
+            document.getElementById('weh-step3').style.display = 'block';
+            document.getElementById('weh-step3').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            wehClearStatus();
+          } else {
+            const errMsg = result?.error?.message || result?.message || 'Draft generation failed. Please try again.';
+            wehSetStatus(`❌ ${errMsg}`, 'error');
+          }
+        } catch (err) {
+          console.error('[WebEmailHelper] generateEmailReply error:', err);
+          wehSetStatus('❌ Network error. Please check your connection and try again.', 'error');
+        } finally {
+          wehSetLoading(generateBtn, false);
+        }
+      }
+
+      async function wehCopyDraft() {
+        const draftText = document.getElementById('weh-draft-output').textContent;
+        try {
+          await navigator.clipboard.writeText(draftText);
+          const btn = document.getElementById('weh-copy-btn');
+          const orig = btn.textContent;
+          btn.textContent = '✅ Copied!';
+          btn.style.background = '#059669';
+          setTimeout(() => { btn.textContent = orig; btn.style.background = '#4f46e5'; }, 2000);
+        } catch (e) {
+          wehSetStatus('❌ Copy failed. Please select the text manually.', 'error');
+        }
+      }
+
+      function wehReset() {
+        document.getElementById('weh-email-input').value = '';
+        document.getElementById('weh-order-hint').value = '';
+        document.getElementById('weh-step2').style.display = 'none';
+        document.getElementById('weh-step3').style.display = 'none';
+        _wehAnalysisResult = null;
+        wehClearStatus();
+        document.getElementById('weh-step1').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      // ─────────────────────────────────────────────────────────────────────────
 
     </script>
   </body>

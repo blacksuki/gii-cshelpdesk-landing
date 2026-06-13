@@ -195,26 +195,66 @@
       </div>
 
       <div class="countdown">
-        <span
-          >Returning to Gmail in <span id="countdown">5</span> seconds<span
+        <span id="countdownMessage"
+          >Returning in <span id="countdown">5</span> seconds<span
             class="loading-dots"
           ></span
         ></span>
-        <button onclick="window.close()">Close</button>
+        <button id="closeButton" onclick="window.close()">Close</button>
       </div>
     </div>
 
     <script>
+      const APP_HANDLE = "giihelpdeskagent";
+
+      function getStoreHandle(shopDomain) {
+        return String(shopDomain || "")
+          .replace(/^(https?:\/\/)?(www\.)?/i, "")
+          .split(".")[0];
+      }
+
+      function buildEmbeddedReturnUrl(shopDomain, host) {
+        const storeHandle = getStoreHandle(shopDomain);
+        if (!storeHandle) {
+          const fallbackUrl = new URL("/app", window.location.origin);
+          if (shopDomain) fallbackUrl.searchParams.set("shop", shopDomain);
+          if (host) fallbackUrl.searchParams.set("host", host);
+          fallbackUrl.searchParams.set("reauth", "success");
+          return fallbackUrl.toString();
+        }
+
+        const url = new URL(`https://admin.shopify.com/store/${storeHandle}/apps/${APP_HANDLE}`);
+        url.searchParams.set("shop", shopDomain);
+        if (host) {
+          url.searchParams.set("host", host);
+        }
+        url.searchParams.set("reauth", "success");
+        return url.toString();
+      }
+
       // Update page content from URL
       const urlParams = new URLSearchParams(window.location.search);
-      document.getElementById("shopName").textContent = urlParams.get("shop") || "Unknown Store";
-      document.getElementById("userEmail").textContent = urlParams.get("user_email") || "Unknown User";
+      const shop = urlParams.get("shop") || "Unknown Store";
+      const userEmail = urlParams.get("user_email") || "Unknown User";
+      const requestSource = urlParams.get("request_source") || "gmail_addon";
+      const host = urlParams.get("host") || "";
+      const returnUrl = requestSource === "embedded_app_home"
+        ? buildEmbeddedReturnUrl(shop, host)
+        : `/app?shop=${encodeURIComponent(shop)}&reauth=success`;
+      const hasGmailOpener = !!(window.opener && window.opener.google && window.opener.google.script);
+
+      document.getElementById("shopName").textContent = shop;
+      document.getElementById("userEmail").textContent = userEmail;
+      document.getElementById("countdownMessage").innerHTML = hasGmailOpener
+        ? 'Returning to Gmail in <span id="countdown">5</span> seconds<span class="loading-dots"></span>'
+        : 'Returning to the app in <span id="countdown">5</span> seconds<span class="loading-dots"></span>';
+      document.getElementById("closeButton").textContent = hasGmailOpener ? "Close" : "Return to app";
 
       // This function is the key to the fix.
       function runTokenSyncAndClose() {
         console.log("Attempting to call Apps Script to sync token...");
         // Check if the opener and the google.script.run API are available
-        if (window.opener && window.opener.google && window.opener.google.script) {
+        if (hasGmailOpener) {
           window.opener.google.script.run
             .withSuccessHandler(function() {
               console.log("? Token sync successful. Closing window to trigger UI refresh.");
@@ -227,14 +267,14 @@
             })
             .handleAuthSuccessAndRefresh(); // Calling the new function in auth.gs
         } else {
-          console.warn("Could not find window.opener.google.script.run. Closing window directly.");
-          window.close();
+          console.warn("No Gmail opener found. Redirecting back to app.");
+          window.location.assign(returnUrl);
         }
       }
 
       // Countdown and redirect
       let countdown = 5;
-      const countdownElement = document.getElementById("countdown");
+      let countdownElement = document.getElementById("countdown");
       const timer = setInterval(() => {
         countdown--;
         countdownElement.textContent = countdown;

@@ -64,6 +64,11 @@ const API_ENDPOINTS = {
         shopifyDomainCheck: '/apiRouter?route=account/shopify-domain/check',
         quota: '/apiRouter?route=account/quota'  // GET: quota usage info
     },
+
+    // AI / LLM endpoints - used by Web Email Helper and Gmail Add-on
+    llm: {
+        promptLLM: '/handleRouter?route=promptLLM'  // POST: analyze email intent + generate draft reply
+    },
     
     // Subscription endpoints - mixed routing (status uses handleRouter, others use apiRouter)
     subscription: {
